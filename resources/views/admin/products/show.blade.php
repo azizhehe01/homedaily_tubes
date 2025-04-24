@@ -31,6 +31,11 @@
                 <div class="col-md-3 fw-bold">Stock:</div>
                 <div class="col-md-9">{{ $product->stock }}</div>
             </div>
+
+            <div class="row mb-3">
+                <div class="col-md-3 fw-bold">Category :</div>
+                <div class="col-md-9">{{ $product->category }}</div>
+            </div>
             
             <div class="mt-4 d-flex gap-2">
                 <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning">Edit</a>

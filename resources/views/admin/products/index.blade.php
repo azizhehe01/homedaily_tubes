@@ -17,6 +17,7 @@
                 <th>Name</th>
                 <th>Price</th>
                 <th>Stock</th>
+                <th>Category</th>
                 <th>Image</th>
                 <th>Actions</th>
             </tr>
@@ -28,6 +29,7 @@
                 <td>{{ $product->name }}</td>
                 <td>Rp {{ number_format($product->price, 0, ',', '.') }}</td>
                 <td>{{ $product->stock }}</td>
+                <td>{{ $product->category }}</td>
                 <td>
                     @if($product->image)
                         <img src="{{ asset('storage/' . $product->image) }}" width="50">

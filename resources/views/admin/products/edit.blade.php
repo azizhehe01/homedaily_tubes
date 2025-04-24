@@ -26,6 +26,14 @@
                 <label for="stock" class="form-label">Stock</label>
                 <input type="number" class="form-control" id="stock" name="stock" value="{{ $product->stock }}" required>
             </div>
+            <div class="col-md-6 mb-3">
+                <label for="category" class="form-label">Category</label>
+                <select name="category" id="category" class="form-select" required>
+                    <option value="" disabled selected>current category : {{ $product->category }}</option>
+                    <option value="jasa" >jasa</option>
+                    <option value="product" >product</option>
+                </select>
+            </div>
         </div>
         
         <div class="mb-3">

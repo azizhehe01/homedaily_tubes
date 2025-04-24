@@ -26,6 +26,19 @@
                 <input type="number" class="form-control" id="stock" name="stock" required>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="category" class="form-label">Category</label>
+                <select name="category" id="category" class="form-select" required>
+                    <option value="" disabled selected>select a category</option>
+                    <option value="jasa" >jasa</option>
+                    <option value="product" >product</option>
+                </select>
+            </div>
+        </div>
+
+
         
         <div class="mb-3">
             <label for="image" class="form-label">Product Image</label>
