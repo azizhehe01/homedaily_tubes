@@ -20,7 +20,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::prefix('pages')->name('pages.')->group(function () {
         // Products Pages
         Route::get('/input-products', [ProductController::class, 'create'])->name('input-products');
+        Route::post('/input-products', [ProductController::class, 'store'])->name('store-products');
         Route::get('/products', [ProductController::class, 'index'])->name('products');
+        Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+        Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+        Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
 
         // Users Pages
         Route::get('/users', [UserController::class, 'index'])->name('users');

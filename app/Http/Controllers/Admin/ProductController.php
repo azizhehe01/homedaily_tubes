@@ -3,117 +3,116 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Product;
+use App\Models\ProductCategory;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return view('admin.pages.products');
+        $products = Product::with('category')
+                    ->latest()
+                    ->paginate(10); // 10 item per halaman
+
+        return view('admin.pages.products', compact('products'));
     }
 
-    // /**
-    //  * Show the form for creating a new resource.
-    //  */
-
-    // Create - Form tambah produk
     public function create()
     {
-        return view('admin.pages.input-products');
+        $categories = ProductCategory::select('category_id', 'category_name')->get();
+        return view('admin.pages.input-products', compact('categories'));
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'category' => 'required|in:jasa,product',
+            'category_id' => 'required|exists:product_categories,category_id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('products', 'public');
+        }
+
+        Product::create($validated);
+
+        return redirect()->route('admin.pages.products')
+               ->with('success', 'Produk berhasil ditambahkan!');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Display the specified resource.
      */
+    public function show($id)
+    {
+        $product = Product::with('category')->findOrFail($id);
+        return view('admin.pages.product-detail', compact('product'));
+    }
 
-    // // Store - Simpan produk baru
-    // public function store(Request $request)
-    // {
-    //     $validated = $request->validate([
-    //         'name' => 'required|max:255',
-    //         'description' => 'nullable',
-    //         'price' => 'required|numeric',
-    //         'stock' => 'required|integer',
-    //         'category' => 'required|in:product,jasa',
-    //         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-    //     ]);
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit($id)
+    {
+        $product = Product::findOrFail($id);
+        $categories = ProductCategory::all();
+        return view('admin.pages.edit-product', compact('product', 'categories'));
+    }
 
-    //     if ($request->hasFile('image')) {
-    //         $imagePath = $request->file('image')->store('products', 'public');
-    //         $validated['image'] = $imagePath;
-    //     }
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
 
-    //     Product::create($validated);
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'category' => 'required|in:jasa,product',
+            'category_id' => 'required|exists:product_categories,category_id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-    //     return redirect()->route('products.index')
-    //         ->with('success', 'Product created successfully.');
-    // }
+        // Handle upload gambar baru
+        if ($request->hasFile('image')) {
+            // Hapus gambar lama jika ada
+            if ($product->image) {
+                Storage::disk('public')->delete($product->image);
+            }
+            $validated['image'] = $request->file('image')->store('products', 'public');
+        }
 
-    // /**
-    //  * Display the specified resource.
-    //  */
-    // // Show - Detail produk
-    // public function show(Product $product)
-    // {
-    //     return view('admin.products.show', compact('product'));
-    // }
+        $product->update($validated);
 
-    // /**
-    //  * Show the form for editing the specified resource.
-    //  */
+        return redirect()->route('admin.pages.products')
+            ->with('success', 'Produk berhasil diperbarui!');
+    }
 
-    // public function edit(Product $product)
-    // {
-    //     return view('admin.products.edit', compact('product'));
-    // }
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($id)
+    {
+        $product = Product::findOrFail($id);
 
-    // /**
-    //  * Update the specified resource in storage.
-    //  */
+        // Hapus gambar jika ada
+        if ($product->image) {
+            Storage::disk('public')->delete($product->image);
+        }
 
-    // // Update - Update produk
-    // public function update(Request $request, Product $product)
-    // {
-    //     $validated = $request->validate([
-    //         'name' => 'required|max:255',
-    //         'description' => 'nullable',
-    //         'price' => 'required|numeric',
-    //         'stock' => 'required|integer',
-    //         'category' => 'required|in:product,jasa',
-    //         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-    //     ]);
+        $product->delete();
 
-    //     if ($request->hasFile('image')) {
-    //         // Hapus gambar lama jika ada
-    //         if ($product->image) {
-    //             Storage::disk('public')->delete($product->image);
-    //         }
-
-    //         $imagePath = $request->file('image')->store('products', 'public');
-    //         $validated['image'] = $imagePath;
-    //     }
-
-    //     $product->update($validated);
-
-    //     return redirect()->route('products.index')
-    //         ->with('success', 'Product updated successfully.');
-    // }
-
-    // public function destroy(Product $product)
-    // {
-    //     // Hapus gambar jika ada
-    //     if ($product->image) {
-    //         Storage::disk('public')->delete($product->image);
-    //     }
-
-    //     $product->delete();
-
-    //     return redirect()->route('products.index')
-    //         ->with('success', 'Product deleted successfully.');
-    // }
+        return redirect()->route('admin.pages.products')
+            ->with('success', 'Produk berhasil dihapus!');
+    }
 }
