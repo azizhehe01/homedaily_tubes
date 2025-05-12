@@ -12,4 +12,4 @@
 <meta content="MyraStudio" name="author">
 
 <!-- App favicon -->
-<link rel="shortcut icon" href="{{ asset('assets/images/iconlogo.svg') }}">
+<link rel="shortcut icon" href="{{ asset('assets/images/iconlogo.svg') }}" type="image/x-icon">

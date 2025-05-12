@@ -7,7 +7,6 @@
 
     <div class="grid gap-6 mb-6 xl:grid-cols-3">
         @include('admin.dashboard.partials.sales-chart')
-        @include('admin.dashboard.partials.recent-buyers-chart')
     </div>
 
     <div class="grid gap-6 xl:grid-cols-2">

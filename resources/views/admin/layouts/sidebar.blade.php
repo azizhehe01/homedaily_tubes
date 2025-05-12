@@ -49,6 +49,38 @@
                 </div>
             </li>
 
+            <li class="menu-item hs-accordion">
+                <a href="javascript:void(0)"
+                    class="flex items-center px-3 py-2 text-sm font-medium transition-all rounded-md hs-accordion-toggle group gap-x-4 text-default-700 hover:bg-default-900/5 hs-accordion-active:bg-default-900/5 hs-accordion-active:text-default-700">
+                    <iconify-icon icon="tabler:stack-2" class="text-xl text-gray-900"></iconify-icon>
+                    <span class="menu-text"> Categories </span>
+                    <span
+                        class="text-sm transition-all i-tabler-chevron-right ms-auto hs-accordion-active:rotate-90"></span>
+                </a>
+
+                <div id="sidenavLevel"
+                    class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300">
+                    <ul class="mt-2 space-y-2">
+                        <li class="menu-item">
+                            <a href="{{ route('admin.pages.input-categories') }}"
+                                class="flex items-center gap-x-3.5 rounded-md px-3 py-2 text-sm font-medium text-default-700 hover:bg-default-900/5">
+                                <iconify-icon icon="material-symbols:add-ad-outline"
+                                    class="text-xl text-gray-600"></iconify-icon>
+                                <span class="menu-text">Tambah Categories</span>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="{{ route('admin.pages.categories') }}"
+                                class="flex items-center gap-x-3.5 rounded-md px-3 py-2 text-sm font-medium text-default-700 hover:bg-default-900/5">
+                                <iconify-icon icon="material-symbols:list-rounded"
+                                    class="text-xl text-gray-600"></iconify-icon>
+                                <span class="menu-text">Daftar Categories</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
             <li class="menu-item">
                 <a href="{{ route('admin.pages.users') }}"
                     class="flex items-center px-3 py-2 text-sm font-medium transition-all rounded-md group gap-x-4 text-default-700 hover:bg-default-900/5 hs-accordion-active:bg-default-900/5">
@@ -81,12 +113,27 @@
 <div class="flex md:hidden">
     <div
         class="fixed bottom-0 z-50 flex items-center justify-between w-full h-16 gap-4 px-5 bg-white border-b shadow-md border-default-100">
-        <a href="{{ route('admin.dashboard') }}"
-            class="flex flex-col items-center justify-center gap-1 text-default-600">
+
+        <a href="#" class="flex flex-col items-center justify-center gap-1 text-default-600">
             <i data-lucide="gauge" class="size-5"></i>
             <span class="text-xs font-semibold">Home</span>
         </a>
-        <!-- ... other mobile nav items ... -->
+        <a href="#" class="flex flex-col items-center justify-center gap-1 text-default-600">
+            <i data-lucide="search" class="size-5"></i>
+            <span class="text-xs font-semibold">Search</span>
+        </a>
+        <a href="#" class="flex flex-col items-center justify-center gap-1 text-default-600">
+            <i data-lucide="compass" class="size-5"></i>
+            <span class="text-xs font-semibold">Explore</span>
+        </a>
+        <a href="#" class="flex flex-col items-center justify-center gap-1 text-default-600">
+            <i data-lucide="bell" class="size-5"></i>
+            <span class="text-xs font-semibold">Alerts</span>
+        </a>
+        <a href="#" class="flex flex-col items-center justify-center gap-1 text-default-600">
+            <i data-lucide="circle-user" class="size-5"></i>
+            <span class="text-xs font-semibold">Profile</span>
+        </a>
     </div>
 </div>
 <!-- Mobile Nav End -->
