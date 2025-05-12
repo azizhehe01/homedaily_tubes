@@ -17,7 +17,6 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2);
             $table->integer('stock');
-            $table->enum('category',['jasa','product']);
             $table->string('image')->nullable();
             $table->unsignedBigInteger('category_id'); 
             $table->foreign('category_id')->references('category_id')->on('product_categories')->onDelete('cascade');

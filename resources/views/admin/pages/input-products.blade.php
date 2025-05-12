@@ -61,22 +61,6 @@
                             <span class="mt-1 text-sm text-red-500">{{ $message }}</span>
                         @enderror
                     </div>
-
-                    <!-- Kategori (Enum) -->
-                    <div>
-                        <label for="category" class="inline-block mb-2 text-sm font-medium text-default-800">Category Type*</label>
-                        <select id="category" name="category" 
-                                class="form-select @error('category') border-red-500 @enderror"
-                                required>
-                            <option value="">Select Category</option>
-                            <option value="product" @selected(old('category') == 'product')>Product</option>
-                            <option value="jasa" @selected(old('category') == 'jasa')>Jasa</option>
-                        </select>
-                        @error('category')
-                            <span class="mt-1 text-sm text-red-500">{{ $message }}</span>
-                        @enderror
-                    </div>
-
                     <!-- Kategori (Foreign Key) -->
                     <div>
                         <label for="category_id" class="inline-block mb-2 text-sm font-medium text-default-800">Product Category*</label>

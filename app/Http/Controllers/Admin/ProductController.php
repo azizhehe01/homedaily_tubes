@@ -14,7 +14,7 @@ class ProductController extends Controller
     {
         $products = Product::with('category')
                     ->latest()
-                    ->paginate(10); // 10 item per halaman
+                    ->paginate(10);
 
         return view('admin.pages.products', compact('products'));
     }
@@ -32,7 +32,6 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
-            'category' => 'required|in:jasa,product',
             'category_id' => 'required|exists:product_categories,category_id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -47,18 +46,12 @@ class ProductController extends Controller
                ->with('success', 'Produk berhasil ditambahkan!');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($id)
     {
         $product = Product::with('category')->findOrFail($id);
         return view('admin.pages.product-detail', compact('product'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit($id)
     {
         $product = Product::findOrFail($id);
@@ -66,9 +59,6 @@ class ProductController extends Controller
         return view('admin.pages.edit-product', compact('product', 'categories'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
         $product = Product::findOrFail($id);
@@ -78,7 +68,6 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
-            'category' => 'required|in:jasa,product',
             'category_id' => 'required|exists:product_categories,category_id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -98,9 +87,6 @@ class ProductController extends Controller
             ->with('success', 'Produk berhasil diperbarui!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
         $product = Product::findOrFail($id);

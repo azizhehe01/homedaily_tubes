@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProductCategory extends Model
 {
     protected $table =  'product_categories';
+    protected $primaryKey = 'category_id'; 
     protected $fillable =  [
         'category_name',
         'description'
@@ -14,6 +15,6 @@ class ProductCategory extends Model
 
     public function products()
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Product::class,'category_id', 'category_id') ;
     }
 }
