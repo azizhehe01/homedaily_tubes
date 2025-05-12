@@ -28,9 +28,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
         Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
 
-        // Categories Pages
-        Route::get('/input-categories', [CategoriesController::class, 'create'])->name('input-categories');
+
+        // Categories Routes
         Route::get('/categories', [CategoriesController::class, 'index'])->name('categories');
+        Route::get('/input-categories', [CategoriesController::class, 'create'])->name('input-categories');
+        Route::post('/input-categories', [CategoriesController::class, 'store'])->name('store-categories');
+        Route::get('/categories/{category}/edit', [CategoriesController::class, 'edit'])->name('categories.edit');
+        Route::put('/categories/{category}', [CategoriesController::class, 'update'])->name('categories.update');
+        Route::delete('/categories/{category}', [CategoriesController::class, 'destroy'])->name('categories.destroy');
+
 
         // Users Pages
         Route::get('/users', [UserController::class, 'index'])->name('users');
