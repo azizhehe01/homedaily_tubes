@@ -74,6 +74,11 @@
                                            title="Edit">
                                             <iconify-icon icon="uil:edit" width="20"></iconify-icon>  {{-- Increased icon size --}}
                                         </a>
+                                        <a href="{{ route('admin.pages.products.detail', $product->product_id) }}" 
+                                           class="p-1 text-blue-600 hover:text-blue-900 transition-colors rounded hover:bg-blue-50"
+                                           title="View Detail">
+                                            <iconify-icon icon="mdi:eye-outline" width="20"></iconify-icon>
+                                        </a>
                                         <form action="{{ route('admin.pages.products.destroy', $product->product_id) }}" method="POST" class="inline">
                                             @csrf
                                             @method('DELETE')
