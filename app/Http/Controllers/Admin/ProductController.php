@@ -13,8 +13,8 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::with('category')
-                    ->latest()
-                    ->paginate(10);
+            ->latest()
+            ->paginate(10);
 
         return view('admin.pages.products', compact('products'));
     }
@@ -43,7 +43,7 @@ class ProductController extends Controller
         Product::create($validated);
 
         return redirect()->route('admin.pages.products')
-               ->with('success', 'Produk berhasil ditambahkan!');
+            ->with('success', 'Produk berhasil ditambahkan!');
     }
 
     public function show($id)
