@@ -3,26 +3,26 @@
 @section('title', 'Products List')
 
 @section('content')
-    <div class="container-fluid py-6 px-4">  {{-- Changed to container-fluid and added px-4 --}}
+    <div class="px-4 py-6 container-fluid"> {{-- Changed to container-fluid and added px-4 --}}
         @include('admin.layouts.page-title', [
             'title' => 'Products List',
             'subtitle' => 'Manage your products',
         ])
 
-        @if(session('success'))
-            <div class="mb-4 p-4 bg-green-50 text-green-700 border border-green-200 rounded-lg">
+        @if (session('success'))
+            <div class="p-4 mb-4 text-green-700 border border-green-200 rounded-lg bg-green-50">
                 {{ session('success') }}
             </div>
         @endif
 
-        <div class="bg-white rounded-lg shadow overflow-hidden">
-            <div class="p-4 flex justify-between items-center border-b">
+        <div class="overflow-hidden bg-white rounded-lg shadow">
+            <div class="flex items-center justify-between p-4 border-b">
                 <div class="flex-1">
                     <h3 class="text-lg font-medium text-default-700">All Products</h3>
                 </div>
                 <div>
-                    <a href="{{ route('admin.pages.input-products') }}" 
-                       class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                    <a href="{{ route('admin.pages.input-products') }}"
+                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700">
                         <iconify-icon icon="material-symbols:add" class="mr-1"></iconify-icon>
                         Add Product
                     </a>
@@ -30,60 +30,84 @@
             </div>
 
             <div class="overflow-x-auto">
-                <table class="w-full divide-y divide-gray-200">  {{-- Changed min-w-full to w-full --}}
+                <table class="w-full divide-y divide-gray-200"> {{-- Changed min-w-full to w-full --}}
                     <thead class="bg-gray-50">
                         <tr>
-                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-16">ID</th>  {{-- Added fixed width --}}
-                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-48">Name</th>  {{-- Added fixed width --}}
-                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-20">Image</th>  {{-- Added fixed width --}}
-                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-32">Price</th>  {{-- Added fixed width --}}
-                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-24">Stock</th>  {{-- Added fixed width --}}
-                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-40">Category</th>  {{-- Added fixed width --}}
-                            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                            <th scope="col" class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-24">Actions</th>  {{-- Added fixed width --}}
+                            <th scope="col"
+                                class="w-16 px-4 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                                ID</th> {{-- Added fixed width --}}
+                            <th scope="col"
+                                class="w-48 px-4 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                                Name</th> {{-- Added fixed width --}}
+                            <th scope="col"
+                                class="w-20 px-4 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                                Image</th> {{-- Added fixed width --}}
+                            <th scope="col"
+                                class="w-32 px-4 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                                Price</th> {{-- Added fixed width --}}
+                            <th scope="col"
+                                class="w-24 px-4 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                                Stock</th> {{-- Added fixed width --}}
+                            <th scope="col"
+                                class="w-40 px-4 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                                Category</th> {{-- Added fixed width --}}
+                            <th scope="col"
+                                class="px-4 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                                Description</th>
+                            <th scope="col"
+                                class="w-24 px-4 py-3 text-xs font-medium tracking-wider text-right text-gray-500 uppercase">
+                                Actions</th> {{-- Added fixed width --}}
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         @forelse ($products as $product)
                             <tr>
-                                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{{ $product->product_id }}</td>
-                                <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $product->name }}</td>
+                                <td class="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">{{ $product->product_id }}
+                                </td>
+                                <td class="px-4 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">
+                                    {{ $product->name }}</td>
                                 <td class="px-4 py-4 whitespace-nowrap">
-                                    @if($product->image)
-                                        <img src="{{ asset('storage/'.$product->image) }}" alt="Product Image" class="h-12 w-12 object-cover rounded-md">
+                                    @if ($product->image)
+                                        <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image"
+                                            class="object-cover w-12 h-12 rounded-md">
                                     @else
-                                        <span class="text-sm text-gray-400 italic">No image</span>
+                                        <span class="text-sm italic text-gray-400">No image</span>
                                     @endif
                                 </td>
-                                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <td class="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
                                     Rp {{ number_format($product->price, 0, ',', '.') }}
                                 </td>
-                                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">{{ $product->stock }}</td>
-                                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $product->category->category_name ?? 'N/A' }}
+                                <td class="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">{{ $product->stock }}</td>
+                                <td class="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                    {{ $product->category->category_name }}
                                 </td>
                                 <td class="px-4 py-4 text-sm text-gray-500">
-                                    <div class="line-clamp-2">  {{-- Changed to show 2 lines --}}
+                                    <div class="line-clamp-2"> {{-- Changed to show 2 lines --}}
                                         {{ $product->description }}
                                     </div>
                                 </td>
-                                <td class="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <div class="flex justify-end space-x-3">  {{-- Increased space between icons --}}
-                                        <a href="{{ route('admin.pages.products.edit', $product->product_id) }}" 
-                                           class="p-1 text-indigo-600 hover:text-indigo-900 transition-colors rounded hover:bg-indigo-50"
-                                           title="Edit">
-                                            <iconify-icon icon="uil:edit" width="20"></iconify-icon>  {{-- Increased icon size --}}
+                                <td class="px-4 py-4 text-sm font-medium text-right whitespace-nowrap">
+                                    <div class="flex justify-end space-x-3"> {{-- Increased space between icons --}}
+                                        <a href="{{ route('admin.pages.products.edit', $product->product_id) }}"
+                                            class="p-1 text-indigo-600 transition-colors rounded hover:text-indigo-900 hover:bg-indigo-50"
+                                            title="Edit">
+                                            <iconify-icon icon="uil:edit" width="20"></iconify-icon>
+                                            {{-- Increased icon size --}}
                                         </a>
-                                        <a href="{{ route('admin.pages.products.detail', $product->product_id) }}" 
-                                           class="p-1 text-blue-600 hover:text-blue-900 transition-colors rounded hover:bg-blue-50"
-                                           title="View Detail">
+                                        <a href="{{ route('admin.pages.products.detail', $product->product_id) }}"
+                                            class="p-1 text-blue-600 transition-colors rounded hover:text-blue-900 hover:bg-blue-50"
+                                            title="View Detail">
                                             <iconify-icon icon="mdi:eye-outline" width="20"></iconify-icon>
                                         </a>
-                                        <form action="{{ route('admin.pages.products.destroy', $product->product_id) }}" method="POST" class="inline">
+                                        <form action="{{ route('admin.pages.products.destroy', $product->product_id) }}"
+                                            method="POST" class="inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="p-1 text-red-600 hover:text-red-900 transition-colors rounded hover:bg-red-50" title="Delete" onclick="return confirm('Are you sure?')">
-                                                <iconify-icon icon="mdi:delete-outline" width="20"></iconify-icon>  {{-- Increased icon size --}}
+                                            <button type="submit"
+                                                class="p-1 text-red-600 transition-colors rounded hover:text-red-900 hover:bg-red-50"
+                                                title="Delete" onclick="return confirm('Are you sure?')">
+                                                <iconify-icon icon="mdi:delete-outline" width="20"></iconify-icon>
+                                                {{-- Increased icon size --}}
                                             </button>
                                         </form>
                                     </div>
@@ -91,7 +115,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="px-6 py-4 text-center text-sm text-gray-500">
+                                <td colspan="8" class="px-6 py-4 text-sm text-center text-gray-500">
                                     No products found
                                 </td>
                             </tr>
@@ -100,7 +124,7 @@
                 </table>
             </div>
 
-            @if($products->hasPages())
+            @if ($products->hasPages())
                 <div class="px-4 py-3 border-t">
                     {{ $products->links() }}
                 </div>
@@ -113,10 +137,10 @@
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js "></script>
     <script>
         // Confirm before deleting
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const deleteForms = document.querySelectorAll('form[action*="destroy"]');
             deleteForms.forEach(form => {
-                form.addEventListener('submit', function (e) {
+                form.addEventListener('submit', function(e) {
                     if (!confirm('Are you sure you want to delete this product?')) {
                         e.preventDefault();
                     }
