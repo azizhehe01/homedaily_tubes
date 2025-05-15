@@ -46,10 +46,15 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum'])->group(func
         Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
         Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
         Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+        Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.detail');
 
         // Categories
         Route::get('/categories', [CategoriesController::class, 'index'])->name('categories');
         Route::get('/input-categories', [CategoriesController::class, 'create'])->name('categories.create');
+        Route::post('/categories', [CategoriesController::class, 'store'])->name('categories.store');
+        Route::get('/categories/{category}/edit', [CategoriesController::class, 'edit'])->name('categories.edit');
+        Route::put('/categories/{category}', [CategoriesController::class, 'update'])->name('categories.update');
+        Route::delete('/categories/{category}', [CategoriesController::class, 'destroy'])->name('categories.destroy');
 
         // Users
         Route::get('/users', [UserController::class, 'index'])->name('users');

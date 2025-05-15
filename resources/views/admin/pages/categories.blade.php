@@ -1,9 +1,28 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Products List')
+@section('title', 'Daftar Kategori Produk')
 
 @section('content')
-    <div class="py-4 table-orders">
+    <div class="py-4">
+        @include('admin.layouts.page-title', [
+            'title' => 'Daftar Kategori Produk',
+            'subtitle' => 'Manajemen Kategori',
+        ])
+
+        @if(session('success'))
+            <div class="p-4 mb-4 text-green-700 bg-green-100 rounded-lg">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        <div class="flex justify-end mb-4">
+            <a href="{{ route('admin.pages.input-categories') }}" 
+               class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 flex items-center">
+                <iconify-icon icon="mdi:plus" class="mr-2"></iconify-icon>
+                Tambah Kategori
+            </a>
+        </div>
+
         <div class="overflow-x-auto">
             <div class="inline-block min-w-full align-middle">
                 <div class="overflow-hidden border rounded-lg">
@@ -11,37 +30,38 @@
                         <thead class="bg-gray-50">
                             <tr>
                                 <th scope="col" class="px-6 py-3 text-sm text-start text-default-500">ID</th>
-                                <th scope="col" class="px-6 py-3 text-sm text-start text-default-500">Name</th>
-                                <th scope="col" class="px-6 py-3 text-sm text-start text-default-500">Title</th>
-                                <th scope="col" class="px-6 py-3 text-sm text-start text-default-500">Email</th>
-                                <th scope="col" class="px-6 py-3 text-sm text-end text-default-500">Action</th>
+                                <th scope="col" class="px-6 py-3 text-sm text-start text-default-500">Nama Kategori</th>
+                                <th scope="col" class="px-6 py-3 text-sm text-start text-default-500">Deskripsi</th>
+                                <th scope="col" class="px-6 py-3 text-sm text-start text-default-500">Tanggal Dibuat</th>
+                                <th scope="col" class="px-6 py-3 text-sm text-end text-default-500">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
-                            @foreach ($products ?? [] as $product)
+                            @foreach ($categories ?? [] as $category)
                                 <tr>
                                     <td class="px-6 py-4 text-sm font-medium whitespace-nowrap text-default-800">
-                                        {{ $product->id ?? 'N/A' }}
+                                        {{ $category->category_id }}
                                     </td>
                                     <td class="px-6 py-4 text-sm font-medium whitespace-nowrap text-default-800">
-                                        {{ $product->name ?? 'N/A' }}
+                                        {{ $category->category_name }}
                                     </td>
                                     <td class="px-6 py-4 text-sm whitespace-nowrap text-default-800">
-                                        {{ $product->title ?? 'N/A' }}
+                                        {{ $category->description ? Str::limit($category->description, 50) : '-' }}
                                     </td>
                                     <td class="px-6 py-4 text-sm whitespace-nowrap text-default-800">
-                                        {{ $product->email ?? 'N/A' }}
+                                        {{ $category->created_at->format('d M Y') }}
                                     </td>
                                     <td class="px-6 py-4 text-sm font-medium whitespace-nowrap text-end">
-                                        <a href="{{ route('admin.products.edit', $product->id) }}"
-                                            class="text-primary hover:text-sky-700">
+                                        <a href="{{ route('admin.pages.categories.edit', $category->category_id) }}"
+                                            class="text-primary hover:text-sky-700 mr-3">
                                             <iconify-icon icon="uil:edit" width="20"></iconify-icon>
                                         </a>
-                                        <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST"
+                                        <form action="{{ route('admin.pages.categories.destroy', $category->category_id) }}" method="POST"
                                             class="inline-block">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="text-primary hover:text-sky-700">
+                                            <button type="submit" class="text-primary hover:text-sky-700" 
+                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')">
                                                 <iconify-icon icon="mdi:delete-outline" width="20"></iconify-icon>
                                             </button>
                                         </form>
@@ -51,9 +71,9 @@
                         </tbody>
                     </table>
 
-                    @if (($products ?? collect())->isEmpty())
+                    @if (($categories ?? collect())->isEmpty())
                         <div class="p-4 text-center text-gray-500">
-                            No products found.
+                            Tidak ada kategori produk ditemukan.
                         </div>
                     @endif
                 </div>
