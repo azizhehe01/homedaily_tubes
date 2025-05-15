@@ -58,8 +58,14 @@ Route::prefix('admin')->name('admin.')->middleware('auth:sanctum')->group(functi
 
 
         // Users Pages
+
         Route::get('/users', [UserController::class, 'index'])->name('users');
-        Route::get('/input-users', [UserController::class, 'create'])->name('users');
+        Route::post('/users', [UserController::class, 'store'])->name('users.store');
+        Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+        Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+        Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+        Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+
 
         // Orders Pages
         Route::get('/orders', [OrderController::class, 'index'])->name('orders');
