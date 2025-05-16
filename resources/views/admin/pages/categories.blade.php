@@ -1,3 +1,7 @@
+@php
+    use Illuminate\Support\Str;
+@endphp
+
 @extends('admin.layouts.app')
 
 @section('title', 'Daftar Kategori Produk')
@@ -9,15 +13,15 @@
             'subtitle' => 'Manajemen Kategori',
         ])
 
-        @if(session('success'))
+        @if (session('success'))
             <div class="p-4 mb-4 text-green-700 bg-green-100 rounded-lg">
                 {{ session('success') }}
             </div>
         @endif
 
         <div class="flex justify-end mb-4">
-            <a href="{{ route('admin.pages.input-categories') }}" 
-               class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 flex items-center">
+            <a href="{{ route('admin.pages.input-categories') }}"
+                class="flex items-center px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">
                 <iconify-icon icon="mdi:plus" class="mr-2"></iconify-icon>
                 Tambah Kategori
             </a>
@@ -53,15 +57,15 @@
                                     </td>
                                     <td class="px-6 py-4 text-sm font-medium whitespace-nowrap text-end">
                                         <a href="{{ route('admin.pages.categories.edit', $category->category_id) }}"
-                                            class="text-primary hover:text-sky-700 mr-3">
+                                            class="mr-3 text-primary hover:text-sky-700">
                                             <iconify-icon icon="uil:edit" width="20"></iconify-icon>
                                         </a>
-                                        <form action="{{ route('admin.pages.categories.destroy', $category->category_id) }}" method="POST"
-                                            class="inline-block">
+                                        <form action="{{ route('admin.pages.categories.destroy', $category->category_id) }}"
+                                            method="POST" class="inline-block">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="text-primary hover:text-sky-700" 
-                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')">
+                                            <button type="submit" class="text-primary hover:text-sky-700"
+                                                onclick="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')">
                                                 <iconify-icon icon="mdi:delete-outline" width="20"></iconify-icon>
                                             </button>
                                         </form>

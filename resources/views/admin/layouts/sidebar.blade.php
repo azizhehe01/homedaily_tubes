@@ -26,23 +26,23 @@
                         class="text-sm transition-all i-tabler-chevron-right ms-auto hs-accordion-active:rotate-90"></span>
                 </a>
 
-                <div id="sidenavLevel"
+                <div id="productsNav"
                     class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300">
                     <ul class="mt-2 space-y-2">
-                        <li class="menu-item">
-                            <a href="{{ route('admin.pages.input-products') }}"
-                                class="flex items-center gap-x-3.5 rounded-md px-3 py-2 text-sm font-medium text-default-700 hover:bg-default-900/5">
-                                <iconify-icon icon="material-symbols:add-ad-outline"
-                                    class="text-xl text-gray-600"></iconify-icon>
-                                <span class="menu-text">Tambah Products</span>
-                            </a>
-                        </li>
                         <li class="menu-item">
                             <a href="{{ route('admin.pages.products') }}"
                                 class="flex items-center gap-x-3.5 rounded-md px-3 py-2 text-sm font-medium text-default-700 hover:bg-default-900/5">
                                 <iconify-icon icon="material-symbols:list-rounded"
                                     class="text-xl text-gray-600"></iconify-icon>
                                 <span class="menu-text">Daftar Products</span>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="{{ route('admin.pages.input-products') }}"
+                                class="flex items-center gap-x-3.5 rounded-md px-3 py-2 text-sm font-medium text-default-700 hover:bg-default-900/5">
+                                <iconify-icon icon="material-symbols:add-ad-outline"
+                                    class="text-xl text-gray-600"></iconify-icon>
+                                <span class="menu-text">Tambah Products</span>
                             </a>
                         </li>
                     </ul>
@@ -58,23 +58,23 @@
                         class="text-sm transition-all i-tabler-chevron-right ms-auto hs-accordion-active:rotate-90"></span>
                 </a>
 
-                <div id="sidenavLevel"
+                <div id="categoriesNav"
                     class="hs-accordion-content hidden w-full overflow-hidden transition-[height] duration-300">
                     <ul class="mt-2 space-y-2">
-                        <li class="menu-item">
-                            <a href="{{ route('admin.pages.input-categories') }}"
-                                class="flex items-center gap-x-3.5 rounded-md px-3 py-2 text-sm font-medium text-default-700 hover:bg-default-900/5">
-                                <iconify-icon icon="material-symbols:add-ad-outline"
-                                    class="text-xl text-gray-600"></iconify-icon>
-                                <span class="menu-text">Tambah Categories</span>
-                            </a>
-                        </li>
                         <li class="menu-item">
                             <a href="{{ route('admin.pages.categories') }}"
                                 class="flex items-center gap-x-3.5 rounded-md px-3 py-2 text-sm font-medium text-default-700 hover:bg-default-900/5">
                                 <iconify-icon icon="material-symbols:list-rounded"
                                     class="text-xl text-gray-600"></iconify-icon>
                                 <span class="menu-text">Daftar Categories</span>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="{{ route('admin.pages.input-categories') }}"
+                                class="flex items-center gap-x-3.5 rounded-md px-3 py-2 text-sm font-medium text-default-700 hover:bg-default-900/5">
+                                <iconify-icon icon="material-symbols:add-ad-outline"
+                                    class="text-xl text-gray-600"></iconify-icon>
+                                <span class="menu-text">Tambah Categories</span>
                             </a>
                         </li>
                     </ul>
