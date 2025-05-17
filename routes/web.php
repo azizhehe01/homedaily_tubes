@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\CategoriesController;
+use App\Models\Product;
 
 Route::get('/', function () {
     return view('welcome');
@@ -42,11 +43,20 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Users Pages
         Route::get('/users', [UserController::class, 'index'])->name('users');
         Route::get('/input-users', [UserController::class, 'create'])->name('users');
-
+        
         // Orders Pages
         Route::get('/orders', [OrderController::class, 'index'])->name('orders');
+
 
         // Transactions Pages
         Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions');
     });
 });
+
+//Homepage User
+        Route::get('/homepage', function () {
+        return view('users.pages.homepage');})->name('homepage');
+
+        //Product Detail 
+        Route::get('/product/{id}', function () {
+        return view('users.pages.detail-product');})->name('product.detail');
