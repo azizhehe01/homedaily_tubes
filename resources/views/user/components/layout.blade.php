@@ -1,29 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'HomeDaily')</title>
-    <meta name="description" content="@yield('description', 'Premium furniture for your home at HomeDaily')">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts - Poppins -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-    </style>
-    @yield('styles')
-</head>
+@include('user.components.head')
 <body class="min-h-screen bg-white">
     <!-- Header -->
     <header class="container mx-auto px-4 py-4 flex items-center justify-between">

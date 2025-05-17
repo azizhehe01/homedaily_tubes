@@ -2,13 +2,34 @@
 
 namespace App\Models;
 
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-
-class User extends Model
+class User extends Authenticatable
 {
-    protected $table = 'users';
-    protected $fillable = ['name', 'email', 'password', 'google_id', 'phone_number', 'address', 'profile_picture', 'role'];
+    use HasApiTokens, HasFactory, Notifiable;
+
+    protected $primaryKey = 'user_id';
+
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'google_id',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
 
     public function adminLogs()
     {

@@ -10,11 +10,21 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
+    public function frontendIndex()
+    {
+        $recommendedProducts = Product::with('category')
+            ->where('stock', '>', 0) 
+            ->orderBy('created_at', 'desc') 
+            ->take(8) 
+            ->get();
+
+        return view('user.index', compact('recommendedProducts'));
+    }
     public function index()
     {
         $products = Product::with('category')
-                    ->latest()
-                    ->paginate(10);
+            ->latest()
+            ->paginate(10);
 
         return view('admin.pages.products', compact('products'));
     }
@@ -43,7 +53,7 @@ class ProductController extends Controller
         Product::create($validated);
 
         return redirect()->route('admin.pages.products')
-               ->with('success', 'Produk berhasil ditambahkan!');
+            ->with('success', 'Produk berhasil ditambahkan!');
     }
 
     public function show($id)

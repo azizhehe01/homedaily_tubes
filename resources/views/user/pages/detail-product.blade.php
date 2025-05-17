@@ -1,7 +1,6 @@
-@extends('users.components.layout')
+@include('user.components.head')
+@extends('user.components.layout') 
 
-@section('title', 'Modern Comfort Sofa')
-@section('description', 'Premium Quality Modern Comfort Sofa')
 
 @section('content')
     <!-- Breadcrumb -->
