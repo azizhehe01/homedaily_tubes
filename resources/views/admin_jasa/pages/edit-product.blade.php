@@ -1,17 +1,18 @@
-@extends('admin.layouts.app')
+@extends('admin_jasa.layouts.app')
 
-@section('title', 'Add Products')
+@section('title', 'Edit Product')
 
 @section('content')
     <div class="container py-6">
-        @include('admin.layouts.page-title', [
-            'title' => 'Add Products',
+        @include('admin_jasa.layouts.page-title', [
+            'title' => 'Edit data jasa',
             'subtitle' => 'Menu',
         ])
 
         <div class="p-6 bg-white rounded-lg shadow">
-            <form action="{{ route('admin.pages.store-products') }}" method="POST" enctype="multipart/form-data" id="product-form">
+            <form action="{{ route('admin_jasa.pages.products.update', $product) }}" method="POST" enctype="multipart/form-data" id="product-form">
                 @csrf
+                @method('PUT')
                 
                 <!-- Error Message Container -->
                 @if($errors->any())
@@ -31,7 +32,7 @@
                         <label for="name" class="inline-block mb-2 text-sm font-medium text-default-800">Product Name*</label>
                         <input type="text" id="name" name="name" 
                                class="form-input @error('name') border-red-500 @enderror" 
-                               value="{{ old('name') }}"
+                               value="{{ old('name', $product->name) }}"
                                required>
                         @error('name')
                             <span class="mt-1 text-sm text-red-500">{{ $message }}</span>
@@ -43,7 +44,7 @@
                         <label for="price" class="inline-block mb-2 text-sm font-medium text-default-800">Price*</label>
                         <input type="number" id="price" name="price" step="0.01" min="0" 
                                class="form-input @error('price') border-red-500 @enderror"
-                               value="{{ old('price') }}"
+                               value="{{ old('price', $product->price) }}"
                                required>
                         @error('price')
                             <span class="mt-1 text-sm text-red-500">{{ $message }}</span>
@@ -55,12 +56,13 @@
                         <label for="stock" class="inline-block mb-2 text-sm font-medium text-default-800">Stock*</label>
                         <input type="number" id="stock" name="stock" min="0" 
                                class="form-input @error('stock') border-red-500 @enderror"
-                               value="{{ old('stock') }}"
+                               value="{{ old('stock', $product->stock) }}"
                                required>
                         @error('stock')
                             <span class="mt-1 text-sm text-red-500">{{ $message }}</span>
                         @enderror
                     </div>
+
                     <!-- Kategori (Foreign Key) -->
                     <div>
                         <label for="category_id" class="inline-block mb-2 text-sm font-medium text-default-800">Product Category*</label>
@@ -69,12 +71,10 @@
                                 required>
                             <option value="">Select Category</option>
                             @foreach($categories as $category)
-                                @if($category->category_name != 'jasa')
-                                    <option value="{{ $category->category_id }}" 
-                                            @selected(old('category_id') == $category->category_id)>
-                                        {{ $category->category_name }}
-                                    </option>
-                                @endif
+                                <option value="{{ $category->category_id }}" 
+                                        @selected(old('category_id', $product->category_id) == $category->category_id)>
+                                    {{ $category->category_name }}
+                                </option>
                             @endforeach
                         </select>
                         @error('category_id')
@@ -85,6 +85,14 @@
                     <!-- Gambar Produk -->
                     <div class="lg:col-span-2">
                         <label for="image" class="inline-block mb-2 text-sm font-medium text-default-800">Product Image</label>
+                        
+                        @if($product->image)
+                            <div class="mb-3">
+                                <img src="{{ asset('storage/' . $product->image) }}" alt="Current Product Image" class="h-32 object-cover rounded">
+                                <p class="mt-1 text-sm text-gray-500">Current Image</p>
+                            </div>
+                        @endif
+                        
                         <input type="file" id="image" name="image" 
                                class="form-input @error('image') border-red-500 @enderror">
                         <p class="mt-1 text-sm text-gray-500">Format: JPEG, PNG, JPG, GIF (Max: 2MB)</p>
@@ -97,16 +105,19 @@
                     <div class="lg:col-span-2">
                         <label for="description" class="inline-block mb-2 text-sm font-medium text-default-800">Description</label>
                         <textarea id="description" name="description" rows="4" 
-                                  class="form-input @error('description') border-red-500 @enderror">{{ old('description') }}</textarea>
+                                  class="form-input @error('description') border-red-500 @enderror">{{ old('description', $product->description) }}</textarea>
                         @error('description')
                             <span class="mt-1 text-sm text-red-500">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
 
-                <div class="flex justify-end mt-6">
+                <div class="flex justify-end mt-6 gap-3">
+                    <a href="{{ route('admin_jasa.pages.products') }}" class="px-6 py-2 text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors">
+                        Cancel
+                    </a>
                     <button type="submit" class="px-6 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">
-                        Save Product
+                        Update Jasa
                     </button>
                 </div>
             </form>
@@ -129,22 +140,24 @@
         // Client-side validation
         document.getElementById('product-form').addEventListener('submit', function(e) {
             let isValid = true;
-            const requiredFields = ['name', 'price', 'stock', 'category', 'category_id'];
+            const requiredFields = ['name', 'price', 'stock', 'category_id'];
             
             // Reset error states
             requiredFields.forEach(field => {
                 const element = document.getElementById(field);
-                element.classList.remove('border-red-500', 'error');
-                const errorElement = element.nextElementSibling;
-                if (errorElement && errorElement.classList.contains('text-red-500')) {
-                    errorElement.textContent = '';
+                if (element) {
+                    element.classList.remove('border-red-500', 'error');
+                    const errorElement = element.nextElementSibling;
+                    if (errorElement && errorElement.classList.contains('text-red-500')) {
+                        errorElement.textContent = '';
+                    }
                 }
             });
 
             // Validate required fields
             requiredFields.forEach(field => {
                 const element = document.getElementById(field);
-                if (!element.value) {
+                if (element && !element.value) {
                     element.classList.add('border-red-500', 'error');
                     const errorElement = element.nextElementSibling;
                     if (errorElement && errorElement.classList.contains('text-red-500')) {
@@ -156,7 +169,7 @@
 
             // Validate price format
             const price = document.getElementById('price');
-            if (price.value && isNaN(parseFloat(price.value))) {
+            if (price && price.value && isNaN(parseFloat(price.value))) {
                 price.classList.add('border-red-500', 'error');
                 const errorElement = price.nextElementSibling;
                 if (errorElement && errorElement.classList.contains('text-red-500')) {

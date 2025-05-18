@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\AdminJasa\ProductController as AdminJasaProductController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\TransactionController;
@@ -70,5 +71,23 @@ Route::prefix('admin')->name('admin.')->middleware('auth:sanctum')->group(functi
 
         // Transactions Pages
         Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions');
+    });
+});
+
+Route::prefix('admin_jasa')->name('admin_jasa.')->middleware('auth:sanctum')->group(function () {
+    // Dashboard
+    Route::get('/dashboard', function () {
+        return view('admin_jasa.dashboard.index');
+    })->name('dashboard');
+
+    Route::prefix('pages')->name('pages.')->group(function () {
+        // Products Pages
+        Route::get('/products', [AdminJasaProductController::class, 'index'])->name('products');
+        Route::get('/products/create', [AdminJasaProductController::class, 'create'])->name('input-products');
+        Route::post('/products', [AdminJasaProductController::class, 'store'])->name('store-products');
+        Route::get('/products/{product}/edit', [AdminJasaProductController::class, 'edit'])->name('products.edit');
+        Route::put('/products/{product}', [AdminJasaProductController::class, 'update'])->name('products.update');
+        Route::delete('/products/{product}', [AdminJasaProductController::class, 'destroy'])->name('products.destroy');
+        Route::get('/products/{product}', [AdminJasaProductController::class, 'show'])->name('products.detail'); 
     });
 });

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\AdminJasa;
 
+use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductCategory;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -22,17 +22,14 @@ class ProductController extends Controller
     }
     public function index()
     {
-        $products = Product::with('category')
-            ->latest()
-            ->paginate(10);
-
-        return view('admin.pages.products', compact('products'));
+        $products = Product::with('category')->latest()->paginate(10);
+        return view('admin_jasa.pages.products', compact('products'));
     }
 
     public function create()
     {
-        $categories = ProductCategory::select('category_id', 'category_name')->get();
-        return view('admin.pages.input-products', compact('categories'));
+        $categories = ProductCategory::all();
+        return view('admin_jasa.pages.input-products', compact('categories'));
     }
 
     public function store(Request $request)
@@ -52,21 +49,15 @@ class ProductController extends Controller
 
         Product::create($validated);
 
-        return redirect()->route('admin.pages.products')
-            ->with('success', 'Produk berhasil ditambahkan!');
-    }
-
-    public function show($id)
-    {
-        $product = Product::with('category')->findOrFail($id);
-        return view('admin.pages.product-detail', compact('product'));
+        return redirect()->route('admin_jasa.pages.products')
+            ->with('success', 'geloo jasa berhasil di tambahkan');
     }
 
     public function edit($id)
     {
         $product = Product::findOrFail($id);
         $categories = ProductCategory::all();
-        return view('admin.pages.edit-product', compact('product', 'categories'));
+        return view('admin_jasa.pages.edit-product', compact('product', 'categories'));
     }
 
     public function update(Request $request, $id)
@@ -93,7 +84,7 @@ class ProductController extends Controller
 
         $product->update($validated);
 
-        return redirect()->route('admin.pages.products')
+        return redirect()->route('admin_jasa.pages.products')
             ->with('success', 'Produk berhasil diperbarui!');
     }
 
@@ -111,13 +102,19 @@ class ProductController extends Controller
             $product->delete();
         
             return redirect()
-                ->route('admin.pages.products')
+                ->route('admin_jasa.pages.products')
                 ->with('success', 'Produk berhasil dihapus!');
         
         } catch (\Exception $e) {
             return redirect()
-                ->route('admin.pages.products')
+                ->route('admin_jasa.pages.products')
                 ->with('error', 'Gagal menghapus produk: ' . $e->getMessage());
         }
+    }
+
+    public function show($id)
+    {
+        $product = Product::with('category')->findOrFail($id);
+        return view('admin_jasa.pages.product-detail', compact('product'));
     }
 }
