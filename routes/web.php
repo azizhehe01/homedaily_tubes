@@ -12,7 +12,7 @@ use App\Http\Controllers\Auth\GoogleController;
 use App\Models\Product;
 
 // Public Routes
-Route::get('/', [ProductController::class, 'frontendIndex'])->name('user.index');
+Route::get('/', [ProductController::class, 'frontendIndex'])->name('user.dashboard');
 Route::get('/product/{id}', [ProductController::class, 'showFrontend'])->name('product.detail');
 
 
@@ -38,6 +38,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth:sanctum')->group(functi
     Route::get('/dashboard', function () {
         return view('admin.dashboard.index');
     })->name('dashboard');
+
 
     // Pages Routes
     Route::prefix('pages')->name('pages.')->group(function () {
@@ -74,4 +75,21 @@ Route::prefix('admin')->name('admin.')->middleware('auth:sanctum')->group(functi
     });
 });
 
+//Admi Jasa Routes
+Route::prefix('admin_jasa')->name('admin_jasa.')->middleware('auth:sanctum')->group(function () {
+    // Dashboard
+    Route::get('/dashboard', function () {
+        return view('admin_jasa.dashboard.index');
+    })->name('dashboard');
 
+    Route::prefix('pages')->name('pages.')->group(function () {
+        // Products Pages
+        Route::get('/products', [AdminJasaProductController::class, 'index'])->name('products');
+        Route::get('/products/create', [AdminJasaProductController::class, 'create'])->name('input-products');
+        Route::post('/products', [AdminJasaProductController::class, 'store'])->name('store-products');
+        Route::get('/products/{product}/edit', [AdminJasaProductController::class, 'edit'])->name('products.edit');
+        Route::put('/products/{product}', [AdminJasaProductController::class, 'update'])->name('products.update');
+        Route::delete('/products/{product}', [AdminJasaProductController::class, 'destroy'])->name('products.destroy');
+        Route::get('/products/{product}', [AdminJasaProductController::class, 'show'])->name('products.detail'); 
+    });
+});

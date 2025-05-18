@@ -118,7 +118,7 @@ class AuthController extends Controller
         return match($role) {
             'admin' => 'admin.dashboard',
             'admin_jasa' => 'admin_jasa.dashboard',
-            default => 'user.index'
+            default => 'user.dashboard'
         };
     }
 
