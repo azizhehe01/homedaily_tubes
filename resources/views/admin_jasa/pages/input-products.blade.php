@@ -1,16 +1,16 @@
-@extends('admin.layouts.app')
+@extends('admin_jasa.layouts.app')
 
-@section('title', 'Add Products')
+@section('title', 'Tambah Jasa')
 
 @section('content')
     <div class="container py-6">
-        @include('admin.layouts.page-title', [
-            'title' => 'Add Products',
+        @include('admin_jasa.layouts.page-title', [
+            'title' => 'tambahkan jasa',
             'subtitle' => 'Menu',
         ])
 
         <div class="p-6 bg-white rounded-lg shadow">
-            <form action="{{ route('admin.pages.store-products') }}" method="POST" enctype="multipart/form-data" id="product-form">
+            <form action="{{ route('admin_jasa.pages.store-products') }}" method="POST" enctype="multipart/form-data" id="product-form">
                 @csrf
                 
                 <!-- Error Message Container -->
@@ -28,7 +28,7 @@
                 <div class="grid gap-6 lg:grid-cols-2">
                     <!-- Nama Produk -->
                     <div>
-                        <label for="name" class="inline-block mb-2 text-sm font-medium text-default-800">Product Name*</label>
+                        <label for="name" class="inline-block mb-2 text-sm font-medium text-default-800">Nama jasa*</label>
                         <input type="text" id="name" name="name" 
                                class="form-input @error('name') border-red-500 @enderror" 
                                value="{{ old('name') }}"
@@ -69,7 +69,7 @@
                                 required>
                             <option value="">Select Category</option>
                             @foreach($categories as $category)
-                                @if($category->category_name != 'jasa')
+                                @if($category->category_name == 'jasa')
                                     <option value="{{ $category->category_id }}" 
                                             @selected(old('category_id') == $category->category_id)>
                                         {{ $category->category_name }}
@@ -84,7 +84,7 @@
 
                     <!-- Gambar Produk -->
                     <div class="lg:col-span-2">
-                        <label for="image" class="inline-block mb-2 text-sm font-medium text-default-800">Product Image</label>
+                        <label for="image" class="inline-block mb-2 text-sm font-medium text-default-800">Jasa image</label>
                         <input type="file" id="image" name="image" 
                                class="form-input @error('image') border-red-500 @enderror">
                         <p class="mt-1 text-sm text-gray-500">Format: JPEG, PNG, JPG, GIF (Max: 2MB)</p>
@@ -106,7 +106,7 @@
 
                 <div class="flex justify-end mt-6">
                     <button type="submit" class="px-6 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">
-                        Save Product
+                        Simpan jasa
                     </button>
                 </div>
             </form>

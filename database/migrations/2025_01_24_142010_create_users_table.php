@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('phone_number', 15)->nullable();
             $table->text('address')->nullable();
             $table->string('profile_picture', 255)->nullable();
-            $table->enum('role', ['user', 'admin'])->default('user'); //default nya user ya
+            $table->enum('role', ['user', 'admin','admin_jasa'])->default('user'); //default nya user ya
             $table->timestamps();
         });
     }

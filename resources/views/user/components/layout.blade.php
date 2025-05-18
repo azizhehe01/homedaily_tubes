@@ -13,6 +13,10 @@
             <a href="/produk" class="text-gray-700 font-medium">Produk</a>
             <a href="/jasa" class="text-gray-700 font-medium">Jasa</a>
             <a href="/about-us" class="text-gray-700 font-medium">About Us</a>
+            <a href="{{ route('login') }}" 
+                class="text-[#ea8c00] font-medium">
+                Login
+            </a>
         </nav>
     </header>
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\AdminJasa;
 
+use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductCategory;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -22,17 +22,14 @@ class ProductController extends Controller
     }
     public function index()
     {
-        $products = Product::with('category')
-            ->latest()
-            ->paginate(10);
-
-        return view('admin.pages.products', compact('products'));
+        $products = Product::with('category')->latest()->paginate(10);
+        return view('admin_jasa.pages.products', compact('products'));
     }
 
     public function create()
     {
-        $categories = ProductCategory::select('category_id', 'category_name')->get();
-        return view('admin.pages.input-products', compact('categories'));
+        $categories = ProductCategory::all();
+        return view('admin_jasa.pages.input-products', compact('categories'));
     }
 
     public function store(Request $request)
@@ -52,21 +49,15 @@ class ProductController extends Controller
 
         Product::create($validated);
 
-        return redirect()->route('admin.pages.products')
-            ->with('success', 'Produk berhasil ditambahkan!');
-    }
-
-    public function show($id)
-    {
-        $product = Product::with('category')->findOrFail($id);
-        return view('admin.pages.product-detail', compact('product'));
+        return redirect()->route('admin_jasa.pages.products')
+            ->with('success', 'geloo jasa berhasil di tambahkan');
     }
 
     public function edit($id)
     {
         $product = Product::findOrFail($id);
         $categories = ProductCategory::all();
-        return view('admin.pages.edit-product', compact('product', 'categories'));
+        return view('admin_jasa.pages.edit-product', compact('product', 'categories'));
     }
 
     public function update(Request $request, $id)
@@ -93,7 +84,7 @@ class ProductController extends Controller
 
         $product->update($validated);
 
-        return redirect()->route('admin.pages.products')
+        return redirect()->route('admin_jasa.pages.products')
             ->with('success', 'Produk berhasil diperbarui!');
     }
 
@@ -111,35 +102,19 @@ class ProductController extends Controller
             $product->delete();
         
             return redirect()
-                ->route('admin.pages.products')
+                ->route('admin_jasa.pages.products')
                 ->with('success', 'Produk berhasil dihapus!');
         
         } catch (\Exception $e) {
             return redirect()
-                ->route('admin.pages.products')
+                ->route('admin_jasa.pages.products')
                 ->with('error', 'Gagal menghapus produk: ' . $e->getMessage());
         }
     }
 
-    public function showFrontend($id)
+    public function show($id)
     {
-        // Create dummy product data
-        $product = (object)[
-            'name' => 'Modern Minimalist Sofa',
-            'price' => 4500000,
-            'description' => 'Elegant modern sofa with premium fabric upholstery. Perfect for contemporary living spaces. Features high-density foam cushions for maximum comfort and durability.',
-            'images' => [
-                'main' => 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=400',
-                'side' => 'https://images.unsplash.com/photo-1567016432779-094069958ea5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&h=200',
-                'detail' => 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&h=200'
-            ],
-            'stock' => 5,
-            'category' => (object)[
-                'name' => 'Living Room Furniture'
-            ]
-        ];
-
-        return view('user.pages.detail-product', compact('product'));
+        $product = Product::with('category')->findOrFail($id);
+        return view('admin_jasa.pages.product-detail', compact('product'));
     }
 }
-

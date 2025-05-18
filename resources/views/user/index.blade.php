@@ -70,7 +70,7 @@
             <div class="w-full md:w-1/2">
                 <div class="relative">
                     <div class="absolute inset-0 transform translate-x-4 translate-y-4 bg-white rounded-3xl"></div>
-                    <img src="{{ asset('assets/images/hero-banner.png') }}"
+                    <img src="{{ asset('assets/images/homedailyxolivia.jpg') }}"
                         class="relative z-10 w-full h-auto shadow-xl rounded-3xl" alt="Furniture">
                 </div>
             </div>
