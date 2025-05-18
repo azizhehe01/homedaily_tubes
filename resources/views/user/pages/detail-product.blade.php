@@ -19,14 +19,20 @@
     </div>
 
     <!-- Product Images -->
-    <div class="container mx-auto px-4 mb-12">
+        <div class="container mx-auto px-4 mb-12">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="md:col-span-2">
-                <img src="https://placehold.co/600x400" alt="Modern Sofa Main View" class="w-full h-full object-cover rounded-lg">
+                <img src="{{ $product->images['main'] }}" 
+                    alt="{{ $product->name }} Main View" 
+                    class="w-full h-full object-cover rounded-lg">
             </div>
             <div class="grid grid-rows-2 gap-4">
-                <img src="https://placehold.co/300x200" alt="Modern Sofa Side View" class="w-full h-full object-cover rounded-lg">
-                <img src="https://placehold.co/300x200" alt="Modern Sofa Detail View" class="w-full h-full object-cover rounded-lg">
+                <img src="{{ $product->images['side'] }}" 
+                    alt="{{ $product->name }} Side View" 
+                    class="w-full h-full object-cover rounded-lg">
+                <img src="{{ $product->images['detail'] }}" 
+                    alt="{{ $product->name }} Detail View" 
+                    class="w-full h-full object-cover rounded-lg">
             </div>
         </div>
     </div>

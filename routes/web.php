@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\AdminJasa\ProductController as AdminJasaProductController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\TransactionController;
@@ -12,6 +13,8 @@ use App\Models\Product;
 
 // Public Routes
 Route::get('/', [ProductController::class, 'frontendIndex'])->name('user.index');
+Route::get('/product/{id}', [ProductController::class, 'showFrontend'])->name('product.detail');
+
 
 // Auth Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -72,6 +75,3 @@ Route::prefix('admin')->name('admin.')->middleware('auth:sanctum')->group(functi
 });
 
 
-Route::get('/product/{id}', function () {
-    return view('user.pages.detail-product');
-})->name('product.detail');

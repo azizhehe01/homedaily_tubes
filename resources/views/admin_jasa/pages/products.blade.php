@@ -1,12 +1,12 @@
-@extends('admin.layouts.app')
+@extends('admin_jasa.layouts.app')
 
 @section('title', 'Products List')
 
 @section('content')
     <div class="px-4 py-6 container-fluid"> {{-- Changed to container-fluid and added px-4 --}}
-        @include('admin.layouts.page-title', [
-            'title' => 'Products List',
-            'subtitle' => 'Manage your products',
+        @include('admin_jasa.layouts.page-title', [
+            'title' => 'Jasa List',
+            'subtitle' => 'atur data jasa lo',
         ])
 
         @if (session('success'))
@@ -21,10 +21,10 @@
                     <h3 class="text-lg font-medium text-default-700">All Products</h3>
                 </div>
                 <div>
-                    <a href="{{ route('admin.pages.input-products') }}"
+                    <a href="{{ route('admin_jasa.pages.input-products') }}"
                         class="inline-flex items-center px-4 py-2 text-sm font-medium text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700">
                         <iconify-icon icon="material-symbols:add" class="mr-1"></iconify-icon>
-                        Add Product
+                        Tambahkan jasa
                     </a>
                 </div>
             </div>
@@ -61,7 +61,7 @@
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         @forelse ($products->filter(function($product) {
-                            return optional($product->category)->category_name != 'jasa';
+                            return $product->category->category_name == 'jasa';
                         }) as $product)
                             <tr>
                                 <td class="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">{{ $product->product_id }}
@@ -90,18 +90,18 @@
                                 </td>
                                 <td class="px-4 py-4 text-sm font-medium text-right whitespace-nowrap">
                                     <div class="flex justify-end space-x-3"> {{-- Increased space between icons --}}
-                                        <a href="{{ route('admin.pages.products.edit', $product->product_id) }}"
+                                        <a href="{{ route('admin_jasa.pages.products.edit', $product->product_id) }}"
                                             class="p-1 text-indigo-600 transition-colors rounded hover:text-indigo-900 hover:bg-indigo-50"
                                             title="Edit">
                                             <iconify-icon icon="uil:edit" width="20"></iconify-icon>
                                             {{-- Increased icon size --}}
                                         </a>
-                                        <a href="{{ route('admin.pages.products.detail', $product->product_id) }}"
+                                        <a href="{{ route('admin_jasa.pages.products.detail', $product->product_id) }}"
                                             class="p-1 text-blue-600 transition-colors rounded hover:text-blue-900 hover:bg-blue-50"
                                             title="View Detail">
                                             <iconify-icon icon="mdi:eye-outline" width="20"></iconify-icon>
                                         </a>
-                                        <form action="{{ route('admin.pages.products.destroy', $product->product_id) }}"
+                                        <form action="{{ route('admin_jasa.pages.products.destroy', $product->product_id) }}"
                                             method="POST" class="inline">
                                             @csrf
                                             @method('DELETE')
@@ -118,7 +118,7 @@
                         @empty
                             <tr>
                                 <td colspan="8" class="px-6 py-4 text-sm text-center text-gray-500">
-                                    No products found
+                                    No products found in "jasa" category
                                 </td>
                             </tr>
                         @endforelse
