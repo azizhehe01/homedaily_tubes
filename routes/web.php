@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\CategoriesController;
 use App\Http\Controllers\Auth\AuthController; 
 use App\Http\Controllers\Auth\GoogleController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use App\Models\Product;
 
 // Public Routes
@@ -90,6 +92,19 @@ Route::prefix('admin_jasa')->name('admin_jasa.')->middleware('auth:sanctum')->gr
         Route::get('/products/{product}/edit', [AdminJasaProductController::class, 'edit'])->name('products.edit');
         Route::put('/products/{product}', [AdminJasaProductController::class, 'update'])->name('products.update');
         Route::delete('/products/{product}', [AdminJasaProductController::class, 'destroy'])->name('products.destroy');
-        Route::get('/products/{product}', [AdminJasaProductController::class, 'show'])->name('products.detail'); 
+        Route::get('/products/{product}', [AdminJasaProductController::class, 'show'])->name('products.detail');
     });
 });
+
+//route logout
+Route::post('/logout', function (Request $request) {
+    // Untuk web session (browser)
+    Auth::guard('web')->logout();
+    // Jika pakai API token (optional)
+    if ($request->user()) {
+        $request->user()->tokens()->delete(); // Hapus semua token API
+    }
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+    return redirect('/login');
+})->name('logout');

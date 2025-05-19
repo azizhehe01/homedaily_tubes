@@ -78,40 +78,39 @@
 
 
     {{-- most picked section --}}
-    <!-- Ganti bagian Recommend Product dengan: -->
     <section>
-    <div class="container p-4 mx-auto">
-        <h2 class="mb-4 text-2xl font-bold text-black-600">Recommend Product</h2>
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            @forelse($recommendedProducts as $product)
-            <div class="relative overflow-hidden bg-gray-800 rounded-lg {{ $loop->first ? 'sm:col-span-2 sm:row-span-2' : '' }}">
-                @if($product->image)
-                <img src="{{ asset('storage/'.$product->image) }}" 
-                     alt="{{ $product->name }}"
-                     class="z-0 object-cover w-full h-full max-h-96"
-                     loading="lazy">
-                @else
-                <div class="flex items-center justify-center w-full h-48 bg-gray-200">
-                    <span class="text-gray-500">No Image Available</span>
+        <div class="container p-4 mx-auto">
+            <h2 class="mb-4 text-2xl font-bold text-black-600">Recommend Product</h2>
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                @forelse($recommendedProducts->where('category.category_name', '!=', 'jasa') as $product)
+                <div class="relative overflow-hidden bg-gray-800 rounded-lg {{ $loop->first ? 'sm:col-span-2 sm:row-span-2' : '' }}">
+                    @if($product->image)
+                    <img src="{{ asset('storage/'.$product->image) }}" 
+                         alt="{{ $product->name }}"
+                         class="z-0 object-cover w-full h-full max-h-96"
+                         loading="lazy">
+                    @else
+                    <div class="flex items-center justify-center w-full h-48 bg-gray-200">
+                        <span class="text-gray-500">No Image Available</span>
+                    </div>
+                    @endif
+
+                    <div class="absolute bottom-0 left-0 z-10 p-4">
+                        <h3 class="text-lg font-semibold text-white">{{ $product->name }}</h3>
+                        <p class="text-sm text-white">{{ $product->category->category_name ?? 'Uncategorized' }}</p>
+                    </div>
+                    <div class="absolute top-0 right-0 z-10 flex items-center justify-center py-3 pl-8 text-2xl font-bold text-white bg-yellow-600 rounded-bl-full w-72">
+                        Rp {{ number_format($product->price, 0, ',', '.') }}
+                    </div>
                 </div>
-                @endif
-                
-                <div class="absolute bottom-0 left-0 z-10 p-4">
-                    <h3 class="text-lg font-semibold text-white">{{ $product->name }}</h3>
-                    <p class="text-sm text-white">{{ $product->category->category_name ?? 'Uncategorized' }}</p>
+                @empty
+                <div class="col-span-full text-center">
+                    <p class="text-gray-500">No recommended products available</p>
                 </div>
-                <div class="absolute top-0 right-0 z-10 flex items-center justify-center py-3 pl-8 text-2xl font-bold text-white bg-yellow-600 rounded-bl-full w-72">
-                    Rp {{ number_format($product->price, 0, ',', '.') }}
-                </div>
+                @endforelse
             </div>
-            @empty
-            <div class="col-span-full text-center">
-                <p class="text-gray-500">No recommended products available</p>
-            </div>
-            @endforelse
         </div>
-    </div>
-</section>
+    </section>
 
 
     {{-- home services section --}}
@@ -119,399 +118,107 @@
         <div class="container px-4 py-16 mx-auto">
             <h2 class="mb-6 text-xl font-semibold text-black-600 ">Our Home Services</h2>
             <div class="grid grid-cols-1 gap-6 md:grid-cols-4">
+                @forelse($recommendedProducts->where('category.category_name', '==', 'jasa') as $product)
                 <div class="w-full rounded-lg shadow-sm card bg-base-100">
                     <figure>
-                        <img src="{{ 'assets/images/service1.png' }}" alt="Tabby Town"
-                            class="object-cover w-full h-48 rounded-lg" />
+                        @if($product->image)
+                        <img src="{{ asset('storage/'.$product->image) }}" alt="Tabby Town"  class="object-cover w-full h-48 rounded-lg" />
+                        @else
+                        <div class="flex items-center justify-center w-full h-48 bg-gray-200">
+                            <span class="text-gray-500">No Image Available</span>
+                        </div>
+                        @endif
                     </figure>
                     <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Tabby Town</h2>
-                        <p class="text-sm text-gray-600">Gunung Batu, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
+                        <h2 class="text-lg card-title">{{ $product->name }}</h2>
+                        <p class="text-sm text-gray-600">{{ $product->category->category_name ?? 'Uncategorized' }}</p>
+                        <p class="mt-2 font-bold text-orange-500">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
                     </div>
                 </div>
-                <div class="w-full shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service2.png' }}" alt="Anggand"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Anggand</h2>
-                        <p class="text-sm text-gray-600">Bogor, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
+                @empty
+                <div class="col-span-full text-center">
+                    <p class="text-gray-500">No recommended products available</p>
                 </div>
-                <div class="w-full shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service3.png' }}" alt="Seattle Rain"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Seattle Rain</h2>
-                        <p class="text-sm text-gray-600">Jakarta, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
-                <div class="w-full shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service4.png' }}" alt="Wooden Pit"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Wooden Pit</h2>
-                        <p class="text-sm text-gray-600">Wonosobo, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
+                @endforelse
             </div>
         </div>
     </section>
 
     {{-- Top Products for you --}}
-    <section>
+    <section x-data="{ activeCategory: null }">
         <div class="container px-4 py-6 pr-8 mx-auto">
             <h2 class="mb-4 text-xl font-semibold text-gray-800">Top Products for you</h2>
-            <div class="flex flex-wrap items-center gap-20">
+            
+            <!-- Category Buttons -->
+            <div class="flex flex-wrap items-center gap-10">
+                <!-- All Products Button -->
                 <button
-                    class="flex items-center px-6 py-3 text-base text-gray-500 border border-gray-500 rounded-full btn btn-outline hover:bg-orange-100">
-                    Furniture
-                    <span class="iconify" data-icon="mdi:chevron-down" data-width="20" data-height="20"></span>
+                    @click="activeCategory = null"
+                    :class="activeCategory === null ? 'bg-orange-500 text-white' : 'text-gray-500 border-gray-500 hover:bg-orange-100'"
+                    class="flex items-center px-6 py-3 text-base border rounded-full btn">
+                    All Products
                 </button>
-                <button type="button"
-                    class="px-6 py-3 mb-2 text-base font-medium text-white bg-orange-500 border border-orange-300 rounded-full focus:outline-none hover:bg-orange-400 focus:ring-4 focus:ring-orange-100 me-2">
-                    Light
-                </button>
-                <button
-                    class="flex items-center px-6 py-3 text-base text-orange-500 border-orange-500 rounded-full btn btn-outline hover:bg-gray-100">
-                    Kursi
-                </button>
-                <button
-                    class="flex items-center px-6 py-3 text-base text-orange-500 border-orange-500 rounded-full btn btn-outline hover:bg-gray-100">
-                    Meja
-                </button>
-                <button
-                    class="flex items-center px-6 py-3 text-base text-orange-500 border-orange-500 rounded-full btn btn-outline hover:bg-gray-100">
-                    Sofa
-                </button>
-                <button
-                    class="flex items-center px-6 py-3 text-base text-orange-500 border-orange-500 rounded-full btn btn-outline hover:bg-gray-100">
-                    Lemari
-                </button>
+    
+                <!-- Dynamic Category Buttons -->
+                @php
+                    $displayedCategories = [];
+                @endphp
+                
+                @foreach($recommendedProducts as $product)
+                    @if(!in_array($product->category->category_name, $displayedCategories))
+                        <button
+                            @click="activeCategory = '{{ $product->category->category_name }}'"
+                            :class="activeCategory === '{{ $product->category->category_name }}' ? 'bg-orange-500 text-white' : 'bg-transparent text-orange-500 border-orange-500 hover:bg-gray-100'"
+                            class="flex items-center px-6 py-3 text-base border rounded-full btn">
+                            {{ $product->category->category_name }}
+                        </button>
+                        @php 
+                            $displayedCategories[] = $product->category->category_name;
+                        @endphp
+                    @endif
+                @endforeach
+    
+                <!-- Filter Button -->
                 <button
                     class="flex items-center px-6 py-3 text-base text-gray-500 border border-gray-500 rounded-full btn btn-outline hover:bg-orange-100">
                     Filter
                     <span class="iconify" data-icon="octicon:filter-16" width="20" height="20"></span>
                 </button>
             </div>
+    
+            <!-- Products Grid -->
             <div class="grid grid-cols-1 gap-6 mt-16 md:grid-cols-4">
-                <div class="w-full rounded-lg shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service1.png' }}" alt="Tabby Town"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Tabby Town</h2>
-                        <p class="text-sm text-gray-600">Gunung Batu, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
+                @foreach($recommendedProducts as $product)
+                    <div 
+                        x-show="activeCategory === null || activeCategory === '{{ $product->category->category_name }}'"
+                        x-transition
+                        class="w-full rounded-lg shadow-sm card bg-base-100"
+                    >
+                        <figure>
+                            @if($product->image)
+                                <img src="{{ asset('storage/'.$product->image) }}" 
+                                     alt="{{ $product->name }}"
+                                     class="object-cover w-full h-48 rounded-lg">
+                            @else
+                                <div class="flex items-center justify-center w-full h-48 bg-gray-200 rounded-lg">
+                                    <span class="text-gray-500">No Image Available</span>
+                                </div>
+                            @endif
+                        </figure>
+                        <div class="p-3 mt-5 card-body">
+                            <h2 class="text-lg card-title">{{ $product->name }}</h2>
+                            <p class="text-sm text-gray-600">{{ $product->category->category_name ?? 'Uncategorized' }}</p>
+                            <p class="mt-2 font-bold text-orange-500">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                        </div>
                     </div>
-                </div>
-                <div class="w-full shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service2.png' }}" alt="Anggand"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Anggand</h2>
-                        <p class="text-sm text-gray-600">Bogor, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
+                @endforeach
+    
+                <!-- Empty State -->
+                <template x-if="!Array.from(document.querySelectorAll('[x-show]')).some(el => el.style.display !== 'none')">
+                    <div class="col-span-4 text-center py-8">
+                        <p class="text-gray-500">No products found in this category</p>
                     </div>
-                </div>
-                <div class="w-full shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service3.png' }}" alt="Seattle Rain"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Seattle Rain</h2>
-                        <p class="text-sm text-gray-600">Jakarta, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
-                <div class="w-full shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service4.png' }}" alt="Wooden Pit"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Wooden Pit</h2>
-                        <p class="text-sm text-gray-600">Wonosobo, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
-                <div class="w-full rounded-lg shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service1.png' }}" alt="Tabby Town"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Tabby Town</h2>
-                        <p class="text-sm text-gray-600">Gunung Batu, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
-                <div class="w-full shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service2.png' }}" alt="Anggand"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Anggand</h2>
-                        <p class="text-sm text-gray-600">Bogor, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
-                <div class="w-full shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service3.png' }}" alt="Seattle Rain"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Seattle Rain</h2>
-                        <p class="text-sm text-gray-600">Jakarta, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
-                <div class="w-full shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service4.png' }}" alt="Wooden Pit"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Wooden Pit</h2>
-                        <p class="text-sm text-gray-600">Wonosobo, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
-                <div class="w-full rounded-lg shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service1.png' }}" alt="Tabby Town"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Tabby Town</h2>
-                        <p class="text-sm text-gray-600">Gunung Batu, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
-                <div class="w-full shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service2.png' }}" alt="Anggand"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Anggand</h2>
-                        <p class="text-sm text-gray-600">Bogor, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
-                <div class="w-full shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service3.png' }}" alt="Seattle Rain"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Seattle Rain</h2>
-                        <p class="text-sm text-gray-600">Jakarta, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
-                <div class="w-full shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service4.png' }}" alt="Wooden Pit"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Wooden Pit</h2>
-                        <p class="text-sm text-gray-600">Wonosobo, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
-                <div class="w-full rounded-lg shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service1.png' }}" alt="Tabby Town"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Tabby Town</h2>
-                        <p class="text-sm text-gray-600">Gunung Batu, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
-                <div class="w-full shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service2.png' }}" alt="Anggand"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Anggand</h2>
-                        <p class="text-sm text-gray-600">Bogor, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
-                <div class="w-full shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service3.png' }}" alt="Seattle Rain"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Seattle Rain</h2>
-                        <p class="text-sm text-gray-600">Jakarta, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
-                <div class="w-full shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service4.png' }}" alt="Wooden Pit"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Wooden Pit</h2>
-                        <p class="text-sm text-gray-600">Wonosobo, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
-                <div class="w-full rounded-lg shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service1.png' }}" alt="Tabby Town"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Tabby Town</h2>
-                        <p class="text-sm text-gray-600">Gunung Batu, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
-                <div class="w-full shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service2.png' }}" alt="Anggand"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Anggand</h2>
-                        <p class="text-sm text-gray-600">Bogor, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
-                <div class="w-full shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service3.png' }}" alt="Seattle Rain"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Seattle Rain</h2>
-                        <p class="text-sm text-gray-600">Jakarta, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
-                <div class="w-full shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service4.png' }}" alt="Wooden Pit"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Wooden Pit</h2>
-                        <p class="text-sm text-gray-600">Wonosobo, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
-                <div class="w-full rounded-lg shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service1.png' }}" alt="Tabby Town"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Tabby Town</h2>
-                        <p class="text-sm text-gray-600">Gunung Batu, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
-                <div class="w-full shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service2.png' }}" alt="Anggand"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Anggand</h2>
-                        <p class="text-sm text-gray-600">Bogor, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
-                <div class="w-full shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service3.png' }}" alt="Seattle Rain"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Seattle Rain</h2>
-                        <p class="text-sm text-gray-600">Jakarta, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
-                <div class="w-full shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service4.png' }}" alt="Wooden Pit"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Wooden Pit</h2>
-                        <p class="text-sm text-gray-600">Wonosobo, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
-                <div class="w-full rounded-lg shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service1.png' }}" alt="Tabby Town"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Tabby Town</h2>
-                        <p class="text-sm text-gray-600">Gunung Batu, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
-                <div class="w-full shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service2.png' }}" alt="Anggand"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Anggand</h2>
-                        <p class="text-sm text-gray-600">Bogor, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
-                <div class="w-full shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service3.png' }}" alt="Seattle Rain"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Seattle Rain</h2>
-                        <p class="text-sm text-gray-600">Jakarta, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
-                <div class="w-full shadow-sm card bg-base-100">
-                    <figure>
-                        <img src="{{ 'assets/images/service4.png' }}" alt="Wooden Pit"
-                            class="object-cover w-full h-48 rounded-lg" />
-                    </figure>
-                    <div class="p-3 mt-5 card-body">
-                        <h2 class="text-lg card-title">Wooden Pit</h2>
-                        <p class="text-sm text-gray-600">Wonosobo, Indonesia</p>
-                        <p class="mt-2 font-bold text-orange-500">Rp 200.000</p>
-                    </div>
-                </div>
+                </template>
             </div>
         </div>
     </section>

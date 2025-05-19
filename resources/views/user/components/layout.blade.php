@@ -1,25 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-@include('user.components.head')
-<body class="min-h-screen bg-white">
-    <!-- Header -->
-    <header class="container mx-auto px-4 py-4 flex items-center justify-between">
-        <a href="/" class="flex items-center gap-2">
-            <img src="{{ asset('assets/images/iconlogo.svg') }}" alt="HomeDaily Logo" class="w-10 h-10">
-            <span class="font-bold text-xl">HomeDaily</span>
-        </a>
-        <nav class="hidden md:flex items-center gap-8">
-            <a href="/" class="text-[#ea8c00] font-medium">Home</a>
-            <a href="/produk" class="text-gray-700 font-medium">Produk</a>
-            <a href="/jasa" class="text-gray-700 font-medium">Jasa</a>
-            <a href="/about-us" class="text-gray-700 font-medium">About Us</a>
-            <a href="{{ route('login') }}" 
-                class="text-[#ea8c00] font-medium">
-                Login
-            </a>
-        </nav>
-    </header>
-
     @yield('content')
 
     <!-- Footer -->
@@ -62,6 +40,8 @@
     </footer>
 
     @yield('scripts')
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://unpkg.com/lucide@latest" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             lucide.createIcons();

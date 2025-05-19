@@ -110,6 +110,7 @@ class AuthController extends Controller
     
         // Jika request web (browser)
         return redirect()->route($this->getRedirectRoute($user->role));
+
     }
     
     // Method baru untuk menentukan redirect route
