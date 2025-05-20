@@ -14,29 +14,28 @@
 
     <!-- Product Title -->
     <div class="container mx-auto px-4 text-center mb-8">
-        <h1 class="text-3xl font-bold text-[#152c5b] mb-1">Modern Comfort Sofa</h1>
+        <h1 class="text-3xl font-bold text-[#152c5b] mb-1">{{ $product->name }}</h1>
         <p class="text-gray-500">Premium Quality | Handcrafted</p>
     </div>
-
-    <!-- Product Images -->
-        <div class="container mx-auto px-4 mb-12">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="md:col-span-2">
-                <img src="{{ $product->images['main'] }}" 
-                    alt="{{ $product->name }} Main View" 
-                    class="w-full h-full object-cover rounded-lg">
-            </div>
-            <div class="grid grid-rows-2 gap-4">
-                <img src="{{ $product->images['side'] }}" 
-                    alt="{{ $product->name }} Side View" 
-                    class="w-full h-full object-cover rounded-lg">
-                <img src="{{ $product->images['detail'] }}" 
-                    alt="{{ $product->name }} Detail View" 
-                    class="w-full h-full object-cover rounded-lg">
-            </div>
-        </div>
-    </div>
-
+    
+      <!-- Product Images -->
+      <div class="container mx-auto px-4 mb-12">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="md:col-span-2">
+                  <img src="{{ asset('storage/'.$product->image) }}" 
+                      alt="Modern Sofa Main View" 
+                      class="w-full h-full object-cover rounded-lg">
+              </div>
+              <div class="grid grid-rows-2 gap-4">
+                  <img src="https://placehold.co/400x300?text=Side+View" 
+                      alt="Modern Sofa Side View" 
+                      class="w-full h-full object-cover rounded-lg">
+                  <img src="https://placehold.co/400x300?text=Detail+View" 
+                      alt="Modern Sofa Detail View" 
+                      class="w-full h-full object-cover rounded-lg">
+              </div>
+          </div>
+      </div>
     <!-- Main Content -->
     <div class="container mx-auto px-4">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -45,22 +44,7 @@
         <div class="mb-10">
           <h2 class="text-xl font-bold text-[#152c5b] mb-4">About this furniture</h2>
           <div class="text-gray-500 space-y-4">
-            <p>
-              This modern sofa combines comfort with contemporary design. Featuring premium upholstery and expert
-              craftsmanship, it's designed to be the centerpiece of your living space. The clean lines and
-              minimalist aesthetic make it versatile enough to complement any interior style.
-            </p>
-            <p>
-              The frame is constructed from kiln-dried hardwood for durability, while the cushions are filled with
-              high-density foam wrapped in a layer of feather and down for the perfect balance of support and
-              softness. The legs are made from solid walnut with a natural finish that showcases the beautiful grain
-              of the wood.
-            </p>
-            <p>
-              Available in multiple fabric options, this sofa can be customized to suit your personal style. The
-              modular design allows for flexible arrangement, making it ideal for both small apartments and spacious
-              homes.
-            </p>
+            <p>{{ $product->description }}</p>
           </div>
         </div>
 
@@ -225,7 +209,7 @@
             <div class="lg:col-span-1">
                 <div class="sticky top-4 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
           <h2 class="text-lg font-medium text-gray-500 mb-2">Price</h2>
-          <h3 class="text-[#ea8c00] text-2xl font-bold mb-6">Rp 4,280,000</h3>
+          <h3 class="text-[#ea8c00] text-2xl font-bold mb-6">Rp {{ number_format($product->price, 0, ',', '.') }}</h3>
 
           <div class="mb-6">
             <p class="text-[#152c5b] font-medium mb-2">Quantity</p>

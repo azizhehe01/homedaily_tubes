@@ -13,9 +13,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Product;
 
-// Public Routes
 Route::get('/', [ProductController::class, 'frontendIndex'])->name('user.dashboard');
-Route::get('/product/{id}', [ProductController::class, 'showFrontend'])->name('product.detail');
+Route::get('/products/{product_id}', [ProductController::class, 'showDetail'])->name('user.product.detail');
 
 
 // Auth Routes

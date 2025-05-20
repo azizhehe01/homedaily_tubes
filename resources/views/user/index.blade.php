@@ -85,33 +85,31 @@ use Illuminate\Support\Str;
     <div class="container p-4 mx-auto">
         <h2 class="mb-4 text-2xl font-bold text-black-600">Recommend Product</h2>
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                @forelse($recommendedProducts->filter(function($product) {
-                return !Str::contains(strtolower($product->category->category_name), 'jasa');
-                }) as $product)
-            <div class="{{ $loop->first ? 'lg:col-span-2 lg:row-span-2 h-full min-h-[400px]' : 'h-64' }} relative overflow-hidden bg-gray-800 rounded-lg">
-                @if($product->image)
-                <img src="{{ asset('storage/'.$product->image) }}" 
-                     alt="{{ $product->name }}"
-                     class="absolute inset-0 z-0 object-cover w-full h-full"
-                     loading="lazy">
-                @else
-                <div class="flex items-center justify-center w-full h-full bg-gray-200">
-                    <span class="text-gray-500">No Image Available</span>
-                </div>
-                @endif
+            @forelse($recommendedProducts->filter(function($product) {return !Str::contains(strtolower($product->category->category_name), 'jasa');}) as $product)
+                <a href="{{ route('user.product.detail', $product->product_id) }}" class="block {{ $loop->first ? 'lg:col-span-2 lg:row-span-2 h-full min-h-[400px]' : 'h-64' }} relative overflow-hidden bg-gray-800 rounded-lg hover:opacity-90 transition-opacity">
+                    @if($product->image)
+                    <img src="{{ asset('storage/'.$product->image) }}" 
+                         alt="{{ $product->name }}"
+                         class="absolute inset-0 z-0 object-cover w-full h-full"
+                         loading="lazy">
+                    @else
+                    <div class="flex items-center justify-center w-full h-full bg-gray-200">
+                        <span class="text-gray-500">No Image Available</span>
+                    </div>
+                    @endif
 
-                <div class="absolute bottom-0 left-0 right-0 z-10 p-4 bg-gradient-to-t from-black/60 to-transparent">
-                    <h3 class="{{ $loop->first ? 'text-2xl' : 'text-lg' }} font-semibold text-white">{{ $product->name }}</h3>
-                    <p class="text-sm text-white">{{ $product->category->category_name ?? 'Uncategorized' }}</p>
-                </div>
-                <div class="absolute top-0 right-0 z-10 flex items-center justify-center py-3 pl-8 {{ $loop->first ? 'text-3xl' : 'text-2xl' }} font-bold text-white bg-yellow-600/90 rounded-bl-full w-72">
-                    Rp {{ number_format($product->price, 0, ',', '.') }}
-                </div>
-            </div>
+                    <div class="absolute bottom-0 left-0 right-0 z-10 p-4 bg-gradient-to-t from-black/60 to-transparent">
+                        <h3 class="{{ $loop->first ? 'text-2xl' : 'text-lg' }} font-semibold text-white">{{ $product->name }}</h3>
+                        <p class="text-sm text-white">{{ $product->category->category_name ?? 'Uncategorized' }}</p>
+                    </div>
+                    <div class="absolute top-0 right-0 z-10 flex items-center justify-center py-3 pl-8 {{ $loop->first ? 'text-3xl' : 'text-2xl' }} font-bold text-white bg-yellow-600/90 rounded-bl-full w-72">
+                        Rp {{ number_format($product->price, 0, ',', '.') }}
+                    </div>
+                </a>
             @empty
-            <div class="col-span-full text-center">
-                <p class="text-gray-500">No recommended products available</p>
-            </div>
+                <div class="col-span-full text-center">
+                    <p class="text-gray-500">No recommended products available</p>
+                </div>
             @endforelse
         </div>
     </div>
@@ -123,13 +121,13 @@ use Illuminate\Support\Str;
         <div class="container px-4 py-16 mx-auto">
             <h2 class="mb-6 text-xl font-semibold text-black-600 ">Our Home Services</h2>
             <div class="grid grid-cols-1 gap-6 md:grid-cols-4">
-             @forelse ($recommendedProducts->filter(function($product) {
+            @forelse ($recommendedProducts->filter(function($product) {
                 return Str::contains(strtolower($product->category->category_name), 'jasa');
             }) as $product)
-                <div class="w-full rounded-lg shadow-sm card bg-base-100">
+                <a href="{{ route('user.product.detail', $product->product_id) }}" class="block w-full rounded-lg shadow-sm card bg-base-100 hover:shadow-md transition-shadow">
                     <figure>
                         @if($product->image)
-                        <img src="{{ asset('storage/'.$product->image) }}" alt="Tabby Town"  class="object-cover w-full h-48 rounded-lg" />
+                        <img src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->name }}" class="object-cover w-full h-48 rounded-lg" />
                         @else
                         <div class="flex items-center justify-center w-full h-48 bg-gray-200">
                             <span class="text-gray-500">No Image Available</span>
@@ -141,12 +139,12 @@ use Illuminate\Support\Str;
                         <p class="text-sm text-gray-600">{{ $product->category->category_name ?? 'Uncategorized' }}</p>
                         <p class="mt-2 font-bold text-orange-500">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
                     </div>
-                </div>
-                @empty
+                </a>
+            @empty
                 <div class="col-span-full text-center">
                     <p class="text-gray-500">No recommended products available</p>
                 </div>
-                @endforelse
+            @endforelse
             </div>
         </div>
     </section>
@@ -196,10 +194,11 @@ use Illuminate\Support\Str;
             <!-- Products Grid -->
             <div class="grid grid-cols-1 gap-6 mt-16 md:grid-cols-4">
                 @foreach($recommendedProducts as $product)
-                    <div 
+                    <a 
+                        href="{{ route('user.product.detail', $product->product_id) }}"
                         x-show="activeCategory === null || activeCategory === '{{ $product->category->category_name }}'"
                         x-transition
-                        class="w-full rounded-lg shadow-sm card bg-base-100"
+                        class="block w-full rounded-lg shadow-sm card bg-base-100 hover:shadow-md transition-shadow"
                     >
                         <figure>
                             @if($product->image)
@@ -217,7 +216,7 @@ use Illuminate\Support\Str;
                             <p class="text-sm text-gray-600">{{ $product->category->category_name ?? 'Uncategorized' }}</p>
                             <p class="mt-2 font-bold text-orange-500">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
                         </div>
-                    </div>
+                    </a>
                 @endforeach
     
                 <!-- Empty State -->

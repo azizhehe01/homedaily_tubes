@@ -20,6 +20,12 @@ class ProductController extends Controller
 
         return view('user.index', compact('recommendedProducts'));
     }
+
+    public function showDetail($id)
+    {
+        $product = Product::with('category')->findOrFail($id);
+        return view('user.pages.detail-product', compact('product'));
+    }
     public function index()
     {
         $products = Product::with('category')
@@ -121,25 +127,6 @@ class ProductController extends Controller
         }
     }
 
-    public function showFrontend($id)
-    {
-        // Create dummy product data
-        $product = (object)[
-            'name' => 'Modern Minimalist Sofa',
-            'price' => 4500000,
-            'description' => 'Elegant modern sofa with premium fabric upholstery. Perfect for contemporary living spaces. Features high-density foam cushions for maximum comfort and durability.',
-            'images' => [
-                'main' => 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=400',
-                'side' => 'https://images.unsplash.com/photo-1567016432779-094069958ea5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&h=200',
-                'detail' => 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&h=200'
-            ],
-            'stock' => 5,
-            'category' => (object)[
-                'name' => 'Living Room Furniture'
-            ]
-        ];
-
-        return view('user.pages.detail-product', compact('product'));
-    }
+    
 }
 
