@@ -256,7 +256,6 @@
     @auth
     @include('user.components.chat-bubble')
 @endauth
-
 @endsection
 
 @section('scripts')
