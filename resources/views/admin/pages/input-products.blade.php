@@ -1,3 +1,8 @@
+@php
+use Illuminate\Support\Str;
+@endphp
+
+
 @extends('admin.layouts.app')
 
 @section('title', 'Add Products')
@@ -69,7 +74,7 @@
                                 required>
                             <option value="">Select Category</option>
                             @foreach($categories as $category)
-                                @if($category->category_name != 'jasa')
+                                 @if(!Str::contains(strtolower($category->category_name), 'jasa'))
                                     <option value="{{ $category->category_id }}" 
                                             @selected(old('category_id') == $category->category_id)>
                                         {{ $category->category_name }}

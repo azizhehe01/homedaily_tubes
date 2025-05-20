@@ -1,4 +1,7 @@
-@include('user.components.head')
+@php
+use Illuminate\Support\Str;
+@endphp
+
 @extends('user.components.layout') 
 
 @section('content')
@@ -79,38 +82,40 @@
 
     {{-- most picked section --}}
     <section>
-        <div class="container p-4 mx-auto">
-            <h2 class="mb-4 text-2xl font-bold text-black-600">Recommend Product</h2>
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                @forelse($recommendedProducts->where('category.category_name', '!=', 'jasa') as $product)
-                <div class="relative overflow-hidden bg-gray-800 rounded-lg {{ $loop->first ? 'sm:col-span-2 sm:row-span-2' : '' }}">
-                    @if($product->image)
-                    <img src="{{ asset('storage/'.$product->image) }}" 
-                         alt="{{ $product->name }}"
-                         class="z-0 object-cover w-full h-full max-h-96"
-                         loading="lazy">
-                    @else
-                    <div class="flex items-center justify-center w-full h-48 bg-gray-200">
-                        <span class="text-gray-500">No Image Available</span>
-                    </div>
-                    @endif
+    <div class="container p-4 mx-auto">
+        <h2 class="mb-4 text-2xl font-bold text-black-600">Recommend Product</h2>
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                @forelse($recommendedProducts->filter(function($product) {
+                return !Str::contains(strtolower($product->category->category_name), 'jasa');
+                }) as $product)
+            <div class="{{ $loop->first ? 'lg:col-span-2 lg:row-span-2 h-full min-h-[400px]' : 'h-64' }} relative overflow-hidden bg-gray-800 rounded-lg">
+                @if($product->image)
+                <img src="{{ asset('storage/'.$product->image) }}" 
+                     alt="{{ $product->name }}"
+                     class="absolute inset-0 z-0 object-cover w-full h-full"
+                     loading="lazy">
+                @else
+                <div class="flex items-center justify-center w-full h-full bg-gray-200">
+                    <span class="text-gray-500">No Image Available</span>
+                </div>
+                @endif
 
-                    <div class="absolute bottom-0 left-0 z-10 p-4">
-                        <h3 class="text-lg font-semibold text-white">{{ $product->name }}</h3>
-                        <p class="text-sm text-white">{{ $product->category->category_name ?? 'Uncategorized' }}</p>
-                    </div>
-                    <div class="absolute top-0 right-0 z-10 flex items-center justify-center py-3 pl-8 text-2xl font-bold text-white bg-yellow-600 rounded-bl-full w-72">
-                        Rp {{ number_format($product->price, 0, ',', '.') }}
-                    </div>
+                <div class="absolute bottom-0 left-0 right-0 z-10 p-4 bg-gradient-to-t from-black/60 to-transparent">
+                    <h3 class="{{ $loop->first ? 'text-2xl' : 'text-lg' }} font-semibold text-white">{{ $product->name }}</h3>
+                    <p class="text-sm text-white">{{ $product->category->category_name ?? 'Uncategorized' }}</p>
                 </div>
-                @empty
-                <div class="col-span-full text-center">
-                    <p class="text-gray-500">No recommended products available</p>
+                <div class="absolute top-0 right-0 z-10 flex items-center justify-center py-3 pl-8 {{ $loop->first ? 'text-3xl' : 'text-2xl' }} font-bold text-white bg-yellow-600/90 rounded-bl-full w-72">
+                    Rp {{ number_format($product->price, 0, ',', '.') }}
                 </div>
-                @endforelse
             </div>
+            @empty
+            <div class="col-span-full text-center">
+                <p class="text-gray-500">No recommended products available</p>
+            </div>
+            @endforelse
         </div>
-    </section>
+    </div>
+</section>
 
 
     {{-- home services section --}}
@@ -118,7 +123,9 @@
         <div class="container px-4 py-16 mx-auto">
             <h2 class="mb-6 text-xl font-semibold text-black-600 ">Our Home Services</h2>
             <div class="grid grid-cols-1 gap-6 md:grid-cols-4">
-                @forelse($recommendedProducts->where('category.category_name', '==', 'jasa') as $product)
+             @forelse ($recommendedProducts->filter(function($product) {
+                return Str::contains(strtolower($product->category->category_name), 'jasa');
+            }) as $product)
                 <div class="w-full rounded-lg shadow-sm card bg-base-100">
                     <figure>
                         @if($product->image)

@@ -1,3 +1,7 @@
+@php
+use Illuminate\Support\Str;
+@endphp
+
 @extends('admin_jasa.layouts.app')
 
 @section('title', 'Products List')
@@ -61,8 +65,7 @@
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         @forelse ($products->filter(function($product) {
-                            return $product->category->category_name == 'jasa';
-                        }) as $product)
+                                    return Str::contains(strtolower($product->category->category_name), 'jasa');}) as $product)
                             <tr>
                                 <td class="px-4 py-4 text-sm text-gray-500 whitespace-nowrap">{{ $product->product_id }}
                                 </td>

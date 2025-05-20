@@ -1,3 +1,7 @@
+@php
+use Illuminate\Support\Str;
+@endphp
+
 @extends('admin_jasa.layouts.app')
 
 @section('title', 'Tambah Jasa')
@@ -63,13 +67,13 @@
                     </div>
                     <!-- Kategori (Foreign Key) -->
                     <div>
-                        <label for="category_id" class="inline-block mb-2 text-sm font-medium text-default-800">Product Category*</label>
+                        <label for="category_id" class="inline-block mb-2 text-sm font-medium text-default-800">Jasa Category*</label>
                         <select id="category_id" name="category_id" 
                                 class="form-select @error('category_id') border-red-500 @enderror"
                                 required>
                             <option value="">Select Category</option>
                             @foreach($categories as $category)
-                                @if($category->category_name == 'jasa')
+                                @if(Str::contains(strtolower($category->category_name), 'jasa'))
                                     <option value="{{ $category->category_id }}" 
                                             @selected(old('category_id') == $category->category_id)>
                                         {{ $category->category_name }}
