@@ -38,6 +38,7 @@
                             <select name="role" id="role" class="w-full p-2 border rounded">
                                 <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
                                 <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
+                                <option value="admin_jasa" {{ $user->role == 'admin_jasa' ? 'selected' : '' }}>Admin jasa</option>
                             </select>
                         </div>
                         

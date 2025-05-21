@@ -41,7 +41,7 @@ class UserController extends Controller
                 Rule::unique('users')->ignore($user->user_id, 'user_id')
             ],
             'password' => 'nullable|string|min:8',
-            'role' => 'required|in:user,admin',
+            'role' => 'required|in:user,admin,admin_jasa',
         ]);
 
         if (!empty($validated['password'])) {
