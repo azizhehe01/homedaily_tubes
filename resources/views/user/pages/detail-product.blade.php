@@ -15,7 +15,7 @@
     <!-- Product Title -->
     <div class="container mx-auto px-4 text-center mb-8">
         <h1 class="text-3xl font-bold text-[#152c5b] mb-1">{{ $product->name }}</h1>
-        <p class="text-gray-500">Premium Quality | Handcrafted</p>
+        <p class="text-gray-500">Premium Quality | {{ $product->category->category_name}}</p>
     </div>
     
       <!-- Product Images -->
@@ -115,53 +115,31 @@
 
         <!-- You May Also Like -->
         <div class="mb-10">
-          <h2 class="text-xl font-bold text-[#152c5b] mb-6">You May Also Like</h2>
+          <h2 class="text-xl font-bold text-[#152c5b] mb-6">anda juga suka ini </h2>
           <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="relative">
-              <img
-                src="https://placehold.co/200x150"
-                alt="Coffee Table"
-                class="w-full h-32 object-cover rounded-lg"
-              />
-              <div class="mt-2">
-                <h3 class="font-medium text-[#152c5b]">Coffee Table</h3>
-                <p class="text-sm text-gray-500">Rp 1,200,000</p>
-              </div>
-            </div>
-            <div class="relative">
-              <img
-                src="https://placehold.co/200x150"
-                alt="Side Table"
-                class="w-full h-32 object-cover rounded-lg"
-              />
-              <div class="mt-2">
-                <h3 class="font-medium text-[#152c5b]">Side Table</h3>
-                <p class="text-sm text-gray-500">Rp 850,000</p>
-              </div>
-            </div>
-            <div class="relative">
-              <img
-                src="https://placehold.co/200x150"
-                alt="Floor Lamp"
-                class="w-full h-32 object-cover rounded-lg"
-              />
-              <div class="absolute top-2 left-2 bg-[#ea8c00] text-white text-xs px-2 py-1 rounded">Sale</div>
-              <div class="mt-2">
-                <h3 class="font-medium text-[#152c5b]">Floor Lamp</h3>
-                <p class="text-sm text-gray-500">Rp 750,000</p>
-              </div>
-            </div>
-            <div class="relative">
-              <img
-                src="https://placehold.co/200x150"
-                alt="Throw Pillows"
-                class="w-full h-32 object-cover rounded-lg"
-              />
-              <div class="mt-2">
-                <h3 class="font-medium text-[#152c5b]">Throw Pillows</h3>
-                <p class="text-sm text-gray-500">Rp 350,000</p>
-              </div>
-            </div>
+            @forelse($recommendedProducts as $relatedProduct)
+                <div class="relative">
+                    @if($relatedProduct->image)
+                        <img src="{{ asset('storage/' . $relatedProduct->image) }}" 
+                             alt="{{ $relatedProduct->name }}"
+                             class="w-full h-32 object-cover rounded-lg">
+                    @else
+                        <img src="https://placehold.co/200x150"
+                             alt="{{ $relatedProduct->name }}"
+                             class="w-full h-32 object-cover rounded-lg">
+                    @endif
+                    <div class="mt-2">
+                        <h3 class="font-medium text-[#152c5b]">{{ $relatedProduct->name }}</h3>
+                        <p class="text-sm text-gray-500">
+                            Rp {{ number_format($relatedProduct->price, 0, ',', '.') }}
+                        </p>
+                    </div>
+                </div>
+            @empty
+                <div class="col-span-full text-center py-8">
+                    <p class="text-gray-500">Tidak ada produk sejenis lainnya</p>
+                </div>
+            @endforelse
           </div>
         </div>
 

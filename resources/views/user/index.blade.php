@@ -85,7 +85,7 @@ use Illuminate\Support\Str;
     <div class="container p-4 mx-auto">
         <h2 class="mb-4 text-2xl font-bold text-black-600">Recommend Product</h2>
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            @forelse($recommendedProducts->filter(function($product) {return !Str::contains(strtolower($product->category->category_name), 'jasa');}) as $product)
+            @forelse($recommendedProducts->filter(function($product) {return !Str::contains(strtolower($product->category->category_name), 'jasa');})->take(9) as $product)
                 <a href="{{ route('user.product.detail', $product->product_id) }}" class="block {{ $loop->first ? 'lg:col-span-2 lg:row-span-2 h-full min-h-[400px]' : 'h-64' }} relative overflow-hidden bg-gray-800 rounded-lg hover:opacity-90 transition-opacity">
                     @if($product->image)
                     <img src="{{ asset('storage/'.$product->image) }}" 
@@ -121,9 +121,7 @@ use Illuminate\Support\Str;
         <div class="container px-4 py-16 mx-auto">
             <h2 class="mb-6 text-xl font-semibold text-black-600 ">Our Home Services</h2>
             <div class="grid grid-cols-1 gap-6 md:grid-cols-4">
-            @forelse ($recommendedProducts->filter(function($product) {
-                return Str::contains(strtolower($product->category->category_name), 'jasa');
-            }) as $product)
+                @forelse ($recommendedProducts->filter(function($product) {return Str::contains(strtolower($product->category->category_name), 'jasa');}) as $product)
                 <a href="{{ route('user.product.detail', $product->product_id) }}" class="block w-full rounded-lg shadow-sm card bg-base-100 hover:shadow-md transition-shadow">
                     <figure>
                         @if($product->image)

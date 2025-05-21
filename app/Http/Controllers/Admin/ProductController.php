@@ -15,16 +15,24 @@ class ProductController extends Controller
         $recommendedProducts = Product::with('category')
             ->where('stock', '>', 0) 
             ->orderBy('created_at', 'desc') 
-            ->take(8) 
             ->get();
 
         return view('user.index', compact('recommendedProducts'));
     }
 
-    public function showDetail($id)
+    public function showDetail($product_id)
     {
-        $product = Product::with('category')->findOrFail($id);
-        return view('user.pages.detail-product', compact('product'));
+        $product = Product::with('category')->findOrFail($product_id);
+        
+        $recommendedProducts = Product::with('category')
+            ->where('category_id', $product->category_id)
+            ->where('product_id', '!=', $product->product_id)
+            ->where('stock', '>', 0)
+            ->orderBy('created_at', 'desc')
+            ->take(4)
+            ->get();
+    
+        return view('user.pages.detail-product', compact('product', 'recommendedProducts'));
     }
     public function index()
     {
