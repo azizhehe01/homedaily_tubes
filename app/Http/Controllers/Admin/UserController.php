@@ -16,41 +16,12 @@ class UserController extends Controller
         return view('admin.pages.users', compact('users'));
     }
 
-    public function create()
-    {
-        return view('admin.pages.users.create');
-    }
-
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
-            'role' => 'required|in:user,admin',
-        ]);
-
-        User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'role' => $validated['role'],
-        ]);
-
-        return redirect()->route('admin.pages.users')
-            ->with('success', 'User created successfully.');
-    }
+    // Hapus method create() dan store()
 
     public function edit($id)
     {
-        $user = User::where('user_id', $id)->first();
-
-        if (!$user) {
-            return redirect()->route('admin.pages.users')
-                ->with('error', 'User not found');
-        }
-
-        return view('admin.pages.users', compact('user'));
+        $user = User::findOrFail($id);
+        return view('admin.pages.edit-user', compact('user'));
     }
 
     public function update(Request $request, $id)
