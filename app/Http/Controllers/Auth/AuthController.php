@@ -119,7 +119,7 @@ class AuthController extends Controller
         return match($role) {
             'admin' => 'admin.dashboard',
             'admin_jasa' => 'admin_jasa.dashboard',
-            default => 'user.dashboard'
+            default => 'user.index'
         };
     }
 
@@ -133,4 +133,5 @@ class AuthController extends Controller
         return view('auth.register');
     }
     // ... existing logout and user methods ...
+
 }
