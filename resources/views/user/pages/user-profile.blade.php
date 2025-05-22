@@ -1,5 +1,4 @@
-@include('user.components.head')
-@extends('user.components.layout') 
+@extends('user.components.layout')
 
 @section('content')
 <div class="container mx-auto px-4 py-8">
@@ -10,9 +9,9 @@
         <img src="https://images.unsplash.com/photo-1628157588251-4d75b1e1a106?ixlib=rb-4.0.3&auto=format&fit=crop&w=96&h=96&q=80" alt="Profile Picture" class="w-24 h-24 rounded-full border-4 border-orange-100 shadow-md">
       </div>
       <div class="flex-1 md:ml-6 text-center md:text-left">
-        <h1 class="text-2xl font-bold mb-1">Surya Nugraha</h1>
+        <h1 class="text-2xl font-bold mb-1">{{ Auth::user()->name }}</h1>
         <p class="text-gray-600 mb-3 flex items-center justify-center md:justify-start">
-          <i data-lucide="mail" class="w-4 h-4 mr-2 text-orange-500"></i> surya555551@gmail.com
+          <i data-lucide="mail" class="w-4 h-4 mr-2 text-orange-500"></i> {{ Auth::user()->email }}
         </p>
 
         <!-- Achievement Badges -->

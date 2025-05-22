@@ -12,6 +12,11 @@ use App\Http\Controllers\Auth\GoogleController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\User\UserProfileController;
+
+
+
+//User Routes
 
 
 Route::middleware(['auth'])->group(function () {
@@ -22,6 +27,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/booking/process', [BookingController::class, 'processBooking'])->name('booking.process');
 });
 
+Route::get('/profile', [UserProfileController::class, 'index'])->name('user.profile');
+
+//Public Routes
 Route::get('/', [ProductController::class, 'frontendIndex'])->name('user.index');
 Route::get('/products/{product_id}', [ProductController::class, 'showDetail'])->name('user.product.detail');
 
