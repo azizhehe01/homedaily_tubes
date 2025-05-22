@@ -7,13 +7,22 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\CategoriesController;
-use App\Http\Controllers\Auth\AuthController; 
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\GoogleController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\Models\Product;
+use App\Http\Controllers\BookingController;
 
-Route::get('/', [ProductController::class, 'frontendIndex'])->name('user.dashboard');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/booking', [BookingController::class, 'showBookingForm'])->name('booking.form');
+    Route::post('/booking/address', [BookingController::class, 'storeAddress'])->name('booking.address.store');
+    Route::get('/booking/address/edit', [BookingController::class, 'editAddress'])->name('booking.address.edit');
+    Route::put('/booking/address', [BookingController::class, 'updateAddress'])->name('booking.address.update');
+    Route::post('/booking/process', [BookingController::class, 'processBooking'])->name('booking.process');
+});
+
+Route::get('/', [ProductController::class, 'frontendIndex'])->name('user.index');
 Route::get('/products/{product_id}', [ProductController::class, 'showDetail'])->name('user.product.detail');
 
 
@@ -63,11 +72,11 @@ Route::prefix('admin')->name('admin.')->middleware('auth:sanctum')->group(functi
 
         // Users Pages
 
-       // Users Routes (hanya edit dan hapus)
-       Route::get('/users', [UserController::class, 'index'])->name('users');
-       Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
-       Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
-       Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+        // Users Routes (hanya edit dan hapus)
+        Route::get('/users', [UserController::class, 'index'])->name('users');
+        Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+        Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+        Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
 
         // Orders Pages
