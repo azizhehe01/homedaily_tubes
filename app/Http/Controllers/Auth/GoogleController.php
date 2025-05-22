@@ -40,7 +40,6 @@ class GoogleController extends Controller
                         'name' => $googleUser->getName(),
                         'google_id' => $googleUser->getId(),
                         'password' => bcrypt(Str::random(24)),
-                        'role' => 'user', // Default role
                     ]
                 );
 
@@ -55,7 +54,7 @@ class GoogleController extends Controller
                 }
 
                 // Default redirect for non-admin users
-                return redirect()->intended(route('user.index'))
+                return redirect()->intended(route('user.dashboard'))
                     ->with('success', 'Successfully logged in with Google!');
             } catch (QueryException $e) {
                 Log::error('Database error during Google login: ' . $e->getMessage());

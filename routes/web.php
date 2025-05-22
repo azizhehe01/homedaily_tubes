@@ -22,7 +22,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/booking/process', [BookingController::class, 'processBooking'])->name('booking.process');
 });
 
-Route::get('/', [ProductController::class, 'frontendIndex'])->name('user.index');
+Route::get('/', [ProductController::class, 'frontendIndex'])->name('user.dashboard');
 Route::get('/products/{product_id}', [ProductController::class, 'showDetail'])->name('user.product.detail');
 
 
