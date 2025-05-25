@@ -86,16 +86,20 @@ use Illuminate\Support\Str;
                             <span class="mt-1 text-sm text-red-500">{{ $message }}</span>
                         @enderror
                     </div>
-
+                    
                     <!-- Gambar Produk -->
                     <div class="lg:col-span-2">
-                        <label for="image" class="inline-block mb-2 text-sm font-medium text-default-800">Product Image</label>
-                        <input type="file" id="image" name="image" 
-                               class="form-input @error('image') border-red-500 @enderror">
-                        <p class="mt-1 text-sm text-gray-500">Format: JPEG, PNG, JPG, GIF (Max: 2MB)</p>
-                        @error('image')
+                        <label class="inline-block mb-2 text-sm font-medium text-default-800">Product Images (Max 3)*</label>
+                        <input type="file" id="images" name="images[]" multiple 
+                               class="form-input @error('images') border-red-500 @enderror"
+                               accept="image/jpeg,image/png,image/jpg,image/gif">
+                        <p class="mt-1 text-sm text-gray-500">Format: JPEG, PNG, JPG, GIF (Max: 2MB per image, Max 3 files)</p>
+                        @error('images')
                             <span class="mt-1 text-sm text-red-500">{{ $message }}</span>
                         @enderror
+
+                        <!-- Preview Container -->
+                        <div id="image-preview" class="mt-4 grid grid-cols-3 gap-4 hidden"></div>
                     </div>
 
                     <!-- Deskripsi -->
@@ -196,5 +200,42 @@ use Illuminate\Support\Str;
                 }
             });
         }
+    </script>
+
+    <script>
+        document.getElementById('images').addEventListener('change', function(e) {
+            const previewContainer = document.getElementById('image-preview');
+            previewContainer.innerHTML = '';
+            
+            if (this.files.length > 0) {
+                previewContainer.classList.remove('hidden');
+                
+                // Limit to 3 files
+                const files = Array.from(this.files).slice(0, 3);
+                
+                files.forEach((file, index) => {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const previewDiv = document.createElement('div');
+                        previewDiv.className = 'relative';
+                        
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.className = 'w-full h-32 object-cover rounded border';
+                        
+                        const badge = document.createElement('div');
+                        badge.className = 'absolute top-2 right-2 bg-blue-500 text-white text-xs px-2 py-1 rounded';
+                        badge.textContent = index === 0 ? 'Primary' : 'Additional';
+                        
+                        previewDiv.appendChild(img);
+                        previewDiv.appendChild(badge);
+                        previewContainer.appendChild(previewDiv);
+                    }
+                    reader.readAsDataURL(file);
+                });
+            } else {
+                previewContainer.classList.add('hidden');
+            }
+        });
     </script>
 @endpush
