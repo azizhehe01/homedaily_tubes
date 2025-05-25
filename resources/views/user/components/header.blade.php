@@ -27,9 +27,11 @@
             </div>
         @else
             <div class="flex items-center gap-4">
-                <img src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}"
+                <a href="{{ route('user.profile') }}" class="flex items-center">
+                    <img src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}"
                     class="w-10 h-10 rounded-full">
-                <span class="font-medium text-gray-900">{{ Auth::user()->name }}</span>
+                    <span class="font-medium text-gray-900">{{ Auth::user()->name }}</span>
+                </a>
             </div>
         @endguest
     </nav>
