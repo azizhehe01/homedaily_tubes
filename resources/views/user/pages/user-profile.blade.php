@@ -62,6 +62,11 @@
                                     <p class="text-base font-medium text-gray-700">suryanugraha355@gmail.com</p>
                                 </div>
                             </div>
+                            <button id="edit-profile-btn"
+                                class="flex items-center justify-center w-full px-4 py-2 mt-4 text-white bg-orange-500 rounded-lg hover:bg-orange-600">
+                                <i data-lucide="user-pen" class="w-4 h-4 mr-2"></i>
+                                Edit Profil
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -468,6 +473,50 @@
         </section>
     </div>
 
+
+    <!-- Profile Dialog -->
+    <div id="profile-dialog"
+        class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-200 bg-black bg-opacity-50 opacity-0">
+        <div class="w-full max-w-md p-6 transition-transform duration-200 transform scale-95 bg-white rounded-lg">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold">Edit Profil</h3>
+                <button id="close-profile-dialog" class="text-gray-500 hover:text-gray-700">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <form id="profile-form">
+                <div class="grid gap-4 py-4">
+                    <div class="grid gap-2">
+                        <label for="profile-name" class="text-sm font-medium">Nama Lengkap</label>
+                        <input id="profile-name" name="name" required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md" value="Muhamad Surya Nugraha" />
+                    </div>
+                    <div class="grid gap-2">
+                        <label for="profile-phone" class="text-sm font-medium">Nomor Telepon</label>
+                        <input id="profile-phone" name="phone" required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md" value="62855659718873" />
+                    </div>
+                    <div class="grid gap-2">
+                        <label for="profile-email" class="text-sm font-medium">Email</label>
+                        <input id="profile-email" name="email" type="email" required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md"
+                            value="suryanugraha355@gmail.com" />
+                    </div>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button type="button" id="cancel-profile-btn"
+                        class="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50">
+                        Batal
+                    </button>
+                    <button type="submit" class="px-4 py-2 text-white bg-orange-500 rounded-md hover:bg-orange-600">
+                        Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Address Dialog -->
     <div id="address-dialog"
         class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-200 bg-black bg-opacity-50 opacity-0">
@@ -806,6 +855,62 @@
                 addressForm: document.getElementById('address-form'),
                 editAddressBtns: document.querySelectorAll('.edit-address-btn')
             };
+
+            // Profile dialog functionality
+            const profileElements = {
+                dialog: document.getElementById('profile-dialog'),
+                editBtn: document.getElementById('edit-profile-btn'),
+                closeBtn: document.getElementById('close-profile-dialog'),
+                cancelBtn: document.getElementById('cancel-profile-btn'),
+                form: document.getElementById('profile-form')
+            };
+
+            // Open profile dialog
+            function openProfileDialog() {
+                profileElements.dialog.classList.remove('hidden');
+                setTimeout(() => {
+                    profileElements.dialog.classList.remove('opacity-0');
+                    profileElements.dialog.querySelector('.transform').classList.remove('scale-95');
+                    profileElements.dialog.querySelector('.transform').classList.add('scale-100');
+                }, 10);
+            }
+
+            // Close profile dialog
+            function closeProfileDialog() {
+                profileElements.dialog.classList.add('opacity-0');
+                profileElements.dialog.querySelector('.transform').classList.remove('scale-100');
+                profileElements.dialog.querySelector('.transform').classList.add('scale-95');
+                setTimeout(() => {
+                    profileElements.dialog.classList.add('hidden');
+                }, 200);
+            }
+
+            // Add event listeners
+            profileElements.editBtn.addEventListener('click', openProfileDialog);
+            profileElements.closeBtn.addEventListener('click', closeProfileDialog);
+            profileElements.cancelBtn.addEventListener('click', closeProfileDialog);
+
+            // Handle form submission
+            profileElements.form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = {
+                    name: this.name.value,
+                    phone: this.phone.value,
+                    email: this.email.value
+                };
+                console.log('Profile updated:', formData);
+                closeProfileDialog();
+                // TODO: Update the profile display with new values
+                // You would typically make an API call here to update the backend
+            });
+
+            // Close when clicking outside
+            profileElements.dialog.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeProfileDialog();
+                }
+            });
+
 
             // Open dialog function
             function openAddressDialog(isEdit = false, addressData = null) {
