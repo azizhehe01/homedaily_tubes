@@ -54,7 +54,7 @@ class GoogleController extends Controller
                 }
 
                 // Default redirect for non-admin users
-                return redirect()->intended(route('user.dashboard'))
+                return redirect()->intended(route('user.index'))
                     ->with('success', 'Successfully logged in with Google!');
             } catch (QueryException $e) {
                 Log::error('Database error during Google login: ' . $e->getMessage());
