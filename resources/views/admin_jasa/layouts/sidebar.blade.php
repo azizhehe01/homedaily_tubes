@@ -21,7 +21,7 @@
                 <a href="javascript:void(0)"
                     class="flex items-center px-3 py-2 text-sm font-medium transition-all rounded-md hs-accordion-toggle group gap-x-4 text-default-700 hover:bg-default-900/5 hs-accordion-active:bg-default-900/5 hs-accordion-active:text-default-700">
                     <iconify-icon icon="icon-park-outline:ad-product" class="text-xl text-gray-900"></iconify-icon>
-                    <span class="menu-text"> Jasa</span>
+                    <span class="menu-text"> Services </span>
                     <span
                         class="text-sm transition-all i-tabler-chevron-right ms-auto hs-accordion-active:rotate-90"></span>
                 </a>
@@ -34,7 +34,7 @@
                                 class="flex items-center gap-x-3.5 rounded-md px-3 py-2 text-sm font-medium text-default-700 hover:bg-default-900/5">
                                 <iconify-icon icon="material-symbols:list-rounded"
                                     class="text-xl text-gray-600"></iconify-icon>
-                                <span class="menu-text">Daftar Jasa</span>
+                                <span class="menu-text">Daftar jasa</span>
                             </a>
                         </li>
                         <li class="menu-item">
@@ -42,11 +42,27 @@
                                 class="flex items-center gap-x-3.5 rounded-md px-3 py-2 text-sm font-medium text-default-700 hover:bg-default-900/5">
                                 <iconify-icon icon="material-symbols:add-ad-outline"
                                     class="text-xl text-gray-600"></iconify-icon>
-                                <span class="menu-text">Tambah Jasa</span>
+                                <span class="menu-text">Tambah jasa</span>
                             </a>
                         </li>
                     </ul>
-                </div>  
+                </div>
+            </li>
+
+            <li class="menu-item">
+                <a href="#"
+                    class="flex items-center px-3 py-2 text-sm font-medium transition-all rounded-md group gap-x-4 text-default-700 hover:bg-default-900/5 hs-accordion-active:bg-default-900/5">
+                    <iconify-icon icon="lets-icons:order" class="text-2xl text-gray-600"></iconify-icon>
+                    <span class="menu-text"> Orders </span>
+                </a>
+            </li>
+
+            <li class="menu-item">
+                <a href="#"
+                    class="flex items-center px-3 py-2 text-sm font-medium transition-all rounded-md group gap-x-4 text-default-700 hover:bg-default-900/5 hs-accordion-active:bg-default-900/5">
+                    <iconify-icon icon="si:money-duotone" class="text-2xl text-gray-600"></iconify-icon>
+                    <span class="menu-text"> Transactions </span>
+                </a>
             </li>
             <li class="menu-item mt-auto">
                 <form method="POST" action="{{ route('logout') }}">

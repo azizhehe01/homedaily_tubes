@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Dashboard jasa') | Admin</title>
+    <title>@yield('title', 'Dashboard Jasa') | Admin jasa</title>
 
     <!-- Vite Assets -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -32,7 +32,7 @@
                 <div class="container py-6">
                     @include('admin_jasa.layouts.page-title', [
                         'subtitle' => 'Menu',
-                        'title' => 'Dashboard jasa',
+                        'title' => 'Dashboard Jasa',
                     ])
 
                     @yield('content')

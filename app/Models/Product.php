@@ -15,7 +15,6 @@ class Product extends Model
         'description',
         'price',
         'stock',
-        'image',
         'category_id'
     ];
 
@@ -38,5 +37,10 @@ class Product extends Model
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function images()
+    {
+        return $this->hasMany(Image::class, 'product_id', 'product_id');
     }
 }

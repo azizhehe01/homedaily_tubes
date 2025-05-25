@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<title>{{ $title ?? 'Dashboard jasa' }} | HomeDaily Admin Page</title>
+<title>{{ $title ?? 'Dashboard' }} | HomeDaily Admin Page</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta content="Tailwind Admin Dashboard, A fully featured admin theme which can be used to build CRM, CMS, etc."
     name="description">
