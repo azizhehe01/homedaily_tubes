@@ -75,6 +75,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const imagePreviewContainer = document.getElementById('imagePreviewContainer');
     const imagePreview = document.getElementById('imagePreview');
     const removeImage = document.getElementById('removeImage');
+    const sendMessageBtn = document.getElementById('sendMessage');
+    const chatInput = document.getElementById('chatInput');
+    const chatMessages = document.getElementById('chatMessages');
 
     chatBubble.addEventListener('click', () => chatBox.classList.toggle('hidden'));
     closeChat.addEventListener('click', () => chatBox.classList.add('hidden'));
@@ -89,6 +92,27 @@ document.addEventListener('DOMContentLoaded', function () {
             };
             reader.readAsDataURL(file);
         }
+    });
+        // Fungsi sementara kirim pesan
+        sendMessageBtn.addEventListener('click', () => {
+        const message = chatInput.value.trim();
+
+        if (message === '') return;
+
+        // Buat elemen pesan baru
+        const msgDiv = document.createElement('div');
+        msgDiv.className = 'flex justify-end';
+        msgDiv.innerHTML = `
+            <div class="bg-[#FF7A00] text-white px-4 py-2 rounded-lg max-w-[70%]">
+                ${message}
+            </div>
+        `;
+
+        chatMessages.appendChild(msgDiv);
+        chatInput.value = '';
+
+        // Scroll otomatis ke bawah
+        chatMessages.scrollTop = chatMessages.scrollHeight;
     });
 
     removeImage.addEventListener('click', () => {
