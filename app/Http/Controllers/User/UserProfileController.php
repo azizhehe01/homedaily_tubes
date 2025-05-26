@@ -2,23 +2,31 @@
 
 namespace App\Http\Controllers\User;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth; 
 
 class UserProfileController extends Controller
 {
-    /**
-     * Display the user's profile.
-     *
-     * @return \Illuminate\View\View
-     */
     public function index()
     {
-        $user = Auth::user(); // Get the authenticated user
-        return view('user.pages.user-profile', compact('user'));
+        return view('user.pages.user-profile'); 
     }
 
-
+    public function update(Request $request)
+    {
+         $user = Auth::user();  
+        // Validasi
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->user_id . ',user_id',
+            'phone_number' => 'nullable|string|max:20'
+        ]);
+    
+        // Update data
+        $user->update($request->only(['name', 'email', 'phone_number']));
+    
+        // Redirect kembali dengan pesan sukses
+        return redirect()->route('user.profile')->with('success', 'Profil berhasil diperbarui!');   
+    }
 }

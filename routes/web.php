@@ -115,6 +115,12 @@ Route::prefix('admin_jasa')->name('admin_jasa.')->middleware('auth:sanctum')->gr
     });
 });
 
+Route::prefix('user')->middleware('auth')->group(function () {
+    Route::get('/profile', [UserProfileController::class, 'index'])->name('user.profile');
+    Route::put('/profile', [UserProfileController::class, 'update'])->name('user.profile.update');
+});
+
+
 //route logout
 Route::post('/logout', function (Request $request) {
     // Untuk web session (browser)

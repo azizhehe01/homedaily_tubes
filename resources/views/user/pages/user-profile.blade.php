@@ -26,7 +26,7 @@
         </div>
 
         <!-- Profile Section -->
-        <section id="profile-section" class="p-6 mb-8 bg-white rounded-lg shadow">
+        <section id="profile-section" class="p-6 mb-8 rounded-lg shadow" style="background-image: url('https://images.unsplash.com/photo-1727580674761-3aae55f53cad?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8eW91am98ZW58MHx8MHx8fDA%3D'); background-size: cover; background-position: center;">
             <div class="flex flex-col items-center md:flex-row md:items-start">
                 <div class="relative mb-4 md:mb-0">
                     <img src="https://images.unsplash.com/photo-1628157588251-4d75b1e1a106?ixlib=rb-4.0.3&auto=format&fit=crop&w=96&h=96&q=80"
@@ -51,15 +51,21 @@
                             <div class="space-y-6">
                                 <div class="flex flex-col">
                                     <label class="text-sm text-gray-500">Nama Lengkap</label>
-                                    <p class="text-base font-medium text-gray-700">Muhamad Surya Nugraha</p>
+                                    <p class="text-base font-medium text-gray-700">
+                                        {{ Auth::user()->name }}  <!-- Ambil nama user -->
+                                    </p>
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-sm text-gray-500">Nomor Telepon</label>
-                                    <p class="text-base font-medium text-gray-700">62855659718873</p>
+                                    <p class="text-base font-medium text-gray-700">
+                                        {{ Auth::user()->phone_number ?? ' kaga  ada no telp kocak 😭' }}  <!-- Nomor telepon (jika ada) -->
+                                    </p>
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-sm text-gray-500">Email</label>
-                                    <p class="text-base font-medium text-gray-700">suryanugraha355@gmail.com</p>
+                                    <p class="text-base font-medium text-gray-700">
+                                        {{ Auth::user()->email }}  <!-- Email user -->
+                                    </p>
                                 </div>
                             </div>
                             <button id="edit-profile-btn"
@@ -485,23 +491,28 @@
                 </button>
             </div>
 
-            <form id="profile-form">
+            <form id="profile-form" method="POST" action="{{ route('user.profile.update') }}">
+                @csrf
+                @method('PUT')
+
                 <div class="grid gap-4 py-4">
                     <div class="grid gap-2">
                         <label for="profile-name" class="text-sm font-medium">Nama Lengkap</label>
                         <input id="profile-name" name="name" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md" value="Muhamad Surya Nugraha" />
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md" 
+                            value="{{ Auth::user()->name }}" />
                     </div>
                     <div class="grid gap-2">
                         <label for="profile-phone" class="text-sm font-medium">Nomor Telepon</label>
-                        <input id="profile-phone" name="phone" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md" value="62855659718873" />
+                        <input id="profile-phone" name="phone_number" required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md" 
+                            value="{{ Auth::user()->phone_number }}" />
                     </div>
                     <div class="grid gap-2">
                         <label for="profile-email" class="text-sm font-medium">Email</label>
                         <input id="profile-email" name="email" type="email" required
                             class="w-full px-3 py-2 border border-gray-300 rounded-md"
-                            value="suryanugraha355@gmail.com" />
+                            value="{{ Auth::user()->email }}" />
                     </div>
                 </div>
                 <div class="flex justify-end gap-2">
@@ -842,187 +853,43 @@
 
 @section('scripts')
     <script>
+        // Profile dialog functionality (pure open/close)
         document.addEventListener("DOMContentLoaded", function() {
-            // Initialize Lucide icons
-            lucide.createIcons();
-
             // DOM Elements
-            const elements = {
-                addressDialog: document.getElementById('address-dialog'),
-                addAddressBtn: document.getElementById('add-address-btn'),
-                closeDialogBtn: document.getElementById('close-dialog'),
-                cancelBtn: document.getElementById('cancel-btn'),
-                addressForm: document.getElementById('address-form'),
-                editAddressBtns: document.querySelectorAll('.edit-address-btn')
-            };
+            const profileDialog = document.getElementById('profile-dialog');
+            const editProfileBtn = document.getElementById('edit-profile-btn');
+            const closeProfileBtn = document.getElementById('close-profile-dialog');
+            const cancelProfileBtn = document.getElementById('cancel-profile-btn');
 
-            // Profile dialog functionality
-            const profileElements = {
-                dialog: document.getElementById('profile-dialog'),
-                editBtn: document.getElementById('edit-profile-btn'),
-                closeBtn: document.getElementById('close-profile-dialog'),
-                cancelBtn: document.getElementById('cancel-profile-btn'),
-                form: document.getElementById('profile-form')
-            };
-
-            // Open profile dialog
+            // Open modal
             function openProfileDialog() {
-                profileElements.dialog.classList.remove('hidden');
+                profileDialog.classList.remove('hidden');
                 setTimeout(() => {
-                    profileElements.dialog.classList.remove('opacity-0');
-                    profileElements.dialog.querySelector('.transform').classList.remove('scale-95');
-                    profileElements.dialog.querySelector('.transform').classList.add('scale-100');
+                    profileDialog.classList.remove('opacity-0');
+                    profileDialog.querySelector('.transform').classList.remove('scale-95');
+                    profileDialog.querySelector('.transform').classList.add('scale-100');
                 }, 10);
             }
 
-            // Close profile dialog
+            // Close modal
             function closeProfileDialog() {
-                profileElements.dialog.classList.add('opacity-0');
-                profileElements.dialog.querySelector('.transform').classList.remove('scale-100');
-                profileElements.dialog.querySelector('.transform').classList.add('scale-95');
+                profileDialog.classList.add('opacity-0');
+                profileDialog.querySelector('.transform').classList.remove('scale-100');
+                profileDialog.querySelector('.transform').classList.add('scale-95');
                 setTimeout(() => {
-                    profileElements.dialog.classList.add('hidden');
+                    profileDialog.classList.add('hidden');
                 }, 200);
             }
 
-            // Add event listeners
-            profileElements.editBtn.addEventListener('click', openProfileDialog);
-            profileElements.closeBtn.addEventListener('click', closeProfileDialog);
-            profileElements.cancelBtn.addEventListener('click', closeProfileDialog);
+            // Event listeners
+            editProfileBtn?.addEventListener('click', openProfileDialog);
+            closeProfileBtn?.addEventListener('click', closeProfileDialog);
+            cancelProfileBtn?.addEventListener('click', closeProfileDialog);
 
-            // Handle form submission
-            profileElements.form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const formData = {
-                    name: this.name.value,
-                    phone: this.phone.value,
-                    email: this.email.value
-                };
-                console.log('Profile updated:', formData);
-                closeProfileDialog();
-                // TODO: Update the profile display with new values
-                // You would typically make an API call here to update the backend
-            });
-
-            // Close when clicking outside
-            profileElements.dialog.addEventListener('click', function(e) {
+            // Close when clicking outside modal
+            profileDialog?.addEventListener('click', function(e) {
                 if (e.target === this) {
                     closeProfileDialog();
-                }
-            });
-
-
-            // Open dialog function
-            function openAddressDialog(isEdit = false, addressData = null) {
-                elements.addressDialog.classList.remove('hidden');
-                elements.addressDialog.classList.remove('opacity-0');
-                elements.addressDialog.querySelector('.transform').classList.remove('scale-95');
-                elements.addressDialog.querySelector('.transform').classList.add('scale-100');
-
-                if (isEdit && addressData) {
-                    document.getElementById('name').value = addressData.name;
-                    document.getElementById('phone').value = addressData.phone;
-                    document.getElementById('address').value = addressData.address;
-                    document.getElementById('label').value = addressData.label;
-                    document.getElementById('dialog-title').textContent = 'Edit Alamat';
-                } else {
-                    elements.addressForm.reset();
-                    document.getElementById('dialog-title').textContent = 'Tambah Alamat';
-                }
-            }
-
-            // Close dialog function
-            function closeAddressDialog() {
-                elements.addressDialog.classList.add('opacity-0');
-                elements.addressDialog.querySelector('.transform').classList.remove('scale-100');
-                elements.addressDialog.querySelector('.transform').classList.add('scale-95');
-
-                setTimeout(() => {
-                    elements.addressDialog.classList.add('hidden');
-                }, 200);
-            }
-
-            // Product tracking dialog functionality
-            const trackingElements = {
-                dialog: document.getElementById('product-tracking-dialog'),
-                viewButtons: document.querySelectorAll('.view-tracking-btn'),
-                closeButtons: document.querySelectorAll('.close-tracking-dialog')
-            };
-
-            // Open tracking dialog
-            function openTrackingDialog() {
-                trackingElements.dialog.classList.remove('hidden');
-                setTimeout(() => {
-                    trackingElements.dialog.classList.remove('opacity-0');
-                    trackingElements.dialog.querySelector('.transform').classList.remove('scale-95');
-                    trackingElements.dialog.querySelector('.transform').classList.add('scale-100');
-                }, 10);
-            }
-
-            // Close tracking dialog
-            function closeTrackingDialog() {
-                trackingElements.dialog.classList.add('opacity-0');
-                trackingElements.dialog.querySelector('.transform').classList.remove('scale-100');
-                trackingElements.dialog.querySelector('.transform').classList.add('scale-95');
-                setTimeout(() => {
-                    trackingElements.dialog.classList.add('hidden');
-                }, 200);
-            }
-
-            // Add click handlers to view buttons
-            trackingElements.viewButtons.forEach(btn => {
-                btn.addEventListener('click', openTrackingDialog);
-            });
-
-            // Add click handlers to close buttons
-            trackingElements.closeButtons.forEach(btn => {
-                btn.addEventListener('click', closeTrackingDialog);
-            });
-
-            // Close when clicking outside
-            trackingElements.dialog.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    closeTrackingDialog();
-                }
-            });
-
-
-            // Add event listeners
-            elements.addAddressBtn.addEventListener('click', () => openAddressDialog());
-            elements.closeDialogBtn.addEventListener('click', closeAddressDialog);
-            elements.cancelBtn.addEventListener('click', closeAddressDialog);
-
-            // Edit address button handlers
-            elements.editAddressBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const card = this.closest('.border');
-                    const addressData = {
-                        name: card.querySelector('p.font-semibold').textContent,
-                        phone: card.querySelector('p.text-gray-500').textContent,
-                        address: card.querySelector('p.mt-2.text-gray-700').textContent,
-                        label: card.querySelector('h4').textContent
-                    };
-                    openAddressDialog(true, addressData);
-                });
-            });
-
-            // Handle form submission
-            elements.addressForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const formData = {
-                    name: this.name.value,
-                    phone: this.phone.value,
-                    address: this.address.value,
-                    label: this.label.value
-                };
-                console.log('Form submitted:', formData);
-                closeAddressDialog();
-            });
-
-            // Close dialog when clicking outside
-            elements.addressDialog.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    closeAddressDialog();
                 }
             });
         });
