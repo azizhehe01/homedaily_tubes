@@ -21,6 +21,7 @@ class User extends Authenticatable
         'google_id',
         'role',
         'phone_number',
+        'profile_picture',
     ];
 
     protected $hidden = [
@@ -33,6 +34,12 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function getProfilePictureUrlAttribute()
+    {
+        return $this->profile_picture 
+            ? asset('storage/profiles/' . $this->profile_picture)
+            : asset('images/default-profile.jpg'); // Ganti dengan path default image
+    }
     public function adminLogs()
     {
         return $this->hasMany(AdminLog::class);

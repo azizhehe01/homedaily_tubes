@@ -29,8 +29,7 @@
         <section id="profile-section" class="p-6 mb-8 rounded-lg shadow" style="background-image: url('https://images.unsplash.com/photo-1727580674761-3aae55f53cad?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8eW91am98ZW58MHx8MHx8fDA%3D'); background-size: cover; background-position: center;">
             <div class="flex flex-col items-center md:flex-row md:items-start">
                 <div class="relative mb-4 md:mb-0">
-                    <img src="https://images.unsplash.com/photo-1628157588251-4d75b1e1a106?ixlib=rb-4.0.3&auto=format&fit=crop&w=96&h=96&q=80"
-                        alt="Profile Picture" class="mb-5 border-4 border-orange-100 rounded shadow-md h-60 w-60">
+                    <img src="{{ Auth::user()->profile_picture_url }}" alt="Profile Picture" class="mb-5 border-4 border-orange-100 rounded shadow-md h-60 w-60">
 
                     <button
                         class="flex items-center justify-center px-4 py-2 mt-4 text-white bg-orange-500 rounded-lg w-60 hover:bg-orange-600">
@@ -528,6 +527,63 @@
         </div>
     </div>
 
+    <!-- Tambahkan ini setelah modal Edit Profil yang sudah ada -->
+    <!-- Photo Upload Dialog -->
+    <div id="photo-dialog"
+        class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-200 bg-black bg-opacity-50 opacity-0">
+        <div class="w-full max-w-md p-6 transition-transform duration-200 transform scale-95 bg-white rounded-lg">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold">Ubah Foto Profil</h3>
+                <button id="close-photo-dialog" class="text-gray-500 hover:text-gray-700">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <form id="photo-form" method="POST" action="{{ route('user.profile.photo.update') }}" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+                
+                <div class="grid gap-4 py-4">
+                    <div class="flex flex-col items-center justify-center gap-4">
+                        <!-- Foto Preview -->
+                        <div class="relative w-32 h-32 overflow-hidden bg-gray-100 rounded-full">
+                            <img id="photo-preview" src="{{ Auth::user()->avatar ? asset('storage/profiles/'.Auth::user()->avatar) : 'https://via.placeholder.com/128' }}" 
+                                class="object-cover w-full h-full" alt="Profile Preview">
+                        </div>
+
+                        <!-- File Input -->
+                        <div class="w-full">
+                            <label for="profile-photo" class="block text-sm font-medium text-gray-700 mb-2">
+                                Pilih Foto Baru
+                            </label>
+                            <input type="file" id="profile-photo" name="avatar" accept="image/*"
+                                class="block w-full text-sm text-gray-500
+                                    file:mr-4 file:py-2 file:px-4
+                                    file:rounded-md file:border-0
+                                    file:text-sm file:font-semibold
+                                    file:bg-orange-50 file:text-orange-700
+                                    hover:file:bg-orange-100">
+                        </div>
+
+                        <!-- Informasi -->
+                        <p class="text-xs text-gray-500">
+                            Format: JPG, PNG maksimal 2MB
+                        </p>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button type="button" id="cancel-photo-btn"
+                        class="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50">
+                        Batal
+                    </button>
+                    <button type="submit" class="px-4 py-2 text-white bg-orange-500 rounded-md hover:bg-orange-600">
+                        Simpan Foto
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Address Dialog -->
     <div id="address-dialog"
         class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-200 bg-black bg-opacity-50 opacity-0">
@@ -890,6 +946,49 @@
             profileDialog?.addEventListener('click', function(e) {
                 if (e.target === this) {
                     closeProfileDialog();
+                }
+            });
+        });
+
+        // Tambahkan ini di script yang sama dengan modal edit profil
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tombol Tambah Foto Profil
+            const photoBtn = document.querySelector('.bg-orange-500.w-60');
+            const photoDialog = document.getElementById('photo-dialog');
+            const closePhotoDialog = document.getElementById('close-photo-dialog');
+            const cancelPhotoBtn = document.getElementById('cancel-photo-btn');
+
+            // Preview gambar saat dipilih
+            const photoInput = document.getElementById('profile-photo');
+            const photoPreview = document.getElementById('photo-preview');
+
+            // Buka modal
+            photoBtn.addEventListener('click', () => {
+                photoDialog.classList.remove('hidden');
+                setTimeout(() => {
+                    photoDialog.classList.remove('opacity-0');
+                    photoDialog.querySelector('.transform').classList.remove('scale-95');
+                }, 20);
+            });
+
+            // Tutup modal
+            function closePhotoModal() {
+                photoDialog.classList.add('opacity-0');
+                photoDialog.querySelector('.transform').classList.add('scale-95');
+                setTimeout(() => photoDialog.classList.add('hidden'), 200);
+            }
+
+            closePhotoDialog.addEventListener('click', closePhotoModal);
+            cancelPhotoBtn.addEventListener('click', closePhotoModal);
+
+            // Preview gambar
+            photoInput.addEventListener('change', function(e) {
+                if (e.target.files && e.target.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        photoPreview.src = event.target.result;
+                    };
+                    reader.readAsDataURL(e.target.files[0]);
                 }
             });
         });

@@ -4,7 +4,9 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str; 
 
 class UserProfileController extends Controller
 {
@@ -28,5 +30,36 @@ class UserProfileController extends Controller
     
         // Redirect kembali dengan pesan sukses
         return redirect()->route('user.profile')->with('success', 'Profil berhasil diperbarui!');   
+    }
+
+    public function updatePhoto(Request $request)
+    {
+        $request->validate([
+            'avatar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
+        ]);
+
+        $user = Auth::user();
+
+        try {
+            // Hapus foto lama jika ada
+            if ($user->profile_picture) {
+                Storage::delete('public/profiles/' . $user->profile_picture);
+            }
+
+            // Simpan file baru
+            $file = $request->file('avatar');
+            $fileName = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            
+            $file->storeAs('public/profiles', $fileName);
+
+            // Update database
+            $user->update([
+                'profile_picture' => $fileName
+            ]);
+
+            return back()->with('success', 'Foto profil berhasil diperbarui!');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal mengupdate foto profil: ' . $e->getMessage());
+        }
     }
 }
