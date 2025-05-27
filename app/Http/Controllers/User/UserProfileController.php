@@ -37,29 +37,27 @@ class UserProfileController extends Controller
         $request->validate([
             'avatar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
         ]);
-
+    
         $user = Auth::user();
-
+    
         try {
             // Hapus foto lama jika ada
             if ($user->profile_picture) {
-                Storage::delete('public/profiles/' . $user->profile_picture);
+                Storage::disk('public')->delete($user->profile_picture);
             }
-
-            // Simpan file baru
-            $file = $request->file('avatar');
-            $fileName = Str::uuid() . '.' . $file->getClientOriginalExtension();
-            
-            $file->storeAs('public/profiles', $fileName);
-
-            // Update database
+        
+            // Simpan file baru ke folder profiles
+            $path = $request->file('avatar')->store('profiles', 'public');
+        
+            // Update database dengan path file baru
             $user->update([
-                'profile_picture' => $fileName
+                'profile_picture' => $path
             ]);
-
+        
             return back()->with('success', 'Foto profil berhasil diperbarui!');
         } catch (\Exception $e) {
             return back()->with('error', 'Gagal mengupdate foto profil: ' . $e->getMessage());
         }
     }
+
 }

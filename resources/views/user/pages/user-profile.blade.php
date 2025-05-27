@@ -29,7 +29,7 @@
         <section id="profile-section" class="p-6 mb-8 rounded-lg shadow" style="background-image: url('https://images.unsplash.com/photo-1727580674761-3aae55f53cad?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8eW91am98ZW58MHx8MHx8fDA%3D'); background-size: cover; background-position: center;">
             <div class="flex flex-col items-center md:flex-row md:items-start">
                 <div class="relative mb-4 md:mb-0">
-                    <img src="{{ Auth::user()->profile_picture_url }}" alt="Profile Picture" class="mb-5 border-4 border-orange-100 rounded shadow-md h-60 w-60">
+                    <img src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : asset('images/default-profile.png') }}" alt="Profile Picture">
 
                     <button
                         class="flex items-center justify-center px-4 py-2 mt-4 text-white bg-orange-500 rounded-lg w-60 hover:bg-orange-600">
@@ -527,7 +527,6 @@
         </div>
     </div>
 
-    <!-- Tambahkan ini setelah modal Edit Profil yang sudah ada -->
     <!-- Photo Upload Dialog -->
     <div id="photo-dialog"
         class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-200 bg-black bg-opacity-50 opacity-0">

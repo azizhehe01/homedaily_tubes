@@ -40,6 +40,7 @@ class User extends Authenticatable
             ? asset('storage/profiles/' . $this->profile_picture)
             : asset('images/default-profile.jpg'); // Ganti dengan path default image
     }
+    
     public function adminLogs()
     {
         return $this->hasMany(AdminLog::class);

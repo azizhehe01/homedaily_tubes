@@ -28,12 +28,19 @@
         @else
             <div class="flex items-center gap-4">
                 <a href="{{ route('user.profile') }}" class="flex items-center">
-                    <img src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}"
+                    <img src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : asset('images/default-profile.png') }}" alt="{{ Auth::user()->name }}"
                         class="w-10 h-10 mr-3 rounded-full"> <!-- Added mr-3 for margin-right -->
                     <span
                         class="font-medium text-gray-900">{{ \Illuminate\Support\Str::before(Auth::user()->name, ' ') }}</span>
                 </a>
             </div>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="flex items-center w-full px-3 py-2 text-sm font-medium transition-all rounded-md group gap-x-4 text-default-700 hover:bg-default-900/5">
+                    <i data-lucide="log-out" class="size-5"></i>
+                    <span class="menu-text">Logout🏃‍♀️‍➡️</span>
+                </button>
+            </form>
         @endguest
     </nav>
 </header>
