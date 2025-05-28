@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str; 
 
 class UserProfileController extends Controller
 {
-    public function index()
+    public function index()          
     {
         return view('user.pages.user-profile'); 
     }
@@ -57,6 +59,49 @@ class UserProfileController extends Controller
             return back()->with('success', 'Foto profil berhasil diperbarui!');
         } catch (\Exception $e) {
             return back()->with('error', 'Gagal mengupdate foto profil: ' . $e->getMessage());
+        }
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $user = Auth::user();
+
+        $validator = Validator::make($request->all(), [
+            'current_password' => [
+                'required',
+                function ($attribute, $value, $fail) use ($user) {
+                    if (!Hash::check($value, $user->password)) {
+                        $fail('Password saat ini tidak sesuai');
+                    }
+                }
+            ],
+            'new_password' => 'required|string|min:8|different:current_password',
+            'confirm_password' => 'required|string|same:new_password'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $user->update([
+                'password' => $request->new_password // Auto hashing dari model
+            ]);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Password berhasil diperbarui'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Gagal mengupdate password: ' . $e->getMessage()
+            ], 500);
         }
     }
 

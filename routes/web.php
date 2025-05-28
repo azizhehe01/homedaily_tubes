@@ -119,6 +119,7 @@ Route::prefix('user')->middleware('auth')->group(function () {
     Route::get('/profile', [UserProfileController::class, 'index'])->name('user.profile');
     Route::put('/profile', [UserProfileController::class, 'update'])->name('user.profile.update');
     Route::put('/profile/photo', [UserProfileController::class, 'updatePhoto'])->name('user.profile.photo.update');
+    Route::put('/profile/password', [UserProfileController::class, 'updatePassword'])->name('user.profile.password.update');
 });
 
 

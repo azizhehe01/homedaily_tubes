@@ -27,18 +27,19 @@
             </div>
         @else
             <div class="flex items-center gap-4">
+                <!-- Username -->
                 <a href="{{ route('user.profile') }}" class="flex items-center">
-                    <img src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : asset('images/default-profile.png') }}" alt="{{ Auth::user()->name }}"
-                        class="w-10 h-10 mr-3 rounded-full"> <!-- Added mr-3 for margin-right -->
-                    <span
-                        class="font-medium text-gray-900">{{ \Illuminate\Support\Str::before(Auth::user()->name, ' ') }}</span>
+                    <img src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : asset('images/default-profile.png') }}" 
+                         alt="{{ Auth::user()->name }}" 
+                         class="w-10 h-10 rounded-full">
+                    <span class="font-medium text-gray-900 ml-3">{{ \Illuminate\Support\Str::before(Auth::user()->name, ' ') }}</span>
                 </a>
             </div>
-            <form method="POST" action="{{ route('logout') }}">
+            <form method="POST" action="{{ route('logout') }}" class="flex items-center">
                 @csrf
-                <button type="submit" class="flex items-center w-full px-3 py-2 text-sm font-medium transition-all rounded-md group gap-x-4 text-default-700 hover:bg-default-900/5">
-                    <i data-lucide="log-out" class="size-5"></i>
-                    <span class="menu-text">Logout🏃‍♀️‍➡️</span>
+                <button type="submit" 
+                        class="font-medium {{ request()->is('logout*') ? 'text-orange-600' : 'text-gray-900' }} hover:text-orange-600">
+                    Logout🏃‍♀️➡️
                 </button>
             </form>
         @endguest

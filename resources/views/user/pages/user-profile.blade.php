@@ -36,9 +36,9 @@
                         <i data-lucide="pencil" class="w-4 h-4 mr-2"></i>
                         Tambah Foto Profil
                     </button>
-
                     <button
-                        class="flex items-center justify-center px-4 py-2 mt-4 text-white bg-orange-500 rounded-lg w-60 hover:bg-orange-600">
+                        id="ubahPasswordBtn"
+                        class="flex items-center justify-center px-4 py-2 mt-4 text-white bg-orange-500 rounded-lg w-60 hover:bg-orange-600 transition-colors">
                         <i data-lucide="pencil" class="w-4 h-4 mr-2"></i>
                         Ubah Kata Sandi
                     </button>
@@ -583,6 +583,109 @@
         </div>
     </div>
 
+    <div id="passwordModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden">
+            <!-- Header -->
+            <div class="flex justify-between items-center p-6 border-b">
+                <h3 class="text-xl font-bold text-gray-800">Ganti Password</h3>
+                <button id="closeModal" type="button" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Form -->
+            <form id="passwordForm" method="POST" action="{{ route('user.profile.password.update') }}">
+                @csrf
+                @method('PUT')
+
+                <div class="p-6 space-y-4">
+                    <!-- Current Password -->
+                    <div class="space-y-1">
+                        <label for="current_password" class="block text-sm font-medium text-gray-700">Password Sekarang</label>
+                        <div class="relative">
+                            <input 
+                                id="current_password"
+                                name="current_password"
+                                type="password" 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                                placeholder="Masukkan password saat ini"
+                                required>
+                            <button 
+                                type="button"
+                                data-target="current_password"
+                                class="toggle-password absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                <i data-lucide="eye" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- New Password -->
+                    <div class="space-y-1">
+                        <label for="new_password" class="block text-sm font-medium text-gray-700">Password Baru</label>
+                        <div class="relative">
+                            <input 
+                                id="new_password"
+                                name="new_password"
+                                type="password" 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                                placeholder="Password minimal 8 karakter"
+                                required
+                                minlength="8">
+                            <button 
+                                type="button"
+                                data-target="new_password"
+                                class="toggle-password absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                <i data-lucide="eye" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="space-y-1">
+                        <label for="confirm_password" class="block text-sm font-medium text-gray-700">Konfirmasi Password</label>
+                        <div class="relative">
+                            <input 
+                                id="confirm_password"
+                                name="confirm_password"
+                                type="password" 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                                placeholder="Ketik ulang password baru"
+                                required>
+                            <button 
+                                type="button"
+                                data-target="confirm_password"
+                                class="toggle-password absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                <i data-lucide="eye" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="flex justify-end gap-3 p-6 border-t bg-gray-50">
+                    <button id="cancelBtn" type="button" class="px-5 py-2 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
+                        Batal
+                    </button>
+                    <button type="submit" class="px-5 py-2 text-white bg-orange-500 rounded-lg hover:bg-orange-600 transition-colors">
+                        Simpan Perubahan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+            <div class="flex justify-end gap-3 p-6 border-t bg-gray-50">
+                <button id="cancelBtn" class="px-5 py-2 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
+                    Batal
+                </button>
+                <button class="px-5 py-2 text-white bg-orange-500 rounded-lg hover:bg-orange-600 transition-colors">
+                    Simpan Perubahan
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Address Dialog -->
     <div id="address-dialog"
         class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-200 bg-black bg-opacity-50 opacity-0">
@@ -949,7 +1052,7 @@
             });
         });
 
-        // Tambahkan ini di script yang sama dengan modal edit profil
+        //ini untuk buka modal tambah foto 
         document.addEventListener('DOMContentLoaded', function() {
             // Tombol Tambah Foto Profil
             const photoBtn = document.querySelector('.bg-orange-500.w-60');
@@ -990,6 +1093,103 @@
                     reader.readAsDataURL(e.target.files[0]);
                 }
             });
+        });
+        //yang di bawah ini untuk modal ubah password
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle Modal
+            const modal = document.getElementById('passwordModal');
+            const openBtn = document.getElementById('ubahPasswordBtn');
+            const closeBtn = document.getElementById('closeModal');
+            const cancelBtn = document.getElementById('cancelBtn');
+                
+            // Buka modal
+            if (openBtn) {
+                openBtn.addEventListener('click', () => modal.classList.remove('hidden'));
+            }
+            
+            // Tutup modal
+            [closeBtn, cancelBtn].forEach(btn => {
+                btn.addEventListener('click', () => modal.classList.add('hidden'));
+            });
+            
+            // Tutup saat klik di luar modal
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) modal.classList.add('hidden');
+            });
+        
+            // Toggle Password Visibility
+            document.querySelectorAll('.toggle-password').forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    const input = document.getElementById(targetId);
+                    const icon = this.querySelector('i');
+                    
+                    // Toggle input type
+                    const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                    input.setAttribute('type', type);
+                    
+                    // Toggle icon
+                    icon.setAttribute('data-lucide', type === 'password' ? 'eye' : 'eye-off');
+                    
+                    // Refresh Lucide icons
+                    if (window.lucide) {
+                        window.lucide.createIcons();
+                    }
+                });
+            });
+        
+            // Handle Form Submission
+            const form = document.getElementById('passwordForm');
+            if (form) {
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.textContent;
+                    
+                    try {
+                        // Tampilkan loading
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = `
+                            <span class="inline-flex items-center">
+                                <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                Memproses...
+                            </span>
+                        `;
+                        
+                        const response = await fetch(form.action, {
+                            method: form.method,
+                            headers: {
+                                'Accept': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                            },
+                            body: new FormData(form)
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (!response.ok) {
+                            throw new Error(data.message || 'Terjadi kesalahan');
+                        }
+                        
+                        // Tampilkan pesan sukses
+                        alert('Password berhasil diperbarui!');
+                        form.reset();
+                        modal.classList.add('hidden');
+                        
+                    } catch (error) {
+                        alert(error.message || 'Gagal memperbarui password');
+                        console.error('Error:', error);
+                    } finally {
+                        // Reset button
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalText;
+                    }
+                });
+            }
         });
     </script>
     <script>
