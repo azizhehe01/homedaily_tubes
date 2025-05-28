@@ -71,38 +71,33 @@ class UserProfileController extends Controller
                 'required',
                 function ($attribute, $value, $fail) use ($user) {
                     if (!Hash::check($value, $user->password)) {
-                        $fail('Password saat ini tidak sesuai');
+                        $fail('Password saat ini tidak sesuai!');
                     }
                 }
             ],
             'new_password' => 'required|string|min:8|different:current_password',
             'confirm_password' => 'required|string|same:new_password'
+        ], [
+            'current_password.required' => 'Password saat ini wajib diisi',
+            'new_password.required' => 'lo niat ubah pw kaga masa  kosong',
+            'new_password.min' => 'Password minimal 8 karakter',
+            'new_password.different' => 'ya ga boleh sama',
+            'confirm_password.required' => 'isi lah kocak konfim pw', 
+            'confirm_password.same' => 'passwordnya ga cocok 😭 bagia confirm'
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Validasi gagal',
-                'errors' => $validator->errors()
-            ], 422);
+            return back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('password_error', true); // Flag untuk auto-open modal
         }
 
-        try {
-            $user->update([
-                'password' => $request->new_password // Auto hashing dari model
-            ]);
+        $user->update([
+            'password' => Hash::make($request->new_password)
+        ]);
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Password berhasil diperbarui'
-            ]);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Gagal mengupdate password: ' . $e->getMessage()
-            ], 500);
-        }
+        return back()->with('success', 'Password berhasil diperbarui!');
     }
 
 }

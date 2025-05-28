@@ -34,7 +34,7 @@
     <!-- Footer -->
     @include('user.components.footer')
 
-    @yield('scripts')
+    @yield('scripts') 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             lucide.createIcons();
