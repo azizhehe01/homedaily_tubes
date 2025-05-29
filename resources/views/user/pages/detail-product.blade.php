@@ -24,12 +24,12 @@
                 @if($primaryImage = $product->images->where('is_primary', true)->first())
                     <img src="{{ asset('storage/' . $primaryImage->path) }}" 
                          alt="{{ $product->name }}"
-                         class="object-cover w-full h-full rounded-lg"
+                         class="object-cover w-full h-[500px] rounded-lg border-gray"
                          id="mainProductImage">
                 @elseif($product->images->first())
                     <img src="{{ asset('storage/' . $product->images->first()->path) }}" 
                          alt="{{ $product->name }}"
-                         class="object-cover w-full h-full rounded-lg"
+                         class="object-cover w-full h-[500] rounded-lg border-gray"  
                          id="mainProductImage">
                 @else
                     <div class="flex items-center justify-center w-full h-64 bg-gray-100 rounded-lg">
@@ -43,7 +43,7 @@
                 @foreach($product->images->where('is_primary', false)->take(2) as $image)
                     <img src="{{ asset('storage/' . $image->path) }}" 
                          alt="{{ $product->name }} - {{ $loop->iteration }}"
-                         class="object-cover w-full h-full rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
+                         class="object-cover  w-[487px] h-[245px] rounded-lg cursor-pointer hover:opacity-90 transition-opacity border-gray"
                          onclick="document.getElementById('mainProductImage').src = this.src">
                 @endforeach
                 

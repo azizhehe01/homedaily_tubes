@@ -33,13 +33,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
-    public function getProfilePictureUrlAttribute()
-    {
-        return $this->profile_picture 
-            ? asset('storage/profiles/' . $this->profile_picture)
-            : asset('images/default-profile.jpg'); // Ganti dengan path default image
-    }
     
     public function adminLogs()
     {

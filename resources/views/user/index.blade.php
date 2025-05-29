@@ -238,6 +238,4 @@ use Illuminate\Support\Str;
         </div>
     </section>
     @endsection
-</body>
 
-</html>
