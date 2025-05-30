@@ -1,6 +1,11 @@
-@extends('user.components.layout')
+@php
+use Illuminate\Support\Str;
+@endphp
+
+@extends('user.components.layout') 
 
 @section('content')
+
     <!-- Hero Section -->
     <section class="container px-4 py-16 mx-auto md:py-24">
         <div class="flex flex-col items-center md:flex-row">
@@ -80,35 +85,34 @@
         <div class="container p-4 mx-auto">
             <h2 class="mb-4 text-2xl font-bold text-black-600">Recommend Product</h2>
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                @forelse($recommendedProducts->filter(function($product) {return \Illuminate\Support\Str::contains(strtolower($product->category->category_name), 'jasa');})->take(9) as $product)
-                    <a href="{{ route('user.product.detail', $product->product_id) }}"
-                        class="block {{ $loop->first ? 'lg:col-span-2 lg:row-span-2 h-full min-h-[400px]' : 'h-64' }} relative overflow-hidden bg-gray-800 rounded-lg hover:opacity-90 transition-opacity">
-                        @if ($product->images->where('is_primary', true)->first())
-                            <img src="{{ asset('storage/' . $product->images->where('is_primary', true)->first()->path) }}"
-                                alt="{{ $product->name }}" class="absolute inset-0 z-0 object-cover w-full h-full"
-                                loading="lazy">
+                @forelse($recommendedProducts->filter(function($product) {return !Str::contains(strtolower($product->category->category_name), 'jasa');})->take(9) as $product)
+                    <a href="{{ route('user.product.detail', $product->product_id) }}" class="block {{ $loop->first ? 'lg:col-span-2 lg:row-span-2 h-full min-h-[400px]' : 'h-64' }} relative overflow-hidden bg-gray-800 rounded-lg hover:opacity-90 transition-opacity">
+                        @if($product->images->where('is_primary', true)->first())
+                        <img src="{{ asset('storage/'.$product->images->where('is_primary', true)->first()->path) }}" 
+                             alt="{{ $product->name }}"
+                             class="absolute inset-0 z-0 object-cover w-full h-full"
+                             loading="lazy">
                         @elseif($product->images->first())
-                            <img src="{{ asset('storage/' . $product->images->first()->path) }}" alt="{{ $product->name }}"
-                                class="absolute inset-0 z-0 object-cover w-full h-full" loading="lazy">
+                        <img src="{{ asset('storage/'.$product->images->first()->path) }}" 
+                             alt="{{ $product->name }}"
+                             class="absolute inset-0 z-0 object-cover w-full h-full"
+                             loading="lazy">
                         @else
-                            <div class="flex items-center justify-center w-full h-full bg-gray-200">
-                                <span class="text-gray-500">No Image Available</span>
-                            </div>
+                        <div class="flex items-center justify-center w-full h-full bg-gray-200">
+                            <span class="text-gray-500">No Image Available</span>
+                        </div>
                         @endif
 
-                        <div
-                            class="absolute bottom-0 left-0 right-0 z-10 p-4 bg-gradient-to-t from-black/60 to-transparent">
-                            <h3 class="{{ $loop->first ? 'text-2xl' : 'text-lg' }} font-semibold text-white">
-                                {{ $product->name }}</h3>
+                        <div class="absolute bottom-0 left-0 right-0 z-10 p-4 bg-gradient-to-t from-black/60 to-transparent">
+                            <h3 class="{{ $loop->first ? 'text-2xl' : 'text-lg' }} font-semibold text-white">{{ $product->name }}</h3>
                             <p class="text-sm text-white">{{ $product->category->category_name ?? 'Uncategorized' }}</p>
                         </div>
-                        <div
-                            class="absolute top-0 right-0 z-10 flex items-center justify-center py-3 pl-8 {{ $loop->first ? 'text-3xl' : 'text-2xl' }} font-bold text-white bg-yellow-600/90 rounded-bl-full w-72">
+                        <div class="absolute top-0 right-0 z-10 flex items-center justify-center py-3 pl-8 {{ $loop->first ? 'text-3xl' : 'text-2xl' }} font-bold text-white bg-yellow-600/90 rounded-bl-full w-72">
                             Rp {{ number_format($product->price, 0, ',', '.') }}
                         </div>
                     </a>
                 @empty
-                    <div class="text-center col-span-full">
+                    <div class="col-span-full text-center">
                         <p class="text-gray-500">No recommended products available</p>
                     </div>
                 @endforelse
@@ -122,34 +126,30 @@
         <div class="container px-4 py-16 mx-auto">
             <h2 class="mb-6 text-xl font-semibold text-black-600 ">Our Home Services</h2>
             <div class="grid grid-cols-1 gap-6 md:grid-cols-4">
-                @forelse ($recommendedProducts->filter(function($product) {return \Illuminate\Support\Str::contains(strtolower($product->category->category_name), 'jasa');}) as $product)
-                    <a href="{{ route('user.product.detail', $product->product_id) }}"
-                        class="block w-full transition-shadow rounded-lg shadow-sm card bg-base-100 hover:shadow-md">
-                        <figure>
-                            @if ($product->images->where('is_primary', true)->first())
-                                <img src="{{ asset('storage/' . $product->images->where('is_primary', true)->first()->path) }}"
-                                    alt="{{ $product->name }}" class="object-cover w-full h-48 rounded-lg" />
-                            @elseif($product->images->first())
-                                <img src="{{ asset('storage/' . $product->images->first()->path) }}"
-                                    alt="{{ $product->name }}" class="object-cover w-full h-48 rounded-lg" />
-                            @else
-                                <div class="flex items-center justify-center w-full h-48 bg-gray-200">
-                                    <span class="text-gray-500">No Image Available</span>
-                                </div>
-                            @endif
-                        </figure>
-                        <div class="p-3 mt-5 card-body">
-                            <h2 class="text-lg card-title">{{ $product->name }}</h2>
-                            <p class="text-sm text-gray-600">{{ $product->category->category_name ?? 'Uncategorized' }}</p>
-                            <p class="mt-2 font-bold text-orange-500">Rp {{ number_format($product->price, 0, ',', '.') }}
-                            </p>
+                @forelse ($recommendedProducts->filter(function($product) {return Str::contains(strtolower($product->category->category_name), 'jasa');}) as $product)
+                <a href="{{ route('user.product.detail', $product->product_id) }}" class="block w-full rounded-lg shadow-sm card bg-base-100 hover:shadow-md transition-shadow">
+                    <figure>
+                        @if($product->images->where('is_primary', true)->first())
+                        <img src="{{ asset('storage/'.$product->images->where('is_primary', true)->first()->path) }}" alt="{{ $product->name }}" class="object-cover w-full h-48 rounded-lg" />
+                        @elseif($product->images->first())
+                        <img src="{{ asset('storage/'.$product->images->first()->path) }}" alt="{{ $product->name }}" class="object-cover w-full h-48 rounded-lg" />
+                        @else
+                        <div class="flex items-center justify-center w-full h-48 bg-gray-200">
+                            <span class="text-gray-500">No Image Available</span>
                         </div>
-                    </a>
-                @empty
-                    <div class="text-center col-span-full">
-                        <p class="text-gray-500">No recommended products available</p>
+                        @endif
+                    </figure>
+                    <div class="p-3 mt-5 card-body">
+                        <h2 class="text-lg card-title">{{ $product->name }}</h2>
+                        <p class="text-sm text-gray-600">{{ $product->category->category_name ?? 'Uncategorized' }}</p>
+                        <p class="mt-2 font-bold text-orange-500">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
                     </div>
-                @endforelse
+                </a>
+            @empty
+                <div class="col-span-full text-center">
+                    <p class="text-gray-500">No recommended products available</p>
+                </div>
+            @endforelse
             </div>
         </div>
     </section>
@@ -158,37 +158,36 @@
     <section x-data="{ activeCategory: null }">
         <div class="container px-4 py-6 pr-8 mx-auto">
             <h2 class="mb-4 text-xl font-semibold text-gray-800">Produk Teratas untuk Anda</h2>
-
+            
             <!-- Tombol Kategori -->
             <div class="flex flex-wrap items-center gap-10">
                 <!-- Tombol Semua Produk -->
-                <button @click="activeCategory = null"
-                    :class="activeCategory === null ? 'bg-orange-500 text-white' :
-                        'text-gray-500 border-gray-500 hover:bg-orange-100'"
+                <button
+                    @click="activeCategory = null"
+                    :class="activeCategory === null ? 'bg-orange-500 text-white' : 'text-gray-500 border-gray-500 hover:bg-orange-100'"
                     class="flex items-center px-6 py-3 text-base border rounded-full btn">
                     Semua Produk
                 </button>
-
+    
                 <!-- Tombol Kategori Dinamis -->
                 @php
                     $displayedCategories = [];
                 @endphp
-
-                @foreach ($recommendedProducts as $product)
-                    @if (!in_array($product->category->category_name, $displayedCategories))
-                        <button @click="activeCategory = '{{ $product->category->category_name }}'"
-                            :class="activeCategory === '{{ $product->category->category_name }}' ?
-                                'bg-orange-500 text-white' :
-                                'bg-transparent text-orange-500 border-orange-500 hover:bg-gray-100'"
+                
+                @foreach($recommendedProducts as $product)
+                    @if(!in_array($product->category->category_name, $displayedCategories))
+                        <button
+                            @click="activeCategory = '{{ $product->category->category_name }}'"
+                            :class="activeCategory === '{{ $product->category->category_name }}' ? 'bg-orange-500 text-white' : 'bg-transparent text-orange-500 border-orange-500 hover:bg-gray-100'"
                             class="flex items-center px-6 py-3 text-base border rounded-full btn">
                             {{ $product->category->category_name }}
                         </button>
-                        @php
+                        @php 
                             $displayedCategories[] = $product->category->category_name;
                         @endphp
                     @endif
                 @endforeach
-
+    
                 <!-- Tombol Filter -->
                 <button
                     class="flex items-center px-6 py-3 text-base text-gray-500 border border-gray-500 rounded-full btn btn-outline hover:bg-orange-100">
@@ -196,21 +195,25 @@
                     <span class="iconify" data-icon="octicon:filter-16" width="20" height="20"></span>
                 </button>
             </div>
-
+    
             <!-- Grid Produk -->
             <div class="grid grid-cols-1 gap-6 mt-16 md:grid-cols-4">
-                @foreach ($recommendedProducts as $product)
-                    <a href="{{ route('user.product.detail', $product->product_id) }}"
+                @foreach($recommendedProducts as $product)
+                    <a 
+                        href="{{ route('user.product.detail', $product->product_id) }}"
                         x-show="activeCategory === null || activeCategory === '{{ $product->category->category_name }}'"
                         x-transition
-                        class="block w-full transition-shadow rounded-lg shadow-sm card bg-base-100 hover:shadow-md">
+                        class="block w-full rounded-lg shadow-sm card bg-base-100 hover:shadow-md transition-shadow"
+                    >
                         <figure>
-                            @if ($product->images->where('is_primary', true)->first())
-                                <img src="{{ asset('storage/' . $product->images->where('is_primary', true)->first()->path) }}"
-                                    alt="{{ $product->name }}" class="object-cover w-full h-48 rounded-lg">
+                            @if($product->images->where('is_primary', true)->first())
+                                <img src="{{ asset('storage/'.$product->images->where('is_primary', true)->first()->path) }}" 
+                                     alt="{{ $product->name }}"
+                                     class="object-cover w-full h-48 rounded-lg">
                             @elseif($product->images->first())
-                                <img src="{{ asset('storage/' . $product->images->first()->path) }}"
-                                    alt="{{ $product->name }}" class="object-cover w-full h-48 rounded-lg">
+                                <img src="{{ asset('storage/'.$product->images->first()->path) }}" 
+                                     alt="{{ $product->name }}"
+                                     class="object-cover w-full h-48 rounded-lg">
                             @else
                                 <div class="flex items-center justify-center w-full h-48 bg-gray-200 rounded-lg">
                                     <span class="text-gray-500">Tidak Ada Gambar</span>
@@ -219,22 +222,20 @@
                         </figure>
                         <div class="p-3 mt-5 card-body">
                             <h2 class="text-lg card-title">{{ $product->name }}</h2>
-                            <p class="text-sm text-gray-600">{{ $product->category->category_name ?? 'Tanpa Kategori' }}
-                            </p>
-                            <p class="mt-2 font-bold text-orange-500">Rp {{ number_format($product->price, 0, ',', '.') }}
-                            </p>
+                            <p class="text-sm text-gray-600">{{ $product->category->category_name ?? 'Tanpa Kategori' }}</p>
+                            <p class="mt-2 font-bold text-orange-500">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
                         </div>
                     </a>
                 @endforeach
-
+    
                 <!-- Tampilan Jika Kosong -->
-                <template
-                    x-if="!Array.from(document.querySelectorAll('[x-show]')).some(el => el.style.display !== 'none')">
-                    <div class="col-span-4 py-8 text-center">
+                <template x-if="!Array.from(document.querySelectorAll('[x-show]')).some(el => el.style.display !== 'none')">
+                    <div class="col-span-4 text-center py-8">
                         <p class="text-gray-500">Tidak ada produk dalam kategori ini</p>
                     </div>
                 </template>
             </div>
         </div>
     </section>
-@endsection
+    @endsection
+
