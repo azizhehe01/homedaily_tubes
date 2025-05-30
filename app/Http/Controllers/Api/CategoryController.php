@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Api;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -10,11 +10,6 @@ use Illuminate\Support\Facades\Auth;
 class CategoryController extends Controller
 {
     // Apply middleware for authentication
-    public function __construct()
-    {
-        $this->middleware('auth:api'); // Ensure API authentication
-    }
-
     // List all categories
     public function index()
     {
