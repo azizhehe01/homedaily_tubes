@@ -120,6 +120,10 @@ Route::prefix('user')->middleware('auth')->group(function () {
     Route::put('/profile', [UserProfileController::class, 'update'])->name('user.profile.update');
     Route::put('/profile/photo', [UserProfileController::class, 'updatePhoto'])->name('user.profile.photo.update');
     Route::put('/profile/password', [UserProfileController::class, 'updatePassword'])->name('user.profile.password.update');
+    //ini  bagian dari alama yang di bawah  ini ya kocak            
+    Route::post('/profile/address', [UserProfileController::class, 'storeAddress'])->name('user.profile.address.store');
+    Route::put('/profile/address/{address}', [UserProfileController::class, 'updateAddress'])->name('user.profile.address.update');
+    Route::delete('/profile/address/{address_id}', [UserProfileController::class, 'destroyAddress'])->name('user.profile.address.destroy');
 });
 
 

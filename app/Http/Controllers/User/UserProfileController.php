@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Address;
 use Illuminate\Support\Str; 
 
 class UserProfileController extends Controller
@@ -99,5 +100,63 @@ class UserProfileController extends Controller
 
         return back()->with('success', 'Password berhasil diperbarui!');
     }
+
+        public function storeAddress(Request $request)
+        {
+            $validator = Validator::make($request->all(), [
+                'recipient_name' => 'required|string|max:255',
+                'phone_number' => 'required|string|max:20',
+                'full_address' => 'required|string',
+                'postal_code' => 'nullable|string|max:10',
+                'city' => 'required|string|max:255',
+                'province' => 'required|string|max:255',
+            ], [
+                'recipient_name.required' => 'Nama penerima wajib diisi',
+                'phone_number.required' => 'Nomor telepon wajib diisi',
+                'full_address.required' => 'Alamat lengkap wajib diisi',
+                'city.required' => 'Kota wajib diisi',
+                'province.required' => 'Provinsi wajib diisi',
+            ]);
+
+            if ($validator->fails()) {
+                return back()
+                    ->withErrors($validator, 'address')
+                    ->withInput()
+                    ->with('address_error', true); // Untuk auto-open modal
+            }
+
+            try {
+                Address::create([
+                    'user_id' => Auth::id(),
+                    'recipient_name' => $request->recipient_name,
+                    'phone_number' => $request->phone_number,
+                    'full_address' => $request->full_address,
+                    'postal_code' => $request->postal_code,
+                    'city' => $request->city,
+                    'province' => $request->province,
+                ]);
+
+                return redirect()->to(route('user.profile') . '#address-section')->with('address_success', 'Alamat berhasil ditambahkan!');
+            } catch (\Exception $e) {
+                return back()->with('error', 'Gagal menambahkan alamat: ' . $e->getMessage());
+            }
+        }
+
+        /**
+         * Menghapus alamat
+         */
+        public function destroyAddress($address_id)
+        {
+            $address = Address::where('address_id', $address_id)->firstOrFail();
+            
+            // Pastikan alamat milik user yang login
+            if ($address->user_id !== Auth::id()) {
+                abort(403, 'Unauthorized action.');
+            }
+        
+            $address->delete();
+            
+            return back()->with('success', 'Alamat berhasil dihapus!');
+        }
 
 }

@@ -221,7 +221,7 @@
                         </div>
                     </div>
 
-                    <form class="flex gap-3 mb-6" action="#" method="POST">
+                    <form class="flex gap-3 mb-6" action="{{ route('booking.form') }}" method="POST">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->product_id }}">
                         <input type="hidden" name="quantity" id="quantityInput" value="1">

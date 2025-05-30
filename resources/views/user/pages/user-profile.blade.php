@@ -13,10 +13,6 @@
                     data-section="transactions-section">
                     <i data-lucide="history" class="inline w-4 h-4 mr-2"></i>Riwayat Transaksi
                 </button>
-                <button class="px-6 py-3 font-medium border-b-2 border-transparent section-tab hover:text-orange-500"
-                    data-section="wishlist-section">
-                    <i data-lucide="heart" class="inline w-4 h-4 mr-2"></i>Wishlist
-                </button>
 
                 <button class="px-6 py-3 font-medium border-b-2 border-transparent section-tab hover:text-orange-500"
                     data-section="address-section">
@@ -29,7 +25,7 @@
         <section id="profile-section" class="p-6 mb-8 rounded-lg shadow" style="background-image: url('https://images.unsplash.com/photo-1727580674761-3aae55f53cad?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8eW91am98ZW58MHx8MHx8fDA%3D'); background-size: cover; background-position: center;">
             <div class="flex flex-col items-center md:flex-row md:items-start">
                 <div class="relative mb-4 md:mb-0">
-                    <img src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : asset('images/default-profile.jpg') }}" alt="Profile Picture"  class="h-60 w-60">
+                    <img src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : asset('images      /default-profile.jpg') }}" alt="Profile Picture"  class="h-60 w-60">
 
                     <button
                         class="flex items-center justify-center px-4 py-2 mt-4 text-white bg-orange-500 rounded-lg w-60 hover:bg-orange-600">
@@ -311,81 +307,32 @@
             </div>
         </section>
 
-        <!-- Wishlist Section -->
-        <section id="wishlist-section" class="hidden p-6 mb-8 bg-white rounded-lg shadow">
-            <h2 class="flex items-center mb-6 text-xl font-bold">
-                <i data-lucide="heart" class="w-5 h-5 mr-2 text-orange-500"></i> Wishlist (5)
-            </h2>
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                <!-- Item 1 -->
-                <div class="overflow-hidden transition-shadow border rounded-lg hover:shadow-lg">
-                    <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80"
-                            alt="Meryl Lounge Chair" class="object-cover w-full h-48">
-                        <button
-                            class="absolute p-2 text-red-500 bg-white rounded-full shadow-md top-2 right-2 hover:bg-red-500 hover:text-white">
-                            <i data-lucide="heart" class="w-4 h-4"></i>
-                        </button>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="mb-1 text-lg font-semibold">Meryl Lounge Chair</h3>
-                        <div class="flex items-center mb-2">
-                            <div class="flex text-yellow-400">
-                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                            </div>
-                            <span class="ml-2 text-sm text-gray-500">(24)</span>
-                        </div>
-                        <p class="mb-3 text-lg font-bold text-orange-500">Rp200,000</p>
-                        <button
-                            class="flex items-center justify-center w-full py-2 text-white bg-orange-500 rounded-lg hover:bg-orange-600">
-                            <i data-lucide="shopping-cart" class="w-4 h-4 mr-1"></i> Beli
-                        </button>
-                    </div>
-                </div>
-                <!-- Item 2 -->
-                <div class="overflow-hidden transition-shadow border rounded-lg hover:shadow-lg">
-                    <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1600585152915-d208bec867a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80"
-                            alt="Sofa Minimalis" class="object-cover w-full h-48">
-                        <button
-                            class="absolute p-2 text-red-500 bg-white rounded-full shadow-md top-2 right-2 hover:bg-red-500 hover:text-white">
-                            <i data-lucide="heart" class="w-4 h-4"></i>
-                        </button>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="mb-1 text-lg font-semibold">Sofa Minimalis</h3>
-                        <div class="flex items-center mb-2">
-                            <div class="flex text-yellow-400">
-                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                            </div>
-                            <span class="ml-2 text-sm text-gray-500">(18)</span>
-                        </div>
-                        <p class="mb-3 text-lg font-bold text-orange-500">Rp1,500,000</p>
-                        <button
-                            class="flex items-center justify-center w-full py-2 text-white bg-orange-500 rounded-lg hover:bg-orange-600">
-                            <i data-lucide="shopping-cart" class="w-4 h-4 mr-1"></i> Beli
-                        </button>
-                    </div>
+        <!-- Address Management Section -->
+         @if(session('address_success'))
+            <div class="p-4 mb-6 text-green-800 bg-green-100 rounded-lg">
+                <div class="flex items-center">
+                    <i data-lucide="check-circle" class="w-5 h-5 mr-2"></i>
+                    {{ session('address_success') }}
                 </div>
             </div>
-        </section>
+        @endif
 
-        <!-- Address Management Section -->
+        @if(session('address_error'))
+            <div class="p-4 mb-6 text-red-800 bg-red-100 rounded-lg">
+                <div class="flex items-center">
+                    <i data-lucide="alert-circle" class="w-5 h-5 mr-2"></i>
+                    {{ session('address_error') }}
+                </div>
+            </div>
+        @endif
         <section id="address-section" class="hidden p-6 mt-8 bg-white rounded-lg shadow">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="flex items-center text-xl font-bold">
                     <i data-lucide="map-pin" class="w-5 h-5 mr-2 text-orange-500"></i> Daftar Alamat
                 </h2>
                 <button id="add-address-btn"
-                    class="flex items-center px-4 py-2 text-white bg-orange-500 rounded-lg hover:bg-orange-600">
+                    class="flex items-center px-4 py-2 text-white bg-orange-500 rounded-lg hover:bg-orange-600"
+                    onclick="switchTab('address-section')">
                     <i data-lucide="plus" class="w-4 h-4 mr-2"></i> Tambah Alamat
                 </button>
             </div>
@@ -399,81 +346,50 @@
             <h3 class="mb-4 text-lg font-semibold text-orange-500">Semua Alamat</h3>
 
             <div class="space-y-4">
-                <!-- Address Card 1 -->
-                <div class="p-4 transition-shadow border rounded-lg hover:shadow-md" data-address-id="1">
+                @forelse(Auth::user()->addresses as $address)
+                <div class="p-4 transition-shadow border rounded-lg hover:shadow-md" data-address-id="{{ $address->id }}">
                     <div class="flex items-start justify-between">
-                        <h4 class="font-semibold text-orange-500">Rumah</h4>
-                        <button class="edit-address-btn" data-index="0">
-                            <i data-lucide="edit" class="w-5 h-5 text-gray-400 cursor-pointer"></i>
-                        </button>
+                        <h4 class="font-semibold text-orange-500">{{ $address->label ?? 'Alamat' }}</h4>
+                        <div class="flex gap-2">
+                            <form action="{{ route('user.profile.address.destroy', ['address_id' => $address->address_id]) }}" method="POST" class="delete-address-form">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" class="delete-address-btn">
+                                    <i data-lucide="trash-2" class="w-5 h-5 text-gray-400 cursor-pointer hover:text-red-500"></i>
+                                </button>
+                            </form>
+                        </div>
                     </div>
-
+            
                     <div class="mt-2">
-                        <p class="font-semibold">Surya Nugraha</p>
-                        <p class="text-gray-500">62855659718873</p>
+                        <p class="font-semibold">{{ $address->recipient_name }}</p>  
+                        <p class="text-gray-500">{{ $address->phone_number }}</p>
                     </div>
-
-                    <p class="mt-2 text-gray-700">Kp. Pangadegan Girang No. 03 Rt/Rw 01/06 Desa Pegelaran Kec Pegelaran Kab
-                        Cianjur Jawabarat Indonesia 43266</p>
-
+            
+                    <p class="mt-2 text-gray-700">
+                        {{ $address->full_address }}, 
+                        {{ $address->city }}, 
+                        {{ $address->province }} 
+                        @if($address->postal_code)
+                            {{ $address->postal_code }}
+                        @endif
+                    </p>
+            
                     <div class="flex items-center mt-2">
                         <i data-lucide="map-pin" class="w-4 h-4 mr-1 text-orange-500"></i>
-                        <span class="text-sm text-orange-500">Sudah Pinpoint</span>
+                        <span class="text-sm text-orange-500">Alamat Utama</span>
                     </div>
-
-                    <button class="w-full py-2 mt-3 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50">
-                        Ubah Alamat
+            
+                    <button class="w-full py-2 mt-3 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 set-default-address" data-address-id="{{ $address->id }}">
+                        Jadikan Alamat Utama
                     </button>
                 </div>
-
-                <!-- Address Card 2 -->
-                <div class="p-4 transition-shadow border rounded-lg hover:shadow-md" data-address-id="2">
-                    <div class="flex items-start justify-between">
-                        <h4 class="font-semibold text-orange-500">Kos</h4>
-                        <button class="edit-address-btn" data-index="1">
-                            <i data-lucide="edit" class="w-5 h-5 text-gray-400 cursor-pointer"></i>
-                        </button>
-                    </div>
-
-                    <div class="mt-2">
-                        <p class="font-semibold">Surya Nugraha</p>
-                        <p class="text-gray-500">62855659718873</p>
-                    </div>
-
-                    <p class="mt-2 text-gray-700">Ciganitri Mukti V No.45 Rt06/Rw11 Desa. Cipagalo Kec. Bojongsong Kab.
-                        Bandung 40288</p>
-
-                    <div class="flex items-center mt-2">
-                        <i data-lucide="map-pin" class="w-4 h-4 mr-1 text-orange-500"></i>
-                        <span class="text-sm text-orange-500">Sudah Pinpoint</span>
-                    </div>
-
-                    <button class="w-full py-2 mt-3 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50">
-                        Ubah Alamat
-                    </button>
+                @empty
+                <div class="p-4 text-center text-gray-500 border border-dashed rounded-lg">
+                    <i data-lucide="map-pin-off" class="w-8 h-8 mx-auto mb-2 text-gray-400"></i>
+                    <p>Belum ada alamat yang tersimpan</p>
                 </div>
-
-                <!-- Address Card 3 -->
-                <div class="p-4 transition-shadow border rounded-lg hover:shadow-md" data-address-id="3">
-                    <div class="flex items-start justify-between">
-                        <h4 class="font-semibold text-orange-500">Rumah</h4>
-                        <button class="edit-address-btn" data-index="2">
-                            <i data-lucide="edit" class="w-5 h-5 text-gray-400 cursor-pointer"></i>
-                        </button>
-                    </div>
-
-                    <div class="mt-2">
-                        <p class="font-semibold">Alya Aulla</p>
-                        <p class="text-gray-500">628212465780</p>
-                    </div>
-
-                    <p class="mt-2 text-gray-700">Jl. A Makahanap G14 Komplek Dwikora, Perum Taman Galaksi, Halim Perdana
-                        Kusuma</p>
-
-                    <button class="w-full py-2 mt-3 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50">
-                        Ubah Alamat
-                    </button>
-                </div>
+                @endforelse
             </div>
         </section>
     </div>
@@ -683,47 +599,113 @@
     </div>
 
     <!-- Address Dialog -->
-    <div id="address-dialog"
-        class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-200 bg-black bg-opacity-50 opacity-0">
+    <div id="address-dialog" class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-200 bg-black bg-opacity-50 opacity-0">
         <div class="w-full max-w-md p-6 transition-transform duration-200 transform scale-95 bg-white rounded-lg">
             <div class="flex items-center justify-between mb-4">
-                <h3 id="dialog-title" class="text-lg font-semibold">Tambah Alamat</h3>
+                <h3 id="dialog-title" class="text-lg font-semibold">
+                    {{ isset($edit_address) ? 'Edit Alamat' : 'Tambah Alamat' }}
+                </h3>
                 <button id="close-dialog" class="text-gray-500 hover:text-gray-700">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
 
-            <form id="address-form">
+            <form id="address-form" method="POST" 
+                  action="{{ isset($edit_address) ? route('user.profile.address.update', $edit_address->id) : route('user.profile.address.store') }}">
+                @csrf
+                @if(isset($edit_address))
+                    @method('PUT')
+                @endif
+
                 <div class="grid gap-4 py-4">
+                    <!-- Nama Penerima -->
                     <div class="grid gap-2">
-                        <label for="name" class="text-sm font-medium">Nama</label>
-                        <!-- Form inputs -->
-                        <input id="name" name="name" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md" />
+                        <label for="recipient_name" class="text-sm font-medium">Nama Penerima*</label>
+                        <input id="recipient_name" name="recipient_name" required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md" 
+                            value="{{ old('recipient_name', $edit_address->recipient_name ?? '') }}"
+                            placeholder="Nama lengkap penerima"/>
+                        @error('recipient_name', 'address')
+                            <p class="text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
+
+                    <!-- Nomor Telepon -->
                     <div class="grid gap-2">
-                        <label for="phone" class="text-sm font-medium">Nomor Telepon</label>
-                        <input id="phone" name="phone" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md" />
+                        <label for="phone_number" class="text-sm font-medium">Nomor Telepon*</label>
+                        <input id="phone_number" name="phone_number" required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md"
+                            value="{{ old('phone_number', $edit_address->phone_number ?? '') }}"
+                            placeholder="Contoh: 081234567890"/>
+                        @error('phone_number', 'address')
+                            <p class="text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
+
+                    <!-- Provinsi -->
                     <div class="grid gap-2">
-                        <label for="address" class="text-sm font-medium">Alamat Lengkap</label>
-                        <textarea id="address" name="address" required rows="3"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md"></textarea>
+                        <label for="province" class="text-sm font-medium">Provinsi*</label>
+                        <input id="province" name="province" required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md"
+                            value="{{ old('province', $edit_address->province ?? '') }}"
+                            placeholder="Contoh: Jawa Barat"/>
+                        @error('province', 'address')
+                            <p class="text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
+
+                    <!-- Kota/Kabupaten -->
                     <div class="grid gap-2">
-                        <label for="label" class="text-sm font-medium">Label (Rumah/Kos)</label>
-                        <input id="label" name="label" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md" />
+                        <label for="city" class="text-sm font-medium">Kota/Kabupaten*</label>
+                        <input id="city" name="city" required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md"
+                            value="{{ old('city', $edit_address->city ?? '') }}"
+                            placeholder="Contoh: Bandung"/>
+                        @error('city', 'address')
+                            <p class="text-sm text-red-600">{{ $message }}</p>
+                        @enderror
                     </div>
+
+                    <!-- Kode Pos -->
+                    <div class="grid gap-2">
+                        <label for="postal_code" class="text-sm font-medium">Kode Pos</label>
+                        <input id="postal_code" name="postal_code"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md"
+                            value="{{ old('postal_code', $edit_address->postal_code ?? '') }}"
+                            placeholder="Contoh: 40132"/>
+                        @error('postal_code', 'address')
+                            <p class="text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Alamat Lengkap -->
+                    <div class="grid gap-2">
+                        <label for="full_address" class="text-sm font-medium">Alamat Lengkap*</label>
+                        <textarea id="full_address" name="full_address" required rows="3"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md" 
+                            placeholder="Contoh: Jl. Merdeka No. 10, RT 01/RW 02, Kec. Bandung Kulon">{{ old('full_address', $edit_address->full_address ?? '') }}</textarea>
+                        @error('full_address', 'address')
+                            <p class="text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Error Message -->
+                    @if ($errors->address->any())
+                        <div class="p-2 text-sm text-red-600 bg-red-100 rounded-md">
+                            @foreach ($errors->address->all() as $error)
+                                <p>{{ $error }}</p>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
+
                 <div class="flex justify-end gap-2">
                     <button type="button" id="cancel-btn"
                         class="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50">
                         Batal
                     </button>
                     <button type="submit" class="px-4 py-2 text-white bg-orange-500 rounded-md hover:bg-orange-600">
-                        Simpan
+                        {{ isset($edit_address) ? 'Update Alamat' : 'Simpan Alamat' }}
                     </button>
                 </div>
             </form>
@@ -1023,7 +1005,7 @@
                 setTimeout(() => {
                     profileDialog.classList.remove('opacity-0');
                     profileDialog.querySelector('.transform').classList.remove('scale-95');
-                    profileDialog.querySelector('.transform').classList.add('scale-100');
+                    profileDialog.querySelector('.transform').classList.add('scale-100');   
                 }, 10);
             }
 
@@ -1050,7 +1032,7 @@
             });
         });
 
-        //ini untuk buka modal tambah foto 
+        // Modal tambah foto profil
         document.addEventListener('DOMContentLoaded', function() {
             // Tombol Tambah Foto Profil
             const photoBtn = document.querySelector('.bg-orange-500.w-60');
@@ -1063,7 +1045,7 @@
             const photoPreview = document.getElementById('photo-preview');
 
             // Buka modal
-            photoBtn.addEventListener('click', () => {
+            photoBtn?.addEventListener('click', () => {
                 photoDialog.classList.remove('hidden');
                 setTimeout(() => {
                     photoDialog.classList.remove('opacity-0');
@@ -1078,11 +1060,11 @@
                 setTimeout(() => photoDialog.classList.add('hidden'), 200);
             }
 
-            closePhotoDialog.addEventListener('click', closePhotoModal);
-            cancelPhotoBtn.addEventListener('click', closePhotoModal);
+            closePhotoDialog?.addEventListener('click', closePhotoModal);
+            cancelPhotoBtn?.addEventListener('click', closePhotoModal);
 
             // Preview gambar
-            photoInput.addEventListener('change', function(e) {
+            photoInput?.addEventListener('change', function(e) {
                 if (e.target.files && e.target.files[0]) {
                     const reader = new FileReader();
                     reader.onload = function(event) {
@@ -1092,7 +1074,8 @@
                 }
             });
         });
-        //yang di bawah ini untuk modal ubah password
+
+        // Modal ubah password
         function togglePassword(id) {
             const input = document.getElementById(id);
             const icon = input.nextElementSibling.querySelector('.iconify');
@@ -1113,14 +1096,66 @@
         document.getElementById('closeModal')?.addEventListener('click', () => {
             document.getElementById('passwordModal').classList.add('hidden');
         });
+
         @if(session('password_error'))
-                document.getElementById('passwordModal').classList.remove('hidden');
+            document.getElementById('passwordModal').classList.remove('hidden');
         @endif
-    </script>
-    
-    <script>
+
+        // Modal alamat dan tab section
         document.addEventListener('DOMContentLoaded', function() {
-            // Get all tab buttons and sections
+            // ==================== Modal Alamat ====================
+            const addressDialog = document.getElementById('address-dialog');
+            const addAddressBtn = document.getElementById('add-address-btn');
+            const closeDialogBtn = document.getElementById('close-dialog');
+            const cancelBtn = document.getElementById('cancel-btn');
+            const addressForm = document.getElementById('address-form');
+
+            // Fungsi buka modal alamat
+            function openAddressDialog() {
+                addressDialog.classList.remove('hidden');
+                setTimeout(() => {
+                    addressDialog.classList.remove('opacity-0');
+                    addressDialog.querySelector('.transform').classList.remove('scale-95');
+                    addressDialog.querySelector('.transform').classList.add('scale-100');
+                }, 10);
+            }
+        
+            // Fungsi tutup modal alamat
+            function closeAddressDialog() {
+                addressDialog.classList.add('opacity-0');
+                addressDialog.querySelector('.transform').classList.remove('scale-100');
+                addressDialog.querySelector('.transform').classList.add('scale-95');
+                setTimeout(() => {
+                    addressDialog.classList.add('hidden');
+                }, 200);
+            }
+
+            // Event listeners untuk modal alamat
+            if (addAddressBtn) {
+                addAddressBtn.addEventListener('click', function() {
+                    // Reset form dan set ke mode tambah
+                    if (addressForm) {
+                        addressForm.reset();
+                        addressForm.action = "{{ route('user.profile.address.store') }}";
+                        const methodInput = addressForm.querySelector('input[name="_method"]');
+                        if (methodInput) methodInput.value = 'POST';
+                        document.getElementById('dialog-title').textContent = 'Tambah Alamat';
+                    }
+                    openAddressDialog();
+                });
+            }
+
+            closeDialogBtn?.addEventListener('click', closeAddressDialog);
+            cancelBtn?.addEventListener('click', closeAddressDialog);
+        
+            // Tutup modal ketika klik di luar
+            addressDialog?.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeAddressDialog();
+                }
+            });
+
+            // ==================== Tab Section ====================
             const tabButtons = document.querySelectorAll('.section-tab');
             const sections = document.querySelectorAll('section[id$="-section"]');
 
@@ -1145,6 +1180,9 @@
                     activeTab.classList.add('active', 'border-orange-500', 'text-orange-500');
                     activeTab.classList.remove('border-transparent');
                     activeSection.classList.remove('hidden');
+
+                    // Update URL hash untuk tetap di section setelah refresh
+                    window.location.hash = targetSection;
                 }
             }
 
@@ -1156,9 +1194,62 @@
                 });
             });
 
-            // Show profile section by default
-            const defaultSection = 'profile-section';
-            switchTab(defaultSection);
+            // Buka section sesuai hash URL (untuk tetap di section alamat setelah submit)
+            if (window.location.hash) {
+                const targetSection = window.location.hash.substring(1);
+                const targetTab = document.querySelector(`[data-section="${targetSection}"]`);
+
+                if (targetTab) {
+                    switchTab(targetSection);
+
+                    // Auto-scroll ke section setelah beberapa milidetik
+                    setTimeout(() => {
+                        const section = document.getElementById(targetSection);
+                        if (section) {
+                            section.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }, 100);
+                }
+            } else {
+                // Show profile section by default
+                switchTab('profile-section');
+            }
+
+            // ==================== Form Submission Handling ====================
+            if (addressForm) {
+                addressForm.addEventListener('submit', function(e) {
+                    // Anda bisa tambahkan loading spinner atau validasi tambahan di sini
+                    // Contoh:
+                    const submitBtn = this.querySelector('button[type="submit"]');
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = '<span class="flex items-center justify-center"><i data-lucide="loader-2" class="w-4 h-4 mr-2 animate-spin"></i> Memproses...</span>';
+                    }
+
+                    // Set timeout untuk auto-close modal setelah submit
+                    setTimeout(closeAddressDialog, 500);
+                });
+            }
+
+            // ==================== Delete Address Confirmation ====================
+            document.querySelectorAll('.delete-address-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (confirm('Apakah Anda yakin ingin menghapus alamat ini?')) {
+                        // Tampilkan loading
+                        this.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i>';
+
+                        // Submit form
+                        this.closest('form').submit();
+                    }
+                });
+            });
+        });
+
+        // Inisialisasi Lucide Icons setelah konten dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.lucide) {
+                lucide.createIcons();
+            }
         });
     </script>
 @endsection
