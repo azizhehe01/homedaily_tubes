@@ -6,8 +6,28 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    protected $table =  'orders';
-    protected $fillable =  ['user_id','product_id','quantity','total_price','payment_method','order_status','order_date'];
+    protected $primaryKey = 'order_id';
+    public $incrementing = false;
+    protected $keyType = 'string';
+
+    protected $fillable = [
+        'order_id',
+        'user_id',
+        'product_id',
+        'quantity',
+        'total_price',
+        'midtrans_transaction_id',
+        'midtrans_status_code',
+        'midtrans_fraud_status',
+        'payment_type',
+        'va_number',
+        'bank',
+        'currency',
+        'transaction_time',
+        'payment_method',
+        'order_status',
+        'order_date'
+    ];
 
     public function users()
     {

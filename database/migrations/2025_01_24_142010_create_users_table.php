@@ -18,9 +18,8 @@ return new class extends Migration
             $table->string('password', 255)->nullable()->comment('Password will be null if user signs up with Google');
             $table->string('google_id', 255)->nullable()->comment('Google authentication ID, used when signing in with Google');
             $table->string('phone_number', 15)->nullable();
-            $table->text('address')->nullable();
             $table->string('profile_picture', 255)->nullable();
-            $table->enum('role', ['user', 'admin','admin_jasa'])->default('user'); //default nya user ya
+            $table->enum('role', ['user', 'admin', 'admin_jasa'])->default('user'); //default nya user ya
             $table->timestamps();
         });
     }

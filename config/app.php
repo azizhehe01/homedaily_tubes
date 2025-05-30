@@ -62,6 +62,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         \Laravel\Sanctum\SanctumServiceProvider::class,
+        App\Providers\RouteServiceProvider::class,
     ],
 
     'aliases' => [

@@ -37,9 +37,9 @@ class AuthController extends Controller
             }
 
             return redirect()
-                    ->back()
-                    ->withErrors($validator)
-                    ->withInput();
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
         $user = User::create([
@@ -69,7 +69,7 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json([
                 'status' => false,
@@ -77,9 +77,9 @@ class AuthController extends Controller
                 'errors' => $validator->errors()
             ], 422);
         }
-    
+
         $user = User::where('email', $request->email)->first();
-    
+
         // Cek apakah user ada dan bukan Google user
         if (!$user || $user->google_id) {
             return response()->json([
@@ -87,16 +87,16 @@ class AuthController extends Controller
                 'message' => 'Invalid credentials or Google account',
             ], 401);
         }
-    
+
         if (!Auth::attempt($request->only('email', 'password'))) {
             return response()->json([
                 'status' => false,
                 'message' => 'Invalid credentials',
             ], 401);
         }
-    
+
         $token = $user->createToken('auth_token')->plainTextToken;
-    
+
         // Jika request API (JSON)
         if ($request->wantsJson()) {
             return response()->json([
@@ -107,16 +107,15 @@ class AuthController extends Controller
                 'redirect' => $this->getRedirectRoute($user->role)
             ], 200);
         }
-    
+
         // Jika request web (browser)
         return redirect()->route($this->getRedirectRoute($user->role));
-
     }
-    
+
     // Method baru untuk menentukan redirect route
     protected function getRedirectRoute(string $role): string
     {
-        return match($role) {
+        return match ($role) {
             'admin' => 'admin.dashboard',
             'admin_jasa' => 'admin_jasa.dashboard',
             default => 'user.index'

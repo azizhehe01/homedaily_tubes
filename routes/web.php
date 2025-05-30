@@ -13,18 +13,25 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\User\UserProfileController;
+use App\Http\Controllers\MidtransNotificationController;
 
 
+Route::get('/test-midtrans', [BookingController::class, 'testMidtransConfig']);
+//Midtrans Notification Routes
+Route::post('payments/midtrans-notification', [MidtransNotificationController::class, 'receive']);
 
-//User Routes
-
-
+// Booking Route
 Route::middleware(['auth'])->group(function () {
+    // Existing routes
     Route::get('/booking', [BookingController::class, 'showBookingForm'])->name('booking.form');
+    Route::post('/booking/create', [BookingController::class, 'createBooking'])->name('booking.create'); // Add this new route
     Route::post('/booking/address', [BookingController::class, 'storeAddress'])->name('booking.address.store');
     Route::get('/booking/address/edit', [BookingController::class, 'editAddress'])->name('booking.address.edit');
     Route::put('/booking/address', [BookingController::class, 'updateAddress'])->name('booking.address.update');
     Route::post('/booking/process', [BookingController::class, 'processBooking'])->name('booking.process');
+    Route::get('/order/success', [OrderController::class, 'success'])->name('order.success');
+    Route::get('/order/pending', [OrderController::class, 'pending'])->name('order.pending');
+    Route::get('/order/failed', [OrderController::class, 'failed'])->name('order.failed');
 });
 
 Route::get('/profile', [UserProfileController::class, 'index'])->name('user.profile');
