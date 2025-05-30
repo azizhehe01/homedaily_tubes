@@ -237,9 +237,4 @@
             </div>
         </div>
     </section>
-<<<<<<< Updated upstream
-    @endsection
-
-=======
 @endsection
->>>>>>> Stashed changes
