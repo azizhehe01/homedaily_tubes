@@ -29,13 +29,13 @@ class Order extends Model
         'order_date'
     ];
 
-    public function users()
-    {
-        return $this->belongsTo(User::class);
-    }
-
     public function products()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class, 'product_id', 'product_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 }
