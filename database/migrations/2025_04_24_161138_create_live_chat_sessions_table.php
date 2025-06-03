@@ -21,7 +21,6 @@ return new class extends Migration
 
             // kaga ussah jelasin  lagi tau  lah yangh  di bawah ubntuk apa
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
-            $table->foreign('admin_id')->references('user_id')->on('users')->onDelete('set null');
         });
     }
 
