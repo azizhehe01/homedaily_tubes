@@ -29,6 +29,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/booking/address/edit', [BookingController::class, 'editAddress'])->name('booking.address.edit');
     Route::put('/booking/address', [BookingController::class, 'updateAddress'])->name('booking.address.update');
     Route::post('/booking/process', [BookingController::class, 'processBooking'])->name('booking.process');
+    Route::get('/orders', [BookingController::class, 'getOrders'])->name('user.orders');
+    Route::post('/order/{orderId}/update-status', [BookingController::class, 'updateStatus'])
+        ->name('order.update-status')
+        ->withoutMiddleware(['csrf']);
     Route::get('/order/success', [OrderController::class, 'success'])->name('order.success');
     Route::get('/order/pending', [OrderController::class, 'pending'])->name('order.pending');
     Route::get('/order/failed', [OrderController::class, 'failed'])->name('order.failed');
@@ -127,7 +131,7 @@ Route::prefix('user')->middleware('auth')->group(function () {
     Route::put('/profile', [UserProfileController::class, 'update'])->name('user.profile.update');
     Route::put('/profile/photo', [UserProfileController::class, 'updatePhoto'])->name('user.profile.photo.update');
     Route::put('/profile/password', [UserProfileController::class, 'updatePassword'])->name('user.profile.password.update');
-    //ini  bagian dari alama yang di bawah  ini ya kocak            
+    //ini  bagian dari alama yang di bawah  ini ya kocak
     Route::post('/profile/address', [UserProfileController::class, 'storeAddress'])->name('user.profile.address.store');
     Route::put('/profile/address/{address}', [UserProfileController::class, 'updateAddress'])->name('user.profile.address.update');
     Route::delete('/profile/address/{address_id}', [UserProfileController::class, 'destroyAddress'])->name('user.profile.address.destroy');

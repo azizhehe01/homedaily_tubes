@@ -22,19 +22,20 @@
         </div>
 
         <!-- Profile Section -->
-        <section id="profile-section" class="p-6 mb-8 rounded-lg shadow" style="background-image: url('https://images.unsplash.com/photo-1727580674761-3aae55f53cad?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8eW91am98ZW58MHx8MHx8fDA%3D'); background-size: cover; background-position: center;">
+        <section id="profile-section" class="p-6 mb-8 rounded-lg shadow"
+            style="background-image: url('https://images.unsplash.com/photo-1727580674761-3aae55f53cad?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8eW91am98ZW58MHx8MHx8fDA%3D'); background-size: cover; background-position: center;">
             <div class="flex flex-col items-center md:flex-row md:items-start">
                 <div class="relative mb-4 md:mb-0">
-                    <img src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : asset('images      /default-profile.jpg') }}" alt="Profile Picture"  class="h-60 w-60">
+                    <img src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : asset('images      /default-profile.jpg') }}"
+                        alt="Profile Picture" class="h-60 w-60">
 
                     <button
                         class="flex items-center justify-center px-4 py-2 mt-4 text-white bg-orange-500 rounded-lg w-60 hover:bg-orange-600">
                         <i data-lucide="pencil" class="w-4 h-4 mr-2"></i>
                         Tambah Foto Profil
                     </button>
-                    <button
-                        id="ubahPasswordBtn"
-                        class="flex items-center justify-center px-4 py-2 mt-4 text-white bg-orange-500 rounded-lg w-60 hover:bg-orange-600 transition-colors">
+                    <button id="ubahPasswordBtn"
+                        class="flex items-center justify-center px-4 py-2 mt-4 text-white transition-colors bg-orange-500 rounded-lg w-60 hover:bg-orange-600">
                         <i data-lucide="pencil" class="w-4 h-4 mr-2"></i>
                         Ubah Kata Sandi
                     </button>
@@ -47,19 +48,20 @@
                                 <div class="flex flex-col">
                                     <label class="text-sm text-gray-500">Nama Lengkap</label>
                                     <p class="text-base font-medium text-gray-700">
-                                        {{ Auth::user()->name }}  <!-- Ambil nama user -->
+                                        {{ Auth::user()->name }} <!-- Ambil nama user -->
                                     </p>
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-sm text-gray-500">Nomor Telepon</label>
                                     <p class="text-base font-medium text-gray-700">
-                                        {{ Auth::user()->phone_number ?? ' kaga  ada no telp kocak 😭' }}  <!-- Nomor telepon (jika ada) -->
+                                        {{ Auth::user()->phone_number ?? ' kaga  ada no telp kocak 😭' }}
+                                        <!-- Nomor telepon (jika ada) -->
                                     </p>
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-sm text-gray-500">Email</label>
                                     <p class="text-base font-medium text-gray-700">
-                                        {{ Auth::user()->email }}  <!-- Email user -->
+                                        {{ Auth::user()->email }} <!-- Email user -->
                                     </p>
                                 </div>
                             </div>
@@ -169,146 +171,50 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
-                        <!-- Produk Transactions -->
-                        <tr class="transition-colors hover:bg-gray-50" data-status="completed" data-type="product">
-                            <td class="px-4 py-3 font-medium">#12345</td>
-                            <td class="px-4 py-3">15 Mei 2025</td>
-                            <td class="flex items-center px-4 py-3">
-                                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=40&h=40&q=80"
-                                    alt="Meryl Lounge Chair" class="object-cover w-10 h-10 mr-3 rounded-lg">
-                                <div>
-                                    <p>Meryl Lounge Chair</p>
-                                    <span class="text-xs text-gray-500">Produk</span>
-                                </div>
-                            </td>
-                            <td class="px-4 py-3">1</td>
-                            <td class="px-4 py-3 font-medium">Rp200,000</td>
-                            <td class="px-4 py-3">
-                                <span
-                                    class="flex items-center px-2 py-1 text-xs text-green-800 bg-green-100 rounded-full w-fit">
-                                    <i data-lucide="check-circle" class="w-3 h-3 mr-1"></i> Selesai
-                                </span>
-                            </td>
-                            <td class="relative px-4 py-3">
-                                <button
-                                    class="block w-full px-4 py-2 text-sm text-left text-gray-700 view-tracking-btn hover:bg-gray-100">
-                                    <i data-lucide="eye" class="inline w-4 h-4 mr-2"></i> Lihat Detail
-                                </button>
-                            </td>
-                        </tr>
-                        <tr class="transition-colors hover:bg-gray-50" data-status="shipping" data-type="product">
-                            <td class="px-4 py-3 font-medium">#12346</td>
-                            <td class="px-4 py-3">10 Mei 2025</td>
-                            <td class="flex items-center px-4 py-3">
-                                <img src="https://images.unsplash.com/photo-1600585152915-d208bec867a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=40&h=40&q=80"
-                                    alt="Sofa Minimalis" class="object-cover w-10 h-10 mr-3 rounded-lg">
-                                <div>
-                                    <p>Sofa Minimalis</p>
-                                    <span class="text-xs text-gray-500">Produk</span>
-                                </div>
-                            </td>
-                            <td class="px-4 py-3">1</td>
-                            <td class="px-4 py-3 font-medium">Rp1,500,000</td>
-                            <td class="px-4 py-3">
-                                <span
-                                    class="flex items-center px-2 py-1 text-xs text-yellow-800 bg-yellow-100 rounded-full w-fit">
-                                    <i data-lucide="truck" class="w-3 h-3 mr-1"></i> Dikirim
-                                </span>
-                            </td>
-                            <td class="relative px-4 py-3">
-                                <button
-                                    class="block w-full px-4 py-2 text-sm text-left text-gray-700 view-tracking-btn hover:bg-gray-100">
-                                    <i data-lucide="eye" class="inline w-4 h-4 mr-2"></i> Lihat Detail
-                                </button>
-                            </td>
-                        </tr>
-                        <tr class="transition-colors hover:bg-gray-50" data-status="packing" data-type="product">
-                            <td class="px-4 py-3 font-medium">#12347</td>
-                            <td class="px-4 py-3">8 Mei 2025</td>
-                            <td class="flex items-center px-4 py-3">
-                                <img src="https://images.unsplash.com/photo-1542372147193-a7aca54189cd?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                    alt="Coffee Table" class="object-cover w-10 h-10 mr-3 rounded-lg">
-                                <div>
-                                    <p>Coffee Table</p>
-                                    <span class="text-xs text-gray-500">Produk</span>
-                                </div>
-                            </td>
-                            <td class="px-4 py-3">2</td>
-                            <td class="px-4 py-3 font-medium">Rp750,000</td>
-                            <td class="px-4 py-3">
-                                <span
-                                    class="flex items-center px-2 py-1 text-xs text-blue-800 bg-blue-100 rounded-full w-fit">
-                                    <i data-lucide="package" class="w-3 h-3 mr-1"></i> Sedang Dikemas
-                                </span>
-                            </td>
-                            <td class="relative px-4 py-3">
-                                <button
-                                    class="block w-full px-4 py-2 text-sm text-left text-gray-700 view-tracking-btn hover:bg-gray-100">
-                                    <i data-lucide="eye" class="inline w-4 h-4 mr-2"></i> Lihat Detail
-                                </button>
-                            </td>
-                        </tr>
-
-                        <!-- Service Transactions -->
-                        <tr class="transition-colors hover:bg-gray-50" data-status="completed" data-type="service">
-                            <td class="px-4 py-3 font-medium">#S12349</td>
-                            <td class="px-4 py-3">18 Mei 2025</td>
-                            <td class="flex items-center px-4 py-3">
-                                <img src="https://images.unsplash.com/photo-1581783898377-1c85bf937427?ixlib=rb-4.0.3&auto=format&fit=crop&w=40&h=40&q=80"
-                                    alt="Pemasangan AC" class="object-cover w-10 h-10 mr-3 rounded-lg">
-                                <div>
-                                    <p>Pemasangan AC</p>
-                                    <span class="text-xs text-gray-500">Jasa</span>
-                                </div>
-                            </td>
-                            <td class="px-4 py-3">1</td>
-                            <td class="px-4 py-3 font-medium">Rp350,000</td>
-                            <td class="px-4 py-3">
-                                <span
-                                    class="flex items-center px-2 py-1 text-xs text-green-800 bg-green-100 rounded-full w-fit">
-                                    <i data-lucide="check-circle" class="w-3 h-3 mr-1"></i> Selesai
-                                </span>
-                            </td>
-                            <td class="relative px-4 py-3">
-                                <button
-                                    class="block w-full px-4 py-2 text-sm text-left text-gray-700 view-tracking-btn hover:bg-gray-100">
-                                    <i data-lucide="eye" class="inline w-4 h-4 mr-2"></i> Lihat Detail
-                                </button>
-                            </td>
-                        </tr>
-                        <tr class="transition-colors hover:bg-gray-50" data-status="scheduled" data-type="service">
-                            <td class="px-4 py-3 font-medium">#S12350</td>
-                            <td class="px-4 py-3">20 Mei 2025</td>
-                            <td class="flex items-center px-4 py-3">
-                                <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=40&h=40&q=80"
-                                    alt="Pembersihan Sofa" class="object-cover w-10 h-10 mr-3 rounded-lg">
-                                <div>
-                                    <p>Pembersihan Sofa</p>
-                                    <span class="text-xs text-gray-500">Jasa</span>
-                                </div>
-                            </td>
-                            <td class="px-4 py-3">1</td>
-                            <td class="px-4 py-3 font-medium">Rp250,000</td>
-                            <td class="px-4 py-3">
-                                <span
-                                    class="flex items-center px-2 py-1 text-xs text-indigo-800 bg-indigo-100 rounded-full w-fit">
-                                    <i data-lucide="calendar" class="w-3 h-3 mr-1"></i> Terjadwal
-                                </span>
-                            </td>
-                            <td class="relative px-4 py-3">
-                                <button
-                                    class="block w-full px-4 py-2 text-sm text-left text-gray-700 view-tracking-btn hover:bg-gray-100">
-                                    <i data-lucide="eye" class="inline w-4 h-4 mr-2"></i> Lihat Detail
-                                </button>
-                            </td>
-                        </tr>
+                        @forelse($orders as $order)
+                            <tr class="transition-colors hover:bg-gray-50">
+                                <td class="px-4 py-3 font-medium">{{ $order['order_id'] }}</td>
+                                <td class="px-4 py-3">{{ $order['date'] }}</td>
+                                <td class="flex items-center px-4 py-3">
+                                    <img src="{{ asset('storage/' . $order['product']['image']) }}"
+                                        alt="{{ $order['product']['name'] }}"
+                                        class="object-cover w-10 h-10 mr-3 rounded-lg">
+                                    <div>
+                                        <p>{{ $order['product']['name'] }}</p>
+                                        <span class="text-xs text-gray-500">{{ $order['product']['type'] }}</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3">{{ $order['quantity'] }}</td>
+                                <td class="px-4 py-3 font-medium">Rp
+                                    {{ number_format($order['total_price'], 0, ',', '.') }}</td>
+                                <td class="px-4 py-3">
+                                    <span
+                                        class="flex items-center px-2 py-1 text-xs rounded-full w-fit {{ $order['status']['class'] }}">
+                                        <i data-lucide="{{ $order['status']['icon'] }}" class="w-3 h-3 mr-1"></i>
+                                        {{ $order['status']['text'] }}
+                                    </span>
+                                </td>
+                                <td class="relative px-4 py-3">
+                                    <button
+                                        class="block w-full px-4 py-2 text-sm text-left text-gray-700 view-tracking-btn hover:bg-gray-100">
+                                        <i data-lucide="eye" class="inline w-4 h-4 mr-2"></i> Lihat Detail
+                                    </button>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="px-4 py-3 text-center text-gray-500">
+                                    Tidak ada pesanan
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
         </section>
 
         <!-- Address Management Section -->
-         @if(session('address_success'))
+        @if (session('address_success'))
             <div class="p-4 mb-6 text-green-800 bg-green-100 rounded-lg">
                 <div class="flex items-center">
                     <i data-lucide="check-circle" class="w-5 h-5 mr-2"></i>
@@ -317,7 +223,7 @@
             </div>
         @endif
 
-        @if(session('address_error'))
+        @if (session('address_error'))
             <div class="p-4 mb-6 text-red-800 bg-red-100 rounded-lg">
                 <div class="flex items-center">
                     <i data-lucide="alert-circle" class="w-5 h-5 mr-2"></i>
@@ -347,48 +253,54 @@
 
             <div class="space-y-4">
                 @forelse(Auth::user()->addresses as $address)
-                <div class="p-4 transition-shadow border rounded-lg hover:shadow-md" data-address-id="{{ $address->id }}">
-                    <div class="flex items-start justify-between">
-                        <h4 class="font-semibold text-orange-500">{{ $address->label ?? 'Alamat' }}</h4>
-                        <div class="flex gap-2">
-                            <form action="{{ route('user.profile.address.destroy', ['address_id' => $address->address_id]) }}" method="POST" class="delete-address-form">
-                                @csrf
-                                @method('DELETE')
-                                <button type="button" class="delete-address-btn">
-                                    <i data-lucide="trash-2" class="w-5 h-5 text-gray-400 cursor-pointer hover:text-red-500"></i>
-                                </button>
-                            </form>
+                    <div class="p-4 transition-shadow border rounded-lg hover:shadow-md"
+                        data-address-id="{{ $address->id }}">
+                        <div class="flex items-start justify-between">
+                            <h4 class="font-semibold text-orange-500">{{ $address->label ?? 'Alamat' }}</h4>
+                            <div class="flex gap-2">
+                                <form
+                                    action="{{ route('user.profile.address.destroy', ['address_id' => $address->address_id]) }}"
+                                    method="POST" class="delete-address-form">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="button" class="delete-address-btn">
+                                        <i data-lucide="trash-2"
+                                            class="w-5 h-5 text-gray-400 cursor-pointer hover:text-red-500"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </div>
+
+                        <div class="mt-2">
+                            <p class="font-semibold">{{ $address->recipient_name }}</p>
+                            <p class="text-gray-500">{{ $address->phone_number }}</p>
+                        </div>
+
+                        <p class="mt-2 text-gray-700">
+                            {{ $address->full_address }},
+                            {{ $address->city }},
+                            {{ $address->province }}
+                            @if ($address->postal_code)
+                                {{ $address->postal_code }}
+                            @endif
+                        </p>
+
+                        <div class="flex items-center mt-2">
+                            <i data-lucide="map-pin" class="w-4 h-4 mr-1 text-orange-500"></i>
+                            <span class="text-sm text-orange-500">Alamat Utama</span>
+                        </div>
+
+                        <button
+                            class="w-full py-2 mt-3 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 set-default-address"
+                            data-address-id="{{ $address->id }}">
+                            Jadikan Alamat Utama
+                        </button>
                     </div>
-            
-                    <div class="mt-2">
-                        <p class="font-semibold">{{ $address->recipient_name }}</p>  
-                        <p class="text-gray-500">{{ $address->phone_number }}</p>
-                    </div>
-            
-                    <p class="mt-2 text-gray-700">
-                        {{ $address->full_address }}, 
-                        {{ $address->city }}, 
-                        {{ $address->province }} 
-                        @if($address->postal_code)
-                            {{ $address->postal_code }}
-                        @endif
-                    </p>
-            
-                    <div class="flex items-center mt-2">
-                        <i data-lucide="map-pin" class="w-4 h-4 mr-1 text-orange-500"></i>
-                        <span class="text-sm text-orange-500">Alamat Utama</span>
-                    </div>
-            
-                    <button class="w-full py-2 mt-3 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 set-default-address" data-address-id="{{ $address->id }}">
-                        Jadikan Alamat Utama
-                    </button>
-                </div>
                 @empty
-                <div class="p-4 text-center text-gray-500 border border-dashed rounded-lg">
-                    <i data-lucide="map-pin-off" class="w-8 h-8 mx-auto mb-2 text-gray-400"></i>
-                    <p>Belum ada alamat yang tersimpan</p>
-                </div>
+                    <div class="p-4 text-center text-gray-500 border border-dashed rounded-lg">
+                        <i data-lucide="map-pin-off" class="w-8 h-8 mx-auto mb-2 text-gray-400"></i>
+                        <p>Belum ada alamat yang tersimpan</p>
+                    </div>
                 @endforelse
             </div>
         </section>
@@ -414,13 +326,13 @@
                     <div class="grid gap-2">
                         <label for="profile-name" class="text-sm font-medium">Nama Lengkap</label>
                         <input id="profile-name" name="name" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md"
                             value="{{ Auth::user()->name }}" />
                     </div>
                     <div class="grid gap-2">
                         <label for="profile-phone" class="text-sm font-medium">Nomor Telepon</label>
                         <input id="profile-phone" name="phone_number" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md"
                             value="{{ Auth::user()->phone_number }}" />
                     </div>
                     <div class="grid gap-2">
@@ -454,30 +366,27 @@
                 </button>
             </div>
 
-            <form id="photo-form" method="POST" action="{{ route('user.profile.photo.update') }}" enctype="multipart/form-data">
+            <form id="photo-form" method="POST" action="{{ route('user.profile.photo.update') }}"
+                enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                
+
                 <div class="grid gap-4 py-4">
                     <div class="flex flex-col items-center justify-center gap-4">
                         <!-- Foto Preview -->
                         <div class="relative w-32 h-32 overflow-hidden bg-gray-100 rounded-full">
-                            <img id="photo-preview" src="{{ Auth::user()->avatar ? asset('storage/profiles/'.Auth::user()->avatar) : 'https://via.placeholder.com/128' }}" 
+                            <img id="photo-preview"
+                                src="{{ Auth::user()->avatar ? asset('storage/profiles/' . Auth::user()->avatar) : 'https://via.placeholder.com/128' }}"
                                 class="object-cover w-full h-full" alt="Profile Preview">
                         </div>
 
                         <!-- File Input -->
                         <div class="w-full">
-                            <label for="profile-photo" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="profile-photo" class="block mb-2 text-sm font-medium text-gray-700">
                                 Pilih Foto Baru
                             </label>
                             <input type="file" id="profile-photo" name="avatar" accept="image/*"
-                                class="block w-full text-sm text-gray-500
-                                    file:mr-4 file:py-2 file:px-4
-                                    file:rounded-md file:border-0
-                                    file:text-sm file:font-semibold
-                                    file:bg-orange-50 file:text-orange-700
-                                    hover:file:bg-orange-100">
+                                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100">
                         </div>
 
                         <!-- Informasi -->
@@ -498,13 +407,13 @@
             </form>
         </div>
     </div>
-    
-    <div id="passwordModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden">
+
+    <div id="passwordModal" class="fixed inset-0 z-50 flex items-center justify-center hidden p-4 bg-black/50">
+        <div class="w-full max-w-md overflow-hidden bg-white shadow-xl rounded-xl">
             <!-- Header -->
-            <div class="flex justify-between items-center p-6 border-b">
+            <div class="flex items-center justify-between p-6 border-b">
                 <h3 class="text-xl font-bold text-gray-800">Ganti Password</h3>
-                <button id="closeModal" type="button" class="text-gray-400 hover:text-gray-600 transition-colors">
+                <button id="closeModal" type="button" class="text-gray-400 transition-colors hover:text-gray-600">
                     <span class="iconify" data-icon="mdi:close"></span>
                 </button>
             </div>
@@ -528,17 +437,11 @@
                     <div class="space-y-2">
                         <label for="current_password" class="block text-gray-700">Password Sekarang</label>
                         <div class="relative">
-                            <input 
-                                id="current_password"
-                                name="current_password"
-                                type="password" 
+                            <input id="current_password" name="current_password" type="password"
                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
-                                placeholder="Masukkan password saat ini"
-                                autofocus >
-                            <button 
-                                type="button"
-                                onclick="togglePassword('current_password')"
-                                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                placeholder="Masukkan password saat ini" autofocus>
+                            <button type="button" onclick="togglePassword('current_password')"
+                                class="absolute text-gray-400 transform -translate-y-1/2 right-3 top-1/2 hover:text-gray-600">
                                 <span class="iconify" data-icon="mdi:eye"></span>
                             </button>
                         </div>
@@ -548,17 +451,12 @@
                     <div class="space-y-2">
                         <label for="new_password" class="block text-gray-700">Password Baru</label>
                         <div class="relative">
-                            <input 
-                                id="new_password"
-                                name="new_password"
-                                type="password" 
+                            <input id="new_password" name="new_password" type="password"
                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                                 placeholder="Password minimal 8 karakter"
                                 title="Minimal 8 karakter, mengandung huruf dan angka">
-                            <button 
-                                type="button"
-                                onclick="togglePassword('new_password')"
-                                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                            <button type="button" onclick="togglePassword('new_password')"
+                                class="absolute text-gray-400 transform -translate-y-1/2 right-3 top-1/2 hover:text-gray-600">
                                 <span class="iconify" data-icon="mdi:eye"></span>
                             </button>
                         </div>
@@ -568,16 +466,11 @@
                     <div class="space-y-2">
                         <label for="confirm_password" class="block text-gray-700">Konfirmasi Password</label>
                         <div class="relative">
-                            <input 
-                                id="confirm_password"
-                                name="confirm_password"
-                                type="password" 
+                            <input id="confirm_password" name="confirm_password" type="password"
                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                                 placeholder="Ketik ulang password baru">
-                            <button 
-                                type="button"
-                                onclick="togglePassword('confirm_password')"
-                                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                            <button type="button" onclick="togglePassword('confirm_password')"
+                                class="absolute text-gray-400 transform -translate-y-1/2 right-3 top-1/2 hover:text-gray-600">
                                 <span class="iconify" data-icon="mdi:eye"></span>
                             </button>
                         </div>
@@ -586,11 +479,12 @@
 
                 <!-- Footer -->
                 <div class="flex justify-end gap-3 p-6 border-t bg-gray-50">
-                    <button type="button" onclick="document.getElementById('passwordModal').classList.add('hidden')" 
-                        class="px-5 py-2 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
+                    <button type="button" onclick="document.getElementById('passwordModal').classList.add('hidden')"
+                        class="px-5 py-2 text-gray-700 transition-colors rounded-lg hover:bg-gray-100">
                         Batal
                     </button>
-                    <button type="submit" class="px-5 py-2 text-white bg-orange-500 rounded-lg hover:bg-orange-600 transition-colors">
+                    <button type="submit"
+                        class="px-5 py-2 text-white transition-colors bg-orange-500 rounded-lg hover:bg-orange-600">
                         Simpan Perubahan
                     </button>
                 </div>
@@ -599,7 +493,8 @@
     </div>
 
     <!-- Address Dialog -->
-    <div id="address-dialog" class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-200 bg-black bg-opacity-50 opacity-0">
+    <div id="address-dialog"
+        class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-200 bg-black bg-opacity-50 opacity-0">
         <div class="w-full max-w-md p-6 transition-transform duration-200 transform scale-95 bg-white rounded-lg">
             <div class="flex items-center justify-between mb-4">
                 <h3 id="dialog-title" class="text-lg font-semibold">
@@ -610,10 +505,10 @@
                 </button>
             </div>
 
-            <form id="address-form" method="POST" 
-                  action="{{ isset($edit_address) ? route('user.profile.address.update', $edit_address->id) : route('user.profile.address.store') }}">
+            <form id="address-form" method="POST"
+                action="{{ isset($edit_address) ? route('user.profile.address.update', $edit_address->id) : route('user.profile.address.store') }}">
                 @csrf
-                @if(isset($edit_address))
+                @if (isset($edit_address))
                     @method('PUT')
                 @endif
 
@@ -622,9 +517,9 @@
                     <div class="grid gap-2">
                         <label for="recipient_name" class="text-sm font-medium">Nama Penerima*</label>
                         <input id="recipient_name" name="recipient_name" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md"
                             value="{{ old('recipient_name', $edit_address->recipient_name ?? '') }}"
-                            placeholder="Nama lengkap penerima"/>
+                            placeholder="Nama lengkap penerima" />
                         @error('recipient_name', 'address')
                             <p class="text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -636,7 +531,7 @@
                         <input id="phone_number" name="phone_number" required
                             class="w-full px-3 py-2 border border-gray-300 rounded-md"
                             value="{{ old('phone_number', $edit_address->phone_number ?? '') }}"
-                            placeholder="Contoh: 081234567890"/>
+                            placeholder="Contoh: 081234567890" />
                         @error('phone_number', 'address')
                             <p class="text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -648,7 +543,7 @@
                         <input id="province" name="province" required
                             class="w-full px-3 py-2 border border-gray-300 rounded-md"
                             value="{{ old('province', $edit_address->province ?? '') }}"
-                            placeholder="Contoh: Jawa Barat"/>
+                            placeholder="Contoh: Jawa Barat" />
                         @error('province', 'address')
                             <p class="text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -659,8 +554,7 @@
                         <label for="city" class="text-sm font-medium">Kota/Kabupaten*</label>
                         <input id="city" name="city" required
                             class="w-full px-3 py-2 border border-gray-300 rounded-md"
-                            value="{{ old('city', $edit_address->city ?? '') }}"
-                            placeholder="Contoh: Bandung"/>
+                            value="{{ old('city', $edit_address->city ?? '') }}" placeholder="Contoh: Bandung" />
                         @error('city', 'address')
                             <p class="text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -672,7 +566,7 @@
                         <input id="postal_code" name="postal_code"
                             class="w-full px-3 py-2 border border-gray-300 rounded-md"
                             value="{{ old('postal_code', $edit_address->postal_code ?? '') }}"
-                            placeholder="Contoh: 40132"/>
+                            placeholder="Contoh: 40132" />
                         @error('postal_code', 'address')
                             <p class="text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -682,7 +576,7 @@
                     <div class="grid gap-2">
                         <label for="full_address" class="text-sm font-medium">Alamat Lengkap*</label>
                         <textarea id="full_address" name="full_address" required rows="3"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md"
                             placeholder="Contoh: Jl. Merdeka No. 10, RT 01/RW 02, Kec. Bandung Kulon">{{ old('full_address', $edit_address->full_address ?? '') }}</textarea>
                         @error('full_address', 'address')
                             <p class="text-sm text-red-600">{{ $message }}</p>
@@ -983,7 +877,7 @@
             </div>
         </div>
     </div>
-    
+
 @endsection
 
 
@@ -1005,7 +899,7 @@
                 setTimeout(() => {
                     profileDialog.classList.remove('opacity-0');
                     profileDialog.querySelector('.transform').classList.remove('scale-95');
-                    profileDialog.querySelector('.transform').classList.add('scale-100');   
+                    profileDialog.querySelector('.transform').classList.add('scale-100');
                 }, 10);
             }
 
@@ -1097,7 +991,7 @@
             document.getElementById('passwordModal').classList.add('hidden');
         });
 
-        @if(session('password_error'))
+        @if (session('password_error'))
             document.getElementById('passwordModal').classList.remove('hidden');
         @endif
 
@@ -1119,7 +1013,7 @@
                     addressDialog.querySelector('.transform').classList.add('scale-100');
                 }, 10);
             }
-        
+
             // Fungsi tutup modal alamat
             function closeAddressDialog() {
                 addressDialog.classList.add('opacity-0');
@@ -1147,7 +1041,7 @@
 
             closeDialogBtn?.addEventListener('click', closeAddressDialog);
             cancelBtn?.addEventListener('click', closeAddressDialog);
-        
+
             // Tutup modal ketika klik di luar
             addressDialog?.addEventListener('click', function(e) {
                 if (e.target === this) {
@@ -1206,7 +1100,9 @@
                     setTimeout(() => {
                         const section = document.getElementById(targetSection);
                         if (section) {
-                            section.scrollIntoView({ behavior: 'smooth' });
+                            section.scrollIntoView({
+                                behavior: 'smooth'
+                            });
                         }
                     }, 100);
                 }
@@ -1223,7 +1119,8 @@
                     const submitBtn = this.querySelector('button[type="submit"]');
                     if (submitBtn) {
                         submitBtn.disabled = true;
-                        submitBtn.innerHTML = '<span class="flex items-center justify-center"><i data-lucide="loader-2" class="w-4 h-4 mr-2 animate-spin"></i> Memproses...</span>';
+                        submitBtn.innerHTML =
+                            '<span class="flex items-center justify-center"><i data-lucide="loader-2" class="w-4 h-4 mr-2 animate-spin"></i> Memproses...</span>';
                     }
 
                     // Set timeout untuk auto-close modal setelah submit
@@ -1236,7 +1133,8 @@
                 btn.addEventListener('click', function() {
                     if (confirm('Apakah Anda yakin ingin menghapus alamat ini?')) {
                         // Tampilkan loading
-                        this.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i>';
+                        this.innerHTML =
+                            '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i>';
 
                         // Submit form
                         this.closest('form').submit();
@@ -1251,5 +1149,23 @@
                 lucide.createIcons();
             }
         });
+
+        if (window.location.hash) {
+            const targetSection = window.location.hash.substring(1);
+            const targetTab = document.querySelector(`[data-section="${targetSection}"]`);
+
+            if (targetTab) {
+                switchTab(targetSection);
+
+                setTimeout(() => {
+                    const section = document.getElementById(targetSection);
+                    if (section) {
+                        section.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                }, 100);
+            }
+        }
     </script>
 @endsection

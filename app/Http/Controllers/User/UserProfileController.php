@@ -9,30 +9,87 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Address;
-use Illuminate\Support\Str; 
+use App\Models\Order;
+use Illuminate\Support\Str;
 
 class UserProfileController extends Controller
 {
-    public function index()          
+    public function index()
     {
-        return view('user.pages.user-profile'); 
+        $orders = Order::with(['products', 'products.images'])
+            ->where('user_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($order) {
+                return [
+                    'order_id' => $order->order_id,
+                    'date' => $order->created_at->format('d M Y'),
+                    'product' => [
+                        'name' => $order->products->name,
+                        'image' => $order->products->images->where('is_primary', true)->first()?->path ?? 'default.jpg',
+                        'type' => 'Produk'
+                    ],
+                    'quantity' => $order->quantity,
+                    'total_price' => $order->total_price,
+                    'status' => $this->getOrderStatus($order->order_status),
+                ];
+            });
+
+        return view('user.pages.user-profile', compact('orders'));
     }
 
     public function update(Request $request)
     {
-         $user = Auth::user();  
+        $user = Auth::user();
         // Validasi
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->user_id . ',user_id',
             'phone_number' => 'nullable|string|max:20'
         ]);
-    
+
         // Update data
         $user->update($request->only(['name', 'email', 'phone_number']));
-    
+
         // Redirect kembali dengan pesan sukses
-        return redirect()->route('user.profile')->with('success', 'Profil berhasil diperbarui!');   
+        return redirect()->route('user.profile')->with('success', 'Profil berhasil diperbarui!');
+    }
+
+
+    private function getOrderStatus($status)
+    {
+        return match ($status) {
+            'completed' => [
+                'text' => 'Selesai',
+                'class' => 'text-green-800 bg-green-100',
+                'icon' => 'check-circle'
+            ],
+            'paid' => [
+                'text' => 'Dibayar',
+                'class' => 'text-emerald-800 bg-emerald-100',
+                'icon' => 'credit-card'
+            ],
+            'shipping' => [
+                'text' => 'Dikirim',
+                'class' => 'text-yellow-800 bg-yellow-100',
+                'icon' => 'truck'
+            ],
+            'packing' => [
+                'text' => 'Dikemas',
+                'class' => 'text-blue-800 bg-blue-100',
+                'icon' => 'package'
+            ],
+            'pending' => [
+                'text' => 'Menunggu Pembayaran',
+                'class' => 'text-orange-800 bg-orange-100',
+                'icon' => 'clock'
+            ],
+            default => [
+                'text' => 'Processing',
+                'class' => 'text-gray-800 bg-gray-100',
+                'icon' => 'loader'
+            ],
+        };
     }
 
     public function updatePhoto(Request $request)
@@ -40,23 +97,23 @@ class UserProfileController extends Controller
         $request->validate([
             'avatar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
         ]);
-    
+
         $user = Auth::user();
-    
+
         try {
             // Hapus foto lama jika ada
             if ($user->profile_picture) {
                 Storage::disk('public')->delete($user->profile_picture);
             }
-        
+
             // Simpan file baru ke folder profiles
             $path = $request->file('avatar')->store('profiles', 'public');
-        
+
             // Update database dengan path file baru
             $user->update([
                 'profile_picture' => $path
             ]);
-        
+
             return back()->with('success', 'Foto profil berhasil diperbarui!');
         } catch (\Exception $e) {
             return back()->with('error', 'Gagal mengupdate foto profil: ' . $e->getMessage());
@@ -83,7 +140,7 @@ class UserProfileController extends Controller
             'new_password.required' => 'lo niat ubah pw kaga masa  kosong',
             'new_password.min' => 'Password minimal 8 karakter',
             'new_password.different' => 'ya ga boleh sama',
-            'confirm_password.required' => 'isi lah kocak konfim pw', 
+            'confirm_password.required' => 'isi lah kocak konfim pw',
             'confirm_password.same' => 'passwordnya ga cocok 😭 bagia confirm'
         ]);
 
@@ -101,62 +158,61 @@ class UserProfileController extends Controller
         return back()->with('success', 'Password berhasil diperbarui!');
     }
 
-        public function storeAddress(Request $request)
-        {
-            $validator = Validator::make($request->all(), [
-                'recipient_name' => 'required|string|max:255',
-                'phone_number' => 'required|string|max:20',
-                'full_address' => 'required|string',
-                'postal_code' => 'nullable|string|max:10',
-                'city' => 'required|string|max:255',
-                'province' => 'required|string|max:255',
-            ], [
-                'recipient_name.required' => 'Nama penerima wajib diisi',
-                'phone_number.required' => 'Nomor telepon wajib diisi',
-                'full_address.required' => 'Alamat lengkap wajib diisi',
-                'city.required' => 'Kota wajib diisi',
-                'province.required' => 'Provinsi wajib diisi',
+    public function storeAddress(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'recipient_name' => 'required|string|max:255',
+            'phone_number' => 'required|string|max:20',
+            'full_address' => 'required|string',
+            'postal_code' => 'nullable|string|max:10',
+            'city' => 'required|string|max:255',
+            'province' => 'required|string|max:255',
+        ], [
+            'recipient_name.required' => 'Nama penerima wajib diisi',
+            'phone_number.required' => 'Nomor telepon wajib diisi',
+            'full_address.required' => 'Alamat lengkap wajib diisi',
+            'city.required' => 'Kota wajib diisi',
+            'province.required' => 'Provinsi wajib diisi',
+        ]);
+
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator, 'address')
+                ->withInput()
+                ->with('address_error', true); // Untuk auto-open modal
+        }
+
+        try {
+            Address::create([
+                'user_id' => Auth::id(),
+                'recipient_name' => $request->recipient_name,
+                'phone_number' => $request->phone_number,
+                'full_address' => $request->full_address,
+                'postal_code' => $request->postal_code,
+                'city' => $request->city,
+                'province' => $request->province,
             ]);
 
-            if ($validator->fails()) {
-                return back()
-                    ->withErrors($validator, 'address')
-                    ->withInput()
-                    ->with('address_error', true); // Untuk auto-open modal
-            }
+            return redirect()->to(route('user.profile') . '#address-section')->with('address_success', 'Alamat berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal menambahkan alamat: ' . $e->getMessage());
+        }
+    }
 
-            try {
-                Address::create([
-                    'user_id' => Auth::id(),
-                    'recipient_name' => $request->recipient_name,
-                    'phone_number' => $request->phone_number,
-                    'full_address' => $request->full_address,
-                    'postal_code' => $request->postal_code,
-                    'city' => $request->city,
-                    'province' => $request->province,
-                ]);
+    /**
+     * Menghapus alamat
+     */
+    public function destroyAddress($address_id)
+    {
+        $address = Address::where('address_id', $address_id)->firstOrFail();
 
-                return redirect()->to(route('user.profile') . '#address-section')->with('address_success', 'Alamat berhasil ditambahkan!');
-            } catch (\Exception $e) {
-                return back()->with('error', 'Gagal menambahkan alamat: ' . $e->getMessage());
-            }
+        // Pastikan alamat milik user yang login
+        if ($address->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
         }
 
-        /**
-         * Menghapus alamat
-         */
-        public function destroyAddress($address_id)
-        {
-            $address = Address::where('address_id', $address_id)->firstOrFail();
-            
-            // Pastikan alamat milik user yang login
-            if ($address->user_id !== Auth::id()) {
-                abort(403, 'Unauthorized action.');
-            }
-        
-            $address->delete();
-            
-            return back()->with('success', 'Alamat berhasil dihapus!');
-        }
+        $address->delete();
 
+        return back()->with('success', 'Alamat berhasil dihapus!');
+    }
 }

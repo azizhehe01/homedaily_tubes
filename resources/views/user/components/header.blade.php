@@ -45,3 +45,22 @@
         @endguest
     </nav>
 </header>
+@if (session('success'))
+    <div id="notification" class="fixed top-4 right-4 bg-green-500 text-white p-3 rounded-lg shadow-lg">
+        {{ session('success') }}
+    </div>
+    <script>
+        // Sembunyikan notifikasi setelah 3 detik
+        setTimeout(() => {
+            const notification = document.getElementById('notification');
+            if (notification) {
+                notification.style.transition = 'opacity 0.5s';
+                notification.style.opacity = '0';
+
+                setTimeout(() => {
+                    notification.remove();
+                }, 500); // Hapus elemen setelah transisi selesai
+            }
+        }, 3000); // Durasi dalam milidetik
+    </script>
+@endif

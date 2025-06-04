@@ -12,6 +12,8 @@ use Midtrans\Config;
 use Midtrans\Snap;
 use Illuminate\Support\Str;
 
+
+
 class BookingController extends Controller
 {
     public function __construct()
@@ -74,7 +76,7 @@ class BookingController extends Controller
         }
 
         if (!$product) {
-            return redirect()->route('home')->with('error', 'No product selected for booking');
+            return redirect()->route('user.index')->with('error', 'No product selected for booking');
         }
 
         return view('user.pages.booking-page', compact('userAddress', 'product'));
@@ -254,5 +256,117 @@ class BookingController extends Controller
                 ]
             ]);
         }
+    }
+
+    public function getOrders()
+    {
+        $orders = Order::with(['products'])
+            ->where('user_id', Auth::user()->user_id)
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($order) {
+                return [
+                    'order_id' => $order->order_id,
+                    'date' => $order->created_at->format('d M Y'),
+                    'product' => [
+                        'name' => $order->products->name,
+                        'image' => $order->products->images->where('is_primary', true)->first()?->path,
+                        'type' => 'Produk'
+                    ],
+                    'quantity' => $order->quantity,
+                    'total_price' => $order->total_price,
+                    'status' => $this->getStatusBadge($order->order_status),
+                ];
+            });
+
+        return view('user.pages.orders', compact('orders'));
+    }
+
+
+    public function updateStatus(Request $request, $orderId)
+    {
+        Log::info('Updating order status', [
+            'order_id' => $orderId,
+            'request_data' => $request->all()
+        ]);
+
+        try {
+            $order = Order::findOrFail($orderId);
+
+            $validated = $request->validate([
+                'status' => 'required|string',
+                'transaction_id' => 'required|string',
+                'payment_type' => 'required|string',
+                'transaction_time' => 'required'
+            ]);
+
+            $order->update([
+                'order_status' => $validated['status'],
+                'midtrans_transaction_id' => $validated['transaction_id'],
+                'payment_type' => $validated['payment_type'],
+                'transaction_time' => $validated['transaction_time'],
+                'payment_method' => 'midtrans'
+            ]);
+
+            // Update product stock
+            $product = $order->products;
+            $product->decrement('stock', $order->quantity);
+
+            Log::info('Order status updated successfully', ['order' => $order]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Status pesanan berhasil diperbarui',
+                'order' => $order
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Failed to update order status', [
+                'error' => $e->getMessage(),
+                'order_id' => $orderId,
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal memperbarui status pesanan: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+    private function getOrderStatus($status)
+    {
+        return match ($status) {
+            'completed' => [
+                'text' => 'Selesai',
+                'class' => 'text-green-800 bg-green-100',
+                'icon' => 'check-circle'
+            ],
+            'paid' => [
+                'text' => 'Dibayar',
+                'class' => 'text-emerald-800 bg-emerald-100',
+                'icon' => 'credit-card'
+            ],
+            'shipping' => [
+                'text' => 'Dikirim',
+                'class' => 'text-yellow-800 bg-yellow-100',
+                'icon' => 'truck'
+            ],
+            'packing' => [
+                'text' => 'Sedang Dikemas',
+                'class' => 'text-blue-800 bg-blue-100',
+                'icon' => 'package'
+            ],
+            'pending' => [
+                'text' => 'Menunggu Pembayaran',
+                'class' => 'text-orange-800 bg-orange-100',
+                'icon' => 'clock'
+            ],
+            default => [
+                'text' => 'Processing',
+                'class' => 'text-gray-800 bg-gray-100',
+                'icon' => 'loader'
+            ],
+        };
     }
 }

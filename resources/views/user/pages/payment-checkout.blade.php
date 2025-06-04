@@ -23,7 +23,6 @@
         </div>
     </div>
 @endsection
-
 @section('scripts')
     <script type="text/javascript" src="{{ config('midtrans.snap_url') }}"
         data-client-key="{{ config('midtrans.client_key') }}"></script>
@@ -34,22 +33,57 @@
 
             window.snap.pay('{{ $snapToken }}', {
                 onSuccess: function(result) {
-                    console.log('success');
-                    console.log(result);
-                    window.location.href = '{{ route('order.success') }}';
+                    console.log('Payment success:', result);
+
+                    // Send status update to server
+                    fetch('{{ route('order.update-status', $order->order_id) }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                status: 'paid',
+                                transaction_id: result.transaction_id,
+                                payment_type: result.payment_type,
+                                transaction_time: result.transaction_time
+                            })
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('Status updated successfully:', data);
+                            // Redirect to profile page after successful update
+                            window.location.href =
+                                '{{ route('user.profile') }}#transactions-section';
+                        })
+                        .catch(error => {
+                            console.error('Error updating status:', error);
+                            // Store payment info in localStorage
+                            localStorage.setItem('pendingPayment', JSON.stringify({
+                                orderId: '{{ $order->order_id }}',
+                                result: result
+                            }));
+                            alert('Payment successful! The order status will be updated shortly.');
+                            window.location.href =
+                                '{{ route('user.profile') }}#transactions-section';
+                        });
                 },
                 onPending: function(result) {
-                    console.log('pending');
-                    console.log(result);
-                    window.location.href = '{{ route('order.pending') }}';
+                    console.log('Payment pending:', result);
+                    window.location.href = '{{ route('user.profile') }}#transactions-section';
                 },
                 onError: function(result) {
-                    console.log('error');
-                    console.log(result);
-                    window.location.href = '{{ route('order.failed') }}';
+                    console.error('Payment error:', result);
+                    alert('Payment failed. Please try again.');
                 },
                 onClose: function() {
-                    alert('You closed the popup without finishing the payment');
+                    console.log('Payment popup closed');
                 }
             });
         });
