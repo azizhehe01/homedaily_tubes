@@ -26,7 +26,7 @@ class UserProfileController extends Controller
                     'date' => $order->created_at->format('d M Y'),
                     'product' => [
                         'name' => $order->products->name,
-                        'image' => $order->products->images->where('is_primary', true)->first()?->path ?? 'default.jpg',
+                        'image' => $order->products->images->where('is_primary', true)->first()?->path,
                         'type' => 'Produk'
                     ],
                     'quantity' => $order->quantity,

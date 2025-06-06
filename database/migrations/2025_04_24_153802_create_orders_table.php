@@ -36,10 +36,10 @@ return new class extends Migration
             // Order status yang lebih komprehensif, mencakup status dari Midtrans
             $table->enum('order_status', [
                 'pending',          // Menunggu pembayaran (awal)
-                'settlement',       // Pembayaran berhasil (dari Midtrans)
-                'processing',       // Pesanan sedang disiapkan
-                'completed',        // Pesanan selesai (sudah dikirim/diterima)
-                'denied',           // Pembayaran ditolak oleh Midtrans
+                'paid',       // Pembayaran berhasil (dari Midtrans)
+                'shipping',       // Pesanan sedang disiapkan
+                'packing',        // Pesanan selesai (sudah dikirim/diterima)
+                'completed',           // Pembayaran ditolak oleh Midtrans
                 'expire',           // Pembayaran kadaluarsa di Midtrans
                 'cancel',           // Pesanan dibatalkan (oleh user/admin)
                 'refunded',         // Dana dikembalikan

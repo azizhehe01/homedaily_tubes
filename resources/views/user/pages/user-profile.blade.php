@@ -157,7 +157,7 @@
                 </button>
             </div>
 
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto">d
                 <table class="w-full text-left">
                     <thead class="bg-gray-50">
                         <tr>
@@ -608,12 +608,11 @@
 
     <!-- Product Tracking Detail Dialog -->
     <div id="product-tracking-dialog"
-        class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-200 bg-black bg-opacity-50 opacity-0">
-        <div
-            class="bg-white rounded-lg w-full max-w-2xl p-6 transform scale-95 transition-transform duration-200 max-h-[90vh] overflow-y-auto">
+        class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-200 bg-black bg-opacity-50">
+        <div class="bg-white rounded-lg w-full max-w-2xl p-6 max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-semibold">Detail Pengiriman Produk</h3>
-                <button class="text-gray-500 close-tracking-dialog hover:text-gray-700">
+                <button class="text-gray-500 hover:text-gray-700" id="close-tracking-dialog">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
@@ -621,11 +620,12 @@
             <div class="pb-4 mb-4 border-b">
                 <div class="flex items-start justify-between mb-2">
                     <div>
-                        <p class="text-lg font-semibold">#12346 - Sofa Minimalis</p>
-                        <p class="text-gray-500">Tanggal Pembelian: 10 Mei 2025</p>
+                        <p class="text-lg font-semibold">#{{ $order['order_id'] }} - {{ $order['product']['name'] }}</p>
+                        <p class="text-gray-500">Tanggal Pembelian: {{ $order['date'] }}</p>
                     </div>
-                    <span class="flex items-center px-2 py-1 text-xs text-yellow-800 bg-yellow-100 rounded-full">
-                        <i data-lucide="truck" class="w-3 h-3 mr-1"></i> Dikirim
+                    <span class="flex items-center px-2 py-1 text-xs rounded-full {{ $order['status']['class'] }}">
+                        <i data-lucide="{{ $order['status']['icon'] }}" class="w-3 h-3 mr-1"></i>
+                        {{ $order['status']['text'] }}
                     </span>
                 </div>
             </div>
@@ -635,19 +635,19 @@
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div>
                         <p class="text-sm text-gray-500">Kurir</p>
-                        <p class="font-medium">JNE Express</p>
+                        <p class="font-medium">{{ $order['courier'] ?? 'JNE Express' }}</p>
                     </div>
                     <div>
                         <p class="text-sm text-gray-500">No. Resi</p>
-                        <p class="font-medium">JP0123456789</p>
+                        <p class="font-medium">{{ $order['tracking_number'] ?? 'Menunggu' }}</p>
                     </div>
                     <div>
                         <p class="text-sm text-gray-500">Estimasi Tiba</p>
-                        <p class="font-medium">15 Mei 2025</p>
+                        <p class="font-medium">{{ $order['estimated_arrival'] ?? '-' }}</p>
                     </div>
                     <div>
                         <p class="text-sm text-gray-500">Berat</p>
-                        <p class="font-medium">15 kg</p>
+                        <p class="font-medium">{{ $order['product']['weight'] ?? '1' }} kg</p>
                     </div>
                 </div>
             </div>
@@ -655,21 +655,26 @@
             <div class="mb-6">
                 <h4 class="mb-2 font-semibold">Alamat Pengiriman</h4>
                 <div class="p-3 rounded-lg bg-gray-50">
-                    <p class="font-medium">Surya Nugraha</p>
-                    <p>62855659718873</p>
-                    <p class="mt-1">Ciganitri Mukti V No.45 Rt06/Rw11 Desa. Cipagalo Kec. Bojongsong Kab. Bandung 40288
-                    </p>
+                    @php
+                        $address = Auth::user()->addresses->first();
+                    @endphp
+                    <p class="font-medium">{{ $address->recipient_name ?? Auth::user()->name }}</p>
+                    <p>{{ $address->phone_number ?? Auth::user()->phone_number }}</p>
+                    <p class="mt-1">{{ $address->full_address ?? 'Alamat belum ditambahkan' }}</p>
                 </div>
             </div>
 
             <div class="mb-6">
                 <h4 class="mb-2 font-semibold">Produk</h4>
                 <div class="flex items-center p-3 rounded-lg bg-gray-50">
-                    <img src="https://images.unsplash.com/photo-1600585152915-d208bec867a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=80&h=80&q=80"
-                        alt="Sofa Minimalis" class="object-cover w-16 h-16 mr-3 rounded">
+                    @if ($order['product']['image'])
+                        <img src="{{ asset('storage/' . $order['product']['image']) }}"
+                            alt="{{ $order['product']['name'] }}" class="object-cover w-16 h-16 mr-3 rounded">
+                    @endif
                     <div>
-                        <p class="font-medium">Sofa Minimalis</p>
-                        <p class="text-gray-500">1 x Rp1,500,000</p>
+                        <p class="font-medium">{{ $order['product']['name'] }}</p>
+                        <p class="text-gray-500">{{ $order['quantity'] }} x
+                            Rp{{ number_format($order['total_price'], 0, ',', '.') }}</p>
                     </div>
                 </div>
             </div>
@@ -677,67 +682,20 @@
             <div>
                 <h4 class="mb-2 font-semibold">Status Pengiriman</h4>
                 <div class="relative pl-6">
-                    <!-- Fixed the vertical line positioning to be centered with the status circles -->
                     <div class="absolute top-0 z-0 w-1 h-full border-l-2 border-gray-300 border-dashed left-4"></div>
                     <div class="space-y-6">
-                        <div class="relative">
-                            <div
-                                class="absolute z-10 flex items-center justify-center w-8 h-8 text-white bg-green-500 rounded-full -left-4">
-                                <i data-lucide="check" class="w-4 h-4"></i>
-                            </div>
-                            <div class="ml-6">
-                                <p class="font-semibold text-gray-800">Pesanan Dikonfirmasi</p>
-                                <p class="text-sm text-gray-500">10 Mei 2025, 14:00 WIB</p>
-                                <p class="mt-1 text-sm text-gray-600">Pesanan Anda telah dikonfirmasi dan sedang diproses.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="relative">
-                            <div
-                                class="absolute z-10 flex items-center justify-center w-8 h-8 text-white bg-green-500 rounded-full -left-4">
-                                <i data-lucide="package" class="w-4 h-4"></i>
-                            </div>
-                            <div class="ml-6">
-                                <p class="font-semibold text-gray-800">Sedang Dikemas</p>
-                                <p class="text-sm text-gray-500">11 Mei 2025, 09:00 WIB</p>
-                                <p class="mt-1 text-sm text-gray-600">Pesanan Anda sedang dikemas dan akan segera dikirim.
-                                </p>
-                            </div>
-                        </div>
-                        <div class="relative">
-                            <div
-                                class="absolute z-10 flex items-center justify-center w-8 h-8 text-white bg-green-500 rounded-full -left-4">
-                                <i data-lucide="truck" class="w-4 h-4"></i>
-                            </div>
-                            <div class="ml-6">
-                                <p class="font-semibold text-gray-800">Dikirim</p>
-                                <p class="text-sm text-gray-500">12 Mei 2025, 13:30 WIB</p>
-                                <p class="mt-1 text-sm text-gray-600">Pesanan Anda telah dikirim dan sedang dalam
-                                    perjalanan.</p>
-                            </div>
-                        </div>
-                        <div class="relative">
-                            <div
-                                class="absolute z-10 flex items-center justify-center w-8 h-8 text-gray-600 bg-gray-200 rounded-full -left-4">
-                                <i data-lucide="home" class="w-4 h-4"></i>
-                            </div>
-                            <div class="ml-6">
-                                <p class="font-semibold text-gray-800">Sampai Tujuan</p>
-                                <p class="text-sm text-gray-500">Estimasi 15 Mei 2025</p>
-                                <p class="mt-1 text-sm text-gray-600">Pesanan Anda akan segera tiba di alamat tujuan.</p>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </div>
 
             <div class="flex justify-end mt-6">
-                <button class="px-4 py-2 mr-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50">
-                    Hubungi Kurir
-                </button>
-                <button class="px-4 py-2 text-white bg-orange-500 rounded-md hover:bg-orange-600">
-                    Lacak Pengiriman
-                </button>
+                @if (isset($order['tracking_url']))
+                    <a href="{{ $order['tracking_url'] }}" target="_blank"
+                        class="px-4 py-2 text-white bg-orange-500 rounded-md hover:bg-orange-600">
+                        Lacak Pengiriman
+                    </a>
+                @endif
             </div>
         </div>
     </div>
@@ -1149,6 +1107,53 @@
                 lucide.createIcons();
             }
         });
+
+        // ==================== Product Tracking Dialog ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            const trackingDialog = document.getElementById('product-tracking-dialog');
+            const openTrackingBtns = document.querySelectorAll('.view-tracking-btn');
+            const closeTrackingBtn = document.getElementById('close-tracking-dialog');
+
+            // Fungsi untuk membuka dialog
+            function openTrackingDialog() {
+                trackingDialog.classList.remove('hidden');
+                setTimeout(() => {
+                    trackingDialog.classList.remove('opacity-0');
+                    trackingDialog.querySelector('.transform').classList.remove('scale-95');
+                    trackingDialog.querySelector('.transform').classList.add('scale-100');
+                }, 10);
+            }
+
+            // Fungsi untuk menutup dialog
+            function closeTrackingDialog() {
+                trackingDialog.classList.add('hidden');
+                trackingDialog.classList.add('opacity-0');
+                trackingDialog.querySelector('.transform').classList.remove('scale-100');
+                trackingDialog.querySelector('.transform').classList.add('scale-95');
+
+            }
+
+            // Event listener untuk tombol buka
+            openTrackingBtns.forEach(btn => {
+                btn.addEventListener('click', openTrackingDialog);
+            });
+
+            // Event listener untuk tombol tutup
+            if (closeTrackingBtn) {
+                closeTrackingBtn.addEventListener('click', closeTrackingDialog);
+            }
+
+            // Tutup dialog ketika klik di luar
+            if (trackingDialog) {
+                trackingDialog.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeTrackingDialog();
+                    }
+                });
+            }
+        });
+
+
 
         if (window.location.hash) {
             const targetSection = window.location.hash.substring(1);
