@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\Image;
+use App\Models\ProductChat;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -221,6 +223,49 @@ class ProductController extends Controller
                 ->route('admin.pages.products')
                 ->with('error', 'Failed to delete product: ' . $e->getMessage());
         }
-    }  
+    }
+    
+    public function getChats($product_id)
+    {
+        $product = Product::findOrFail($product_id);
+        $primaryImage = $product->images()->where('is_primary', true)->first();
+    
+        // Query dasar
+        $query = ProductChat::where('product_id', $product_id)
+                  ->with('user') // Eager load user data
+                  ->orderBy('created_at', 'asc');
+    
+        // Filter berdasarkan role
+        if (Auth::user()->role !== 'admin') {
+            $query->where('user_id', Auth::id());
+        }
+    
+        $chats = $query->get();
+    
+        return response()->json([
+            'chats' => $chats,
+            'product' => [
+                'name' => $product->name,
+                'image' => $primaryImage ? asset('storage/' . $primaryImage->path) : null,
+            ]
+        ]);
+    }
+
+    public function sendChat(Request $request, $product_id)
+    {
+        $request->validate([
+            'message' => 'required|string'
+        ]);
+
+        $chat = ProductChat::create([
+            'product_id' => $product_id,
+            'user_id' => Auth::id(),
+            'message' => $request->message,
+            'is_admin' => Auth::user()->role === 'admin' 
+        ]);
+
+        return response()->json($chat);
+    }
+
 }
 

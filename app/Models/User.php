@@ -73,4 +73,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(LiveChatMassage::class);
     }
+    public function productChats()
+    {
+        return $this->hasMany(ProductChat::class);
+    }
 }

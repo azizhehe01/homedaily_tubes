@@ -7,7 +7,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\CategoriesController;
-use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\AuthController; 
 use App\Http\Controllers\Auth\GoogleController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -59,6 +59,15 @@ Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallba
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
     Route::get('/user', [AuthController::class, 'user'])->name('auth.user');
+});
+
+// di bawah ini untuk chat 
+Route::middleware('auth')->group(function() {
+    Route::post('/products/{product_id}/chat', [ProductController::class, 'sendChat'])
+        ->name('product.chat');
+        
+    Route::get('/products/{product_id}/chats', [ProductController::class, 'getChats'])
+        ->name('product.chats');
 });
 
 // Admin Routes

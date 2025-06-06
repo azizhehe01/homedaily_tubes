@@ -43,4 +43,9 @@ class Product extends Model
     {
         return $this->hasMany(Image::class, 'product_id', 'product_id');
     }
+
+    public function chats()
+    {
+         return $this->hasMany(ProductChat::class, 'product_id', 'product_id')->with('user');
+    }
 }
