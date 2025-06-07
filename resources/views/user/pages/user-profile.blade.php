@@ -88,19 +88,19 @@
                 <button class="px-4 py-2 font-medium text-orange-500 border-b-2 border-orange-500 transaction-type-btn active" data-type="all">
                     Semua
                 </button>
-                <button class="px-4 py-2 border-b-2 border-transparent hover:text-orange-500 transaction-type-btn" data-type="pending">
-                    Menunggu pembayaran
+                <button class="px-4 py-2 border-b-2 border-transparent hover:text-orange-500 transaction-type-btn" data-type="menunggu pembayaran">
+                    Menunggu pembayaran  
                 </button>
-                <button class="px-4 py-2 border-b-2 border-transparent hover:text-orange-500 transaction-type-btn" data-type="paid">
+                <button class="px-4 py-2 border-b-2 border-transparent hover:text-orange-500 transaction-type-btn" data-type="dibayar">
                     Dibayar
                 </button>
-                <button class="px-4 py-2 border-b-2 border-transparent hover:text-orange-500 transaction-type-btn" data-type="processing">
-                    Sedang dikemas
+                <button class="px-4 py-2 border-b-2 border-transparent hover:text-orange-500 transaction-type-btn" data-type="dikemas">
+                    Dikemas  
                 </button>
-                <button class="px-4 py-2 border-b-2 border-transparent hover:text-orange-500 transaction-type-btn" data-type="shipped">
+                <button class="px-4 py-2 border-b-2 border-transparent hover:text-orange-500 transaction-type-btn" data-type="dikirim">
                     Dikirim
                 </button>
-                <button class="px-4 py-2 border-b-2 border-transparent hover:text-orange-500 transaction-type-btn" data-type="completed">
+                <button class="px-4 py-2 border-b-2 border-transparent hover:text-orange-500 transaction-type-btn" data-type="selesai">
                     Selesai
                 </button>
             </div>
@@ -120,7 +120,8 @@
                     </thead>
                     <tbody class="divide-y divide-gray-200">
                         @forelse($orders as $order)
-                            <tr class="transition-colors hover:bg-gray-50" data-status="{{ $order['status']['text']}}">
+                            <tr class="transition-colors hover:bg-gray-50" data-type="{{ strtolower($order['status']['text']) }}">
+                                <!-- {{ $order['status']['text'] }} -->
                                 <td class="px-4 py-3 font-medium">{{ $order['order_id'] }}</td>
                                 <td class="px-4 py-3">{{ $order['date'] }}</td>
                                 <td class="flex items-center px-4 py-3">
@@ -1033,15 +1034,15 @@
                     btn.classList.add('active', 'text-orange-500', 'border-orange-500');
                     btn.classList.remove('border-transparent');
 
-                    const selectedType = btn.textContent.trim(); // Get the button text instead of data-type
+                    const filterType = btn.getAttribute('data-type').toLowerCase();
                     
-                    // Show/hide rows based on status text
+                    // Show/hide rows based on status
                     orderRows.forEach(row => {
-                        if (selectedType === 'Semua') {
+                        if (filterType === 'all') {
                             row.classList.remove('hidden');
                         } else {
-                            const rowStatus = row.getAttribute('data-status').trim();
-                            if (rowStatus === selectedType) {
+                            const rowType = row.getAttribute('data-type').toLowerCase();
+                            if (rowType === filterType) {
                                 row.classList.remove('hidden');
                             } else {
                                 row.classList.add('hidden');

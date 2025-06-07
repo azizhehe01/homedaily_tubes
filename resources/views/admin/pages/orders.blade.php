@@ -24,45 +24,58 @@
                             @foreach ($orders ?? [] as $order)
                                 <tr>
                                     <td class="px-6 py-4 text-sm font-medium whitespace-nowrap text-default-800">
-                                        {{ $order->id ?? '1' }}</td>
+                                        {{ $order['id'] }}
+                                    </td>
                                     <td class="px-6 py-4 text-sm font-medium whitespace-nowrap text-default-800">
-                                        {{ $order->name ?? 'Lindsay Walton' }}</td>
+                                        {{ $order['name'] }}
+                                    </td>
                                     <td class="px-6 py-4 text-sm whitespace-nowrap text-default-800">
-                                        {{ $order->order_date ?? '2025-04-30' }}</td>
+                                        {{ $order['order_date'] }}
+                                    </td>
                                     <td class="px-6 py-4 text-sm whitespace-nowrap text-default-800">
-                                        ${{ $order->total_price ?? '50' }}</td>
+                                        Rp{{ number_format($order['total_price'], 0, ',', '.') }}
+                                    </td>
                                     <td class="px-6 py-4 text-sm whitespace-nowrap text-default-800">
-                                        {{ $order->payment_method ?? 'Credit Card' }}</td>
+                                        {{ $order['payment_method'] }}
+                                    </td>
                                     <td class="px-6 py-4 text-sm whitespace-nowrap text-default-800">
-                                        {{ $order->status ?? 'Completed' }}</td>
+                                        <span class="px-2 py-1 text-xs rounded-full {{ $order['status']['class'] }}">
+                                            {{ $order['status']['text'] }}
+                                        </span>
+                                    </td>
                                     <td class="px-6 py-4 text-sm whitespace-nowrap text-default-800">
-                                        <ul>
-                                            @foreach ($order->products ?? [] as $product)
-                                                <li class="flex items-center {{ !$loop->first ? 'mt-2' : '' }} space-x-4">
-                                                    <img src="{{ $product->image ?? 'https://via.placeholder.com/50' }}"
-                                                        alt="Product Image" class="w-12 h-12 rounded" />
-                                                    <div>
-                                                        <p class="text-sm font-medium">
-                                                            {{ $product->name ?? 'Product ' . $loop->iteration }}</p>
-                                                        <p class="text-xs text-gray-500">{{ $product->quantity ?? '2' }} pcs
-                                                            x ${{ $product->price ?? '25' }}</p>
-                                                    </div>
-                                                </li>
-                                            @endforeach
-                                        </ul>
+                                        <span class="px-2 py-1 text-xs rounded-full {{ $order['status']['class'] }}">
+                                            {{ $order['status']['text'] }}
+                                        </span>
                                     </td>
                                     <td class="px-6 py-4 text-sm font-medium whitespace-nowrap text-end">
-                                        <a class="text-primary hover:text-sky-700" href="#"
-                                            data-hs-overlay="#modal-one">
-                                            <iconify-icon icon="uil:edit" width="20"></iconify-icon>
-                                        </a>
-                                        <a class="text-primary hover:text-sky-700" href="#">
-                                            <iconify-icon icon="iconamoon:eye" width="20"></iconify-icon>
-                                        </a>
-                                        <a class="text-primary hover:text-sky-700" href="#">
-                                            <iconify-icon icon="mdi:delete-outline" width="20"></iconify-icon>
-                                        </a>
+                                        <div class="flex justify-end space-x-2">
+                                            @if($order['status']['text'] === 'paid')
+                                                <form action="{{ route('admin.orders.update-status', $order['order_id']) }}" method="POST" class="inline">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <input type="hidden" name="status" value="packing">
+                                                    <button type="submit" class="px-3 py-1 text-sm text-yellow-700 bg-yellow-100 rounded-md hover:bg-yellow-200">
+                                                        Kemas Pesanan
+                                                    </button>
+                                                </form>
+                                            @elseif($order['status']['text'] === 'packing')
+                                                <form action="{{ route('admin.orders.update-status', $order['order_id']) }}" method="POST" class="inline">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <input type="hidden" name="status" value="shipping">
+                                                    <button type="submit" class="px-3 py-1 text-sm text-purple-700 bg-purple-100 rounded-md hover:bg-purple-200">
+                                                        Kirim Pesanan
+                                                    </button>
+                                                </form>
+                                            @endif
+                                            
+                                            <a class="text-primary hover:text-sky-700" href="#">
+                                                <iconify-icon icon="iconamoon:eye" width="20"></iconify-icon>
+                                            </a>
+                                        </div>
                                     </td>
+                                    
                                 </tr>
                             @endforeach
                         </tbody>

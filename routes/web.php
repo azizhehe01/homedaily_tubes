@@ -36,6 +36,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/order/success', [OrderController::class, 'success'])->name('order.success');
     Route::get('/order/pending', [OrderController::class, 'pending'])->name('order.pending');
     Route::get('/order/failed', [OrderController::class, 'failed'])->name('order.failed');
+    Route::put('/admin/orders/{order}/status', [OrderController::class, 'updateStatus'])
+        ->name('admin.orders.update-status');
 });
 
 Route::get('/profile', [UserProfileController::class, 'index'])->name('user.profile');
