@@ -260,28 +260,27 @@ class BookingController extends Controller
 
     public function getOrders()
     {
-        $orders = Order::with(['products'])
-            ->where('user_id', Auth::user()->user_id)
-            ->orderBy('created_at', 'desc')
-            ->get()
-            ->map(function ($order) {
-                return [
-                    'order_id' => $order->order_id,
-                    'date' => $order->created_at->format('d M Y'),
-                    'product' => [
-                        'name' => $order->products->name,
-                        'image' => $order->products->images->where('is_primary', true)->first()?->path,
-                        'type' => 'Produk'
-                    ],
-                    'quantity' => $order->quantity,
-                    'total_price' => $order->total_price,
-                    'status' => $this->getStatusBadge($order->order_status),
-                ];
-            });
-
-        return view('user.pages.orders', compact('orders'));
+    $orders = Order::with(['products'])
+    ->where('user_id', Auth::user()->user_id)
+    ->orderBy('created_at', 'desc')
+    ->get()
+    ->map(function ($order) {
+        return [
+            'order_id' => $order->order_id,
+            'date' => $order->created_at->format('d M Y'),
+            'product' => [
+                'name' => $order->products->name,
+                'image' => $order->products->images->where('is_primary', true)->first()?->path,
+                'type' => 'Produk'
+            ],
+            'quantity' => $order->quantity,
+            'total_price' => $order->total_price,
+            'status' => $this->getStatusBadge($order->order_status)
+        ];
+    });
+            
+        return view('user.pages.user-profile', compact('orders'));
     }
-
 
     public function updateStatus(Request $request, $orderId)
     {
@@ -338,35 +337,41 @@ class BookingController extends Controller
     {
         return match ($status) {
             'completed' => [
-                'text' => 'Selesai',
-                'class' => 'text-green-800 bg-green-100',
-                'icon' => 'check-circle'
-            ],
-            'paid' => [
-                'text' => 'Dibayar',
-                'class' => 'text-emerald-800 bg-emerald-100',
-                'icon' => 'credit-card'
-            ],
-            'shipping' => [
-                'text' => 'Dikirim',
-                'class' => 'text-yellow-800 bg-yellow-100',
-                'icon' => 'truck'
-            ],
-            'packing' => [
-                'text' => 'Sedang Dikemas',
-                'class' => 'text-blue-800 bg-blue-100',
-                'icon' => 'package'
-            ],
-            'pending' => [
-                'text' => 'Menunggu Pembayaran',
-                'class' => 'text-orange-800 bg-orange-100',
-                'icon' => 'clock'
-            ],
-            default => [
-                'text' => 'Processing',
-                'class' => 'text-gray-800 bg-gray-100',
-                'icon' => 'loader'
-            ],
+            'text' => 'Selesai',
+            'class' => 'text-green-800 bg-green-100',
+            'icon' => 'check-circle',
+            'code' => 'completed'  
+        ],
+        'paid' => [
+            'text' => 'Dibayar',
+            'class' => 'text-emerald-800 bg-emerald-100',
+            'icon' => 'credit-card',
+            'code' => 'paid'
+        ],
+        'shipping' => [
+            'text' => 'Dikirim',
+            'class' => 'text-yellow-800 bg-yellow-100',
+            'icon' => 'truck',
+            'code' => 'shipping'  
+        ],
+        'packing' => [
+            'text' => 'Sedang Dikemas',
+            'class' => 'text-blue-800 bg-blue-100',
+            'icon' => 'package',
+            'code' => 'packing'  
+        ],
+        'pending' => [
+            'text' => 'Menunggu Pembayaran',
+            'class' => 'text-orange-800 bg-orange-100',
+            'icon' => 'clock',
+            'code' => 'pending'  
+        ],
+        default => [
+            'text' => 'Processing',
+            'class' => 'text-gray-800 bg-gray-100',
+            'icon' => 'loader',
+            'code' => 'processing'  
+        ],
         };
     }
 }

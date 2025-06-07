@@ -82,82 +82,30 @@
                 <h2 class="flex items-center text-xl font-bold">
                     <i data-lucide="history" class="w-5 h-5 mr-2 text-orange-500"></i> Riwayat Transaksi
                 </h2>
-
-                <!-- Product Filters - Hidden by default -->
-                <div id="product-filters" class="flex flex-wrap hidden gap-2">
-                    <button class="flex items-center px-3 py-1 text-sm text-white bg-orange-500 rounded-lg filter-btn"
-                        data-filter="all">
-                        <i data-lucide="filter" class="w-3 h-3 mr-1"></i> Semua
-                    </button>
-                    <button
-                        class="flex items-center px-3 py-1 text-sm text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 filter-btn"
-                        data-filter="pending">
-                        <i data-lucide="clock" class="w-3 h-3 mr-1"></i> Belum Bayar
-                    </button>
-                    <button
-                        class="flex items-center px-3 py-1 text-sm text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 filter-btn"
-                        data-filter="packing">
-                        <i data-lucide="package" class="w-3 h-3 mr-1"></i> Sedang Dikemas
-                    </button>
-                    <button
-                        class="flex items-center px-3 py-1 text-sm text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 filter-btn"
-                        data-filter="shipping">
-                        <i data-lucide="truck" class="w-3 h-3 mr-1"></i> Dikirim
-                    </button>
-                    <button
-                        class="flex items-center px-3 py-1 text-sm text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 filter-btn"
-                        data-filter="completed">
-                        <i data-lucide="check-circle" class="w-3 h-3 mr-1"></i> Selesai
-                    </button>
-                </div>
-
-                <!-- Service Filters - Hidden by default -->
-                <div id="service-filters" class="flex flex-wrap hidden gap-2">
-                    <button class="flex items-center px-3 py-1 text-sm text-white bg-orange-500 rounded-lg filter-btn"
-                        data-filter="all">
-                        <i data-lucide="filter" class="w-3 h-3 mr-1"></i> Semua
-                    </button>
-                    <button
-                        class="flex items-center px-3 py-1 text-sm text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 filter-btn"
-                        data-filter="pending">
-                        <i data-lucide="clock" class="w-3 h-3 mr-1"></i> Menunggu Konfirmasi
-                    </button>
-                    <button
-                        class="flex items-center px-3 py-1 text-sm text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 filter-btn"
-                        data-filter="scheduled">
-                        <i data-lucide="calendar" class="w-3 h-3 mr-1"></i> Terjadwal
-                    </button>
-                    <button
-                        class="flex items-center px-3 py-1 text-sm text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 filter-btn"
-                        data-filter="ongoing">
-                        <i data-lucide="pen-tool" class="w-3 h-3 mr-1"></i> Sedang Dikerjakan
-                    </button>
-                    <button
-                        class="flex items-center px-3 py-1 text-sm text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 filter-btn"
-                        data-filter="completed">
-                        <i data-lucide="check-circle" class="w-3 h-3 mr-1"></i> Selesai
-                    </button>
-                </div>
             </div>
-
             <!-- Transaction Type Tabs -->
             <div class="flex mb-4 border-b">
-                <button
-                    class="px-4 py-2 font-medium text-orange-500 border-b-2 border-orange-500 transaction-type-btn active"
-                    data-type="all">
+                <button class="px-4 py-2 font-medium text-orange-500 border-b-2 border-orange-500 transaction-type-btn active" data-type="all">
                     Semua
                 </button>
-                <button class="px-4 py-2 border-b-2 border-transparent hover:text-orange-500 transaction-type-btn"
-                    data-type="product">
-                    Produk
+                <button class="px-4 py-2 border-b-2 border-transparent hover:text-orange-500 transaction-type-btn" data-type="pending">
+                    Menunggu pembayaran
                 </button>
-                <button class="px-4 py-2 border-b-2 border-transparent hover:text-orange-500 transaction-type-btn"
-                    data-type="service">
-                    Jasa
+                <button class="px-4 py-2 border-b-2 border-transparent hover:text-orange-500 transaction-type-btn" data-type="paid">
+                    Dibayar
+                </button>
+                <button class="px-4 py-2 border-b-2 border-transparent hover:text-orange-500 transaction-type-btn" data-type="processing">
+                    Sedang dikemas
+                </button>
+                <button class="px-4 py-2 border-b-2 border-transparent hover:text-orange-500 transaction-type-btn" data-type="shipped">
+                    Dikirim
+                </button>
+                <button class="px-4 py-2 border-b-2 border-transparent hover:text-orange-500 transaction-type-btn" data-type="completed">
+                    Selesai
                 </button>
             </div>
 
-            <div class="overflow-x-auto">d
+            <div class="overflow-x-auto">
                 <table class="w-full text-left">
                     <thead class="bg-gray-50">
                         <tr>
@@ -172,7 +120,7 @@
                     </thead>
                     <tbody class="divide-y divide-gray-200">
                         @forelse($orders as $order)
-                            <tr class="transition-colors hover:bg-gray-50">
+                            <tr class="transition-colors hover:bg-gray-50" data-status="{{ $order['status']['text']}}">
                                 <td class="px-4 py-3 font-medium">{{ $order['order_id'] }}</td>
                                 <td class="px-4 py-3">{{ $order['date'] }}</td>
                                 <td class="flex items-center px-4 py-3">
@@ -1038,7 +986,7 @@
                 }
             }
 
-            // Add click handlers to tabs
+             // Add click handlers to tabs
             tabButtons.forEach(tab => {
                 tab.addEventListener('click', () => {
                     const targetSection = tab.getAttribute('data-section');
@@ -1068,6 +1016,40 @@
                 // Show profile section by default
                 switchTab('profile-section');
             }
+
+             // ===============================Tab Transaction functionality=================================================
+            const transactionTypeBtns = document.querySelectorAll('.transaction-type-btn');
+            const orderRows = document.querySelectorAll('tbody tr');
+
+            transactionTypeBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    transactionTypeBtns.forEach(b => {
+                        b.classList.remove('active', 'text-orange-500', 'border-orange-500');
+                        b.classList.add('border-transparent');
+                    });
+
+                    // Add active class to clicked button
+                    btn.classList.add('active', 'text-orange-500', 'border-orange-500');
+                    btn.classList.remove('border-transparent');
+
+                    const selectedType = btn.textContent.trim(); // Get the button text instead of data-type
+                    
+                    // Show/hide rows based on status text
+                    orderRows.forEach(row => {
+                        if (selectedType === 'Semua') {
+                            row.classList.remove('hidden');
+                        } else {
+                            const rowStatus = row.getAttribute('data-status').trim();
+                            if (rowStatus === selectedType) {
+                                row.classList.remove('hidden');
+                            } else {
+                                row.classList.add('hidden');
+                            }
+                        }
+                    });
+                });
+            });
 
             // ==================== Form Submission Handling ====================
             if (addressForm) {
