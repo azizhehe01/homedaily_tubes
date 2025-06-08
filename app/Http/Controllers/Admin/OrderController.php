@@ -21,6 +21,7 @@ class OrderController extends Controller
                 'text' => $order->order_status ?? 'pending',
                 'class' => $this->getStatusClass($order->order_status)
             ],
+            'product_name' => $order->products->name,
             'order_id' => $order->order_id,
             'products' => $order->products
         ];

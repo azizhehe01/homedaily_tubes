@@ -3,90 +3,66 @@
 @section('title', 'Orders')
 
 @section('content')
-    <div class="py-4 table-orders">
-        <div class="overflow-x-auto">
-            <div class="inline-block min-w-full align-middle">
-                <div class="overflow-hidden border rounded-lg">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 text-sm text-start text-default-500">Order ID</th>
-                                <th scope="col" class="px-6 py-3 text-sm text-start text-default-500">Name</th>
-                                <th scope="col" class="px-6 py-3 text-sm text-start text-default-500">Order Date</th>
-                                <th scope="col" class="px-6 py-3 text-sm text-start text-default-500">Total Price</th>
-                                <th scope="col" class="px-6 py-3 text-sm text-start text-default-500">Payment Method</th>
-                                <th scope="col" class="px-6 py-3 text-sm text-start text-default-500">Order Status</th>
-                                <th scope="col" class="px-6 py-3 text-sm text-start text-default-500">Products</th>
-                                <th scope="col" class="px-6 py-3 text-sm text-end text-default-500">Action</th>
+    <div class="container mx-auto px-4 py-6">
+        <div class="bg-white rounded-xl shadow-lg">
+            <div class="overflow-hidden">
+                <table class="w-full table-auto">
+                    <thead class="bg-gray-100 border-b border-gray-200">
+                        <tr>
+                            <th class="px-6 py-4 text-sm font-semibold text-gray-700 uppercase tracking-wider text-start">Order ID</th>
+                            <th class="px-6 py-4 text-sm font-semibold text-gray-700 uppercase tracking-wider text-start">Name</th>
+                            <th class="px-6 py-4 text-sm font-semibold text-gray-700 uppercase tracking-wider text-start">Date</th>
+                            <th class="px-6 py-4 text-sm font-semibold text-gray-700 uppercase tracking-wider text-start">Price</th>
+                            <th class="px-6 py-4 text-sm font-semibold text-gray-700 uppercase tracking-wider text-start">Payment</th>
+                            <th class="px-6 py-4 text-sm font-semibold text-gray-700 uppercase tracking-wider text-start">Status</th>
+                            <th class="px-6 py-4 text-sm font-semibold text-gray-700 uppercase tracking-wider text-start">Products</th>
+                            <th class="px-6 py-4 text-sm font-semibold text-gray-700 uppercase tracking-wider text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        @foreach ($orders ?? [] as $order)
+                            <tr class="hover:bg-gray-50 transition-colors duration-200">
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">#{{ $order['id'] }}</td>
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $order['name'] }}</td>
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $order['order_date'] }}</td>
+                                <td class="px-6 py-4 text-sm font-bold text-gray-900">
+                                    Rp{{ number_format($order['total_price'], 0, ',', '.') }}
+                                </td>
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $order['payment_method'] }}</td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-full {{ $order['status']['class'] }}">
+                                        {{ $order['status']['text'] }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">
+                                    <span class="inline-flex items-center px-3 py-1.5 text-xs bg-gray-100 rounded-lg">
+                                        {{ $order['product_name']}}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-end">
+                                    <div class="flex justify-end gap-2">
+                                        @if($order['status']['text'] === 'paid')
+                                            <button type="submit" class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-yellow-700 bg-yellow-100 rounded hover:bg-yellow-200">
+                                                Kemas
+                                            </button>
+                                        @elseif($order['status']['text'] === 'packing')
+                                            <button type="submit" class="inline-flex items-center px-3 py-1.5 text-xs font-medium bg-purple-100 rounded hover:bg-purple-200">
+                                                Kirim
+                                            </button>
+                                        @elseif($order['status']['text'] === 'shipping')
+                                            <button type="submit" class="inline-flex items-center px-3 py-1.5 text-xs font-medium bg-green-100 rounded hover:bg-green-200">
+                                                Selesai
+                                            </button>
+                                        @endif
+                                    </div>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-200">
-                            @foreach ($orders ?? [] as $order)
-                                <tr>
-                                    <td class="px-6 py-4 text-sm font-medium whitespace-nowrap text-default-800">
-                                        {{ $order['id'] }}
-                                    </td>
-                                    <td class="px-6 py-4 text-sm font-medium whitespace-nowrap text-default-800">
-                                        {{ $order['name'] }}
-                                    </td>
-                                    <td class="px-6 py-4 text-sm whitespace-nowrap text-default-800">
-                                        {{ $order['order_date'] }}
-                                    </td>
-                                    <td class="px-6 py-4 text-sm whitespace-nowrap text-default-800">
-                                        Rp{{ number_format($order['total_price'], 0, ',', '.') }}
-                                    </td>
-                                    <td class="px-6 py-4 text-sm whitespace-nowrap text-default-800">
-                                        {{ $order['payment_method'] }}
-                                    </td>
-                                    <td class="px-6 py-4 text-sm whitespace-nowrap text-default-800">
-                                        <span class="px-2 py-1 text-xs rounded-full {{ $order['status']['class'] }}">
-                                            {{ $order['status']['text'] }}
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 text-sm whitespace-nowrap text-default-800">
-                                        <span class="px-2 py-1 text-xs rounded-full {{ $order['status']['class'] }}">
-                                            {{ $order['status']['text'] }}
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 text-sm font-medium whitespace-nowrap text-end">
-                                        <div class="flex justify-end space-x-2">
-                                            @if($order['status']['text'] === 'paid')
-                                                <form action="{{ route('admin.orders.update-status', $order['order_id']) }}" method="POST" class="inline">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <input type="hidden" name="status" value="packing">
-                                                    <button type="submit" class="px-3 py-1 text-sm text-yellow-700 bg-yellow-100 rounded-md hover:bg-yellow-200">
-                                                        Kemas Pesanan
-                                                    </button>
-                                                </form>
-                                            @elseif($order['status']['text'] === 'packing')
-                                                <form action="{{ route('admin.orders.update-status', $order['order_id']) }}" method="POST" class="inline">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <input type="hidden" name="status" value="shipping">
-                                                    <button type="submit" class="px-3 py-1 text-sm text-purple-700 bg-purple-100 rounded-md hover:bg-purple-200">
-                                                        Kirim Pesanan
-                                                    </button>
-                                                </form>
-                                            @endif
-                                            
-                                            <a class="text-primary hover:text-sky-700" href="#">
-                                                <iconify-icon icon="iconamoon:eye" width="20"></iconify-icon>
-                                            </a>
-                                        </div>
-                                    </td>
-                                    
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-
-    <!-- Modal -->
-    @include('admin.dashboard.partials.order-modal')
 @endsection
 
 @push('scripts')
