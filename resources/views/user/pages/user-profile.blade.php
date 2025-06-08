@@ -1,74 +1,63 @@
 @extends('user.components.layout')
 
 @section('content')
-    <div class="container px-4 py-8 mx-auto">
+    <div class="container mx-auto px-4 py-8">
         <!-- Tab Navigation -->
-        <div class="container px-4 mx-auto mb-6">
+        <div class="mb-6">
             <div class="flex overflow-x-auto border-b">
-                <button class="px-6 py-3 font-medium text-orange-500 border-b-2 border-orange-500 section-tab active"
-                    data-section="profile-section">
-                    <i data-lucide="user" class="inline w-4 h-4 mr-2"></i>Profile
+                <button class="section-tab active flex items-center px-6 py-3 font-medium text-orange-500 border-b-2 border-orange-500"
+                        data-section="profile-section">
+                    <i data-lucide="user" class="mr-2 h-4 w-4"></i>Profile
                 </button>
-                <button class="px-6 py-3 font-medium border-b-2 border-transparent section-tab hover:text-orange-500"
-                    data-section="transactions-section">
-                    <i data-lucide="history" class="inline w-4 h-4 mr-2"></i>Riwayat Transaksi
+                <button class="section-tab flex items-center px-6 py-3 font-medium border-b-2 border-transparent hover:text-orange-500"
+                        data-section="transactions-section">
+                    <i data-lucide="history" class="mr-2 h-4 w-4"></i>Riwayat Transaksi
                 </button>
-
-                <button class="px-6 py-3 font-medium border-b-2 border-transparent section-tab hover:text-orange-500"
-                    data-section="address-section">
-                    <i data-lucide="map-pin" class="inline w-4 h-4 mr-2"></i>Daftar Alamat
+                <button class="section-tab flex items-center px-6 py-3 font-medium border-b-2 border-transparent hover:text-orange-500"
+                        data-section="address-section">
+                    <i data-lucide="map-pin" class="mr-2 h-4 w-4"></i>Daftar Alamat
                 </button>
             </div>
         </div>
 
         <!-- Profile Section -->
-        <section id="profile-section" class="p-6 mb-8 rounded-lg shadow"
-            style="background-image: url('https://images.unsplash.com/photo-1727580674761-3aae55f53cad?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8eW91am98ZW58MHx8MHx8fDA%3D'); background-size: cover; background-position: center;">
+        <section id="profile-section" class="mb-8 rounded-lg p-6 shadow"
+                 style="background-image: url('https://images.unsplash.com/photo-1727580674761-3aae55f53cad?auto=format&fit=crop&w=600&q=60'); background-size: cover; background-position: center;">
             <div class="flex flex-col items-center md:flex-row md:items-start">
-                <div class="relative mb-4 md:mb-0">
-                    <img src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : asset('images      /default-profile.jpg') }}"
-                        alt="Profile Picture" class="h-60 w-60">
-
-                    <button
-                        class="flex items-center justify-center px-4 py-2 mt-4 text-white bg-orange-500 rounded-lg w-60 hover:bg-orange-600">
-                        <i data-lucide="pencil" class="w-4 h-4 mr-2"></i>
-                        Tambah Foto Profil
+                <div class="mb-4 md:mb-0">
+                    <img src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : asset('images/default-profile.jpg') }}"
+                         alt="Profile Picture" class="h-60 w-60 rounded-lg">
+                    <button class="mt-4 flex w-60 items-center justify-center rounded-lg bg-orange-500 px-4 py-2 text-white hover:bg-orange-600"
+                            id="upload-photo-btn">
+                        <i data-lucide="pencil" class="mr-2 h-4 w-4"></i>Tambah Foto Profil
                     </button>
                     <button id="ubahPasswordBtn"
-                        class="flex items-center justify-center px-4 py-2 mt-4 text-white transition-colors bg-orange-500 rounded-lg w-60 hover:bg-orange-600">
-                        <i data-lucide="pencil" class="w-4 h-4 mr-2"></i>
-                        Ubah Kata Sandi
+                            class="mt-4 flex w-60 items-center justify-center rounded-lg bg-orange-500 px-4 py-2 text-white hover:bg-orange-600">
+                        <i data-lucide="pencil" class="mr-2 h-4 w-4"></i>Ubah Kata Sandi
                     </button>
                 </div>
-                <div class="flex-1 w-full text-center md:text-left md:ml-6 md:w-2/3">
-                    <div class="w-full h-full p-6 rounded-lg bg-gray-50" style="height: calc(240px + 88px)">
-                        <!--Biodata -->
-                        <div class="flex flex-col justify-between h-full">
+                <div class="w-full flex-1 text-center md:ml-6 md:text-left">
+                    <div class="h-full w-full rounded-lg bg-gray-50 p-6" style="height: calc(240px + 88px)">
+                        <div class="flex h-full flex-col justify-between">
                             <div class="space-y-6">
-                                <div class="flex flex-col">
+                                <div>
                                     <label class="text-sm text-gray-500">Nama Lengkap</label>
-                                    <p class="text-base font-medium text-gray-700">
-                                        {{ Auth::user()->name }} <!-- Ambil nama user -->
-                                    </p>
+                                    <p class="text-base font-medium text-gray-700">{{ Auth::user()->name }}</p>
                                 </div>
-                                <div class="flex flex-col">
+                                <div>
                                     <label class="text-sm text-gray-500">Nomor Telepon</label>
                                     <p class="text-base font-medium text-gray-700">
-                                        {{ Auth::user()->phone_number ?? ' kaga  ada no telp kocak 😭' }}
-                                        <!-- Nomor telepon (jika ada) -->
+                                        {{ Auth::user()->phone_number ?? 'Belum ada nomor telepon' }}
                                     </p>
                                 </div>
-                                <div class="flex flex-col">
+                                <div>
                                     <label class="text-sm text-gray-500">Email</label>
-                                    <p class="text-base font-medium text-gray-700">
-                                        {{ Auth::user()->email }} <!-- Email user -->
-                                    </p>
+                                    <p class="text-base font-medium text-gray-700">{{ Auth::user()->email }}</p>
                                 </div>
                             </div>
                             <button id="edit-profile-btn"
-                                class="flex items-center justify-center w-full px-4 py-2 mt-4 text-white bg-orange-500 rounded-lg hover:bg-orange-600">
-                                <i data-lucide="user-pen" class="w-4 h-4 mr-2"></i>
-                                Edit Profil
+                                    class="mt-4 flex w-full items-center justify-center rounded-lg bg-orange-500 px-4 py-2 text-white hover:bg-orange-600">
+                                <i data-lucide="user-pen" class="mr-2 h-4 w-4"></i>Edit Profil
                             </button>
                         </div>
                     </div>
@@ -76,35 +65,21 @@
             </div>
         </section>
 
-        <!-- Transaction History -->
-        <section id="transactions-section" class="hidden p-6 mb-8 bg-white rounded-lg shadow">
-            <div class="flex flex-col items-start justify-between gap-4 mb-6 md:flex-row md:items-center">
+        <!-- Transaction History Section -->
+        <section id="transactions-section" class="hidden mb-8 rounded-lg bg-white p-6 shadow">
+            <div class="mb-6 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
                 <h2 class="flex items-center text-xl font-bold">
-                    <i data-lucide="history" class="w-5 h-5 mr-2 text-orange-500"></i> Riwayat Transaksi
+                    <i data-lucide="history" class="mr-2 h-5 w-5 text-orange-500"></i>Riwayat Transaksi
                 </h2>
             </div>
-            <!-- Transaction Type Tabs -->
-            <div class="flex mb-4 border-b">
-                <button class="px-4 py-2 font-medium text-orange-500 border-b-2 border-orange-500 transaction-type-btn active" data-type="all">
-                    Semua
-                </button>
-                <button class="px-4 py-2 border-b-2 border-transparent hover:text-orange-500 transaction-type-btn" data-type="menunggu pembayaran">
-                    Menunggu pembayaran  
-                </button>
-                <button class="px-4 py-2 border-b-2 border-transparent hover:text-orange-500 transaction-type-btn" data-type="dibayar">
-                    Dibayar
-                </button>
-                <button class="px-4 py-2 border-b-2 border-transparent hover:text-orange-500 transaction-type-btn" data-type="dikemas">
-                    Dikemas  
-                </button>
-                <button class="px-4 py-2 border-b-2 border-transparent hover:text-orange-500 transaction-type-btn" data-type="dikirim">
-                    Dikirim
-                </button>
-                <button class="px-4 py-2 border-b-2 border-transparent hover:text-orange-500 transaction-type-btn" data-type="selesai">
-                    Selesai
-                </button>
+            <div class="mb-4 flex border-b">
+                <button class="transaction-type-btn active px-4 py-2 font-medium text-orange-500 border-b-2 border-orange-500" data-type="all">Semua</button>
+                <button class="transaction-type-btn px-4 py-2 border-b-2 border-transparent hover:text-orange-500" data-type="menunggu pembayaran">Menunggu Pembayaran</button>
+                <button class="transaction-type-btn px-4 py-2 border-b-2 border-transparent hover:text-orange-500" data-type="dibayar">Dibayar</button>
+                <button class="transaction-type-btn px-4 py-2 border-b-2 border-transparent hover:text-orange-500" data-type="dikemas">Dikemas</button>
+                <button class="transaction-type-btn px-4 py-2 border-b-2 border-transparent hover:text-orange-500" data-type="dikirim">Dikirim</button>
+                <button class="transaction-type-btn px-4 py-2 border-b-2 border-transparent hover:text-orange-500" data-type="selesai">Selesai</button>
             </div>
-
             <div class="overflow-x-auto">
                 <table class="w-full text-left">
                     <thead class="bg-gray-50">
@@ -119,44 +94,52 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
-                        @forelse($orders as $order)
-                            <tr class="transition-colors hover:bg-gray-50" data-type="{{ strtolower($order['status']['text']) }}">
-                                <!-- {{ $order['status']['text'] }} -->
-                                <td class="px-4 py-3 font-medium">{{ $order['order_id'] }}</td>
-                                <td class="px-4 py-3">{{ $order['date'] }}</td>
-                                <td class="flex items-center px-4 py-3">
-                                    <img src="{{ asset('storage/' . $order['product']['image']) }}"
-                                        alt="{{ $order['product']['name'] }}"
-                                        class="object-cover w-10 h-10 mr-3 rounded-lg">
-                                    <div>
-                                        <p>{{ $order['product']['name'] }}</p>
-                                        <span class="text-xs text-gray-500">{{ $order['product']['type'] }}</span>
+                        @if(count($orders) > 0)
+                            @forelse($orders as $order)
+                                <tr class="transition-colors hover:bg-gray-50" 
+                                    data-order-id="{{ $order['order_id'] }}"
+                                    data-type="{{ strtolower($order['status']['text']) }}">
+                                    <td class="px-4 py-3 font-medium">{{ $order['order_id'] }}</td>
+                                    <td class="px-4 py-3">{{ $order['date'] }}</td>
+                                    <td class="flex items-center px-4 py-3">
+                                        <img src="{{ asset('storage/' . $order['product']['image']) }}"
+                                             alt="{{ $order['product']['name'] }}"
+                                             class="mr-3 h-10 w-10 rounded-lg object-cover">
+                                        <div>
+                                            <p>{{ $order['product']['name'] }}</p>
+                                            <span class="text-xs text-gray-500">{{ $order['product']['type'] }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3">{{ $order['quantity'] }}</td>
+                                    <td class="px-4 py-3 font-medium">Rp {{ number_format($order['total_price'], 0, ',', '.') }}</td>
+                                    <td class="px-4 py-3">
+                                        <span class="flex items-center px-2 py-1 text-xs rounded-full w-fit {{ $order['status']['class'] }}">
+                                            <i data-lucide="{{ $order['status']['icon'] }}" class="mr-1 h-3 w-3"></i>
+                                            {{ $order['status']['text'] }}
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <button class="view-tracking-btn flex w-full items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            <i data-lucide="eye" class="mr-2 h-4 w-4"></i>Lihat Detail
+                                        </button>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="7" class="px-4 py-3 text-center text-gray-500">Tidak ada pesanan</td>
+                                </tr>
+                            @endforelse
+                        @else
+                            <tr class="no-orders-message">
+                                <td colspan="7" class="px-4 py-8 text-center">
+                                    <div class="flex flex-col items-center justify-center">
+                                        <i data-lucide="package-x" class="mb-4 h-16 w-16 text-gray-300"></i>
+                                        <h3 class="mb-2 text-lg font-medium text-gray-900">Belum Ada Transaksi</h3>
+                                        <p class="mb-4 text-gray-500">Anda belum melakukan transaksi apapun</p>
                                     </div>
                                 </td>
-                                <td class="px-4 py-3">{{ $order['quantity'] }}</td>
-                                <td class="px-4 py-3 font-medium">Rp
-                                    {{ number_format($order['total_price'], 0, ',', '.') }}</td>
-                                <td class="px-4 py-3">
-                                    <span
-                                        class="flex items-center px-2 py-1 text-xs rounded-full w-fit {{ $order['status']['class'] }}">
-                                        <i data-lucide="{{ $order['status']['icon'] }}" class="w-3 h-3 mr-1"></i>
-                                        {{ $order['status']['text'] }}
-                                    </span>
-                                </td>
-                                <td class="relative px-4 py-3">
-                                    <button
-                                        class="block w-full px-4 py-2 text-sm text-left text-gray-700 view-tracking-btn hover:bg-gray-100">
-                                        <i data-lucide="eye" class="inline w-4 h-4 mr-2"></i> Lihat Detail
-                                    </button>
-                                </td>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="7" class="px-4 py-3 text-center text-gray-500">
-                                    Tidak ada pesanan
-                                </td>
-                            </tr>
-                        @endforelse
+                        @endif
                     </tbody>
                 </table>
             </div>
@@ -164,627 +147,504 @@
 
         <!-- Address Management Section -->
         @if (session('address_success'))
-            <div class="p-4 mb-6 text-green-800 bg-green-100 rounded-lg">
+            <div class="mb-6 rounded-lg bg-green-100 p-4 text-green-800">
                 <div class="flex items-center">
-                    <i data-lucide="check-circle" class="w-5 h-5 mr-2"></i>
+                    <i data-lucide="check-circle" class="mr-2 h-5 w-5"></i>
                     {{ session('address_success') }}
                 </div>
             </div>
         @endif
-
         @if (session('address_error'))
-            <div class="p-4 mb-6 text-red-800 bg-red-100 rounded-lg">
+            <div class="mb-6 rounded-lg bg-red-100 p-4 text-red-800">
                 <div class="flex items-center">
-                    <i data-lucide="alert-circle" class="w-5 h-5 mr-2"></i>
+                    <i data-lucide="alert-circle" class="mr-2 h-5 w-5"></i>
                     {{ session('address_error') }}
                 </div>
             </div>
         @endif
-        <section id="address-section" class="hidden p-6 mt-8 bg-white rounded-lg shadow">
-            <div class="flex items-center justify-between mb-6">
+        <section id="address-section" class="hidden mt-8 rounded-lg bg-white p-6 shadow">
+            <div class="mb-6 flex items-center justify-between">
                 <h2 class="flex items-center text-xl font-bold">
-                    <i data-lucide="map-pin" class="w-5 h-5 mr-2 text-orange-500"></i> Daftar Alamat
+                    <i data-lucide="map-pin" class="mr-2 h-5 w-5 text-orange-500"></i>Daftar Alamat
                 </h2>
-                <button id="add-address-btn"
-                    class="flex items-center px-4 py-2 text-white bg-orange-500 rounded-lg hover:bg-orange-600"
-                    onclick="switchTab('address-section')">
-                    <i data-lucide="plus" class="w-4 h-4 mr-2"></i> Tambah Alamat
+                <button id="add-address-btn" class="flex items-center rounded-lg bg-orange-500 px-4 py-2 text-white hover:bg-orange-600">
+                    <i data-lucide="plus" class="mr-2 h-4 w-4"></i>Tambah Alamat
                 </button>
             </div>
-
             <div class="relative mb-6">
-                <i data-lucide="search" class="absolute text-gray-400 transform -translate-y-1/2 left-3 top-1/2"></i>
-                <input type="text" placeholder="Cari Alamat"
-                    class="w-full py-2 pl-10 border-none rounded-lg bg-gray-50">
+                <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                <input type="text" placeholder="Cari Alamat" class="w-full rounded-lg bg-gray-50 py-2 pl-10 border-none">
             </div>
-
             <h3 class="mb-4 text-lg font-semibold text-orange-500">Semua Alamat</h3>
-
             <div class="space-y-4">
                 @forelse(Auth::user()->addresses as $address)
-                    <div class="p-4 transition-shadow border rounded-lg hover:shadow-md"
-                        data-address-id="{{ $address->id }}">
+                    <div class="rounded-lg border p-4 transition-shadow hover:shadow-md" data-address-id="{{ $address->id }}">
                         <div class="flex items-start justify-between">
                             <h4 class="font-semibold text-orange-500">{{ $address->label ?? 'Alamat' }}</h4>
                             <div class="flex gap-2">
-                                <form
-                                    action="{{ route('user.profile.address.destroy', ['address_id' => $address->address_id]) }}"
-                                    method="POST" class="delete-address-form">
+                                <form action="{{ route('user.profile.address.destroy', ['address_id' => $address->address_id]) }}"
+                                      method="POST" class="delete-address-form">
                                     @csrf
                                     @method('DELETE')
                                     <button type="button" class="delete-address-btn">
-                                        <i data-lucide="trash-2"
-                                            class="w-5 h-5 text-gray-400 cursor-pointer hover:text-red-500"></i>
+                                        <i data-lucide="trash-2" class="h-5 w-5 text-gray-400 hover:text-red-500"></i>
                                     </button>
                                 </form>
                             </div>
                         </div>
-
                         <div class="mt-2">
                             <p class="font-semibold">{{ $address->recipient_name }}</p>
                             <p class="text-gray-500">{{ $address->phone_number }}</p>
                         </div>
-
                         <p class="mt-2 text-gray-700">
-                            {{ $address->full_address }},
-                            {{ $address->city }},
-                            {{ $address->province }}
+                            {{ $address->full_address }}, {{ $address->city }}, {{ $address->province }}
                             @if ($address->postal_code)
                                 {{ $address->postal_code }}
                             @endif
                         </p>
-
-                        <div class="flex items-center mt-2">
-                            <i data-lucide="map-pin" class="w-4 h-4 mr-1 text-orange-500"></i>
+                        <div class="mt-2 flex items-center">
+                            <i data-lucide="map-pin" class="mr-1 h-4 w-4 text-orange-500"></i>
                             <span class="text-sm text-orange-500">Alamat Utama</span>
                         </div>
-
-                        <button
-                            class="w-full py-2 mt-3 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 set-default-address"
-                            data-address-id="{{ $address->id }}">
+                        <button class="set-default-address mt-3 w-full rounded-lg border border-gray-300 py-2 text-gray-700 hover:bg-gray-50"
+                                data-address-id="{{ $address->id }}">
                             Jadikan Alamat Utama
                         </button>
                     </div>
                 @empty
-                    <div class="p-4 text-center text-gray-500 border border-dashed rounded-lg">
-                        <i data-lucide="map-pin-off" class="w-8 h-8 mx-auto mb-2 text-gray-400"></i>
+                    <div class="rounded-lg border border-dashed p-4 text-center text-gray-500">
+                        <i data-lucide="map-pin-off" class="mx-auto mb-2 h-8 w-8 text-gray-400"></i>
                         <p>Belum ada alamat yang tersimpan</p>
                     </div>
                 @endforelse
             </div>
         </section>
-    </div>
 
-
-    <!-- Profile Dialog -->
-    <div id="profile-dialog"
-        class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-200 bg-black bg-opacity-50 opacity-0">
-        <div class="w-full max-w-md p-6 transition-transform duration-200 transform scale-95 bg-white rounded-lg">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-semibold">Edit Profil</h3>
-                <button id="close-profile-dialog" class="text-gray-500 hover:text-gray-700">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-
-            <form id="profile-form" method="POST" action="{{ route('user.profile.update') }}">
-                @csrf
-                @method('PUT')
-
-                <div class="grid gap-4 py-4">
-                    <div class="grid gap-2">
-                        <label for="profile-name" class="text-sm font-medium">Nama Lengkap</label>
-                        <input id="profile-name" name="name" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md"
-                            value="{{ Auth::user()->name }}" />
-                    </div>
-                    <div class="grid gap-2">
-                        <label for="profile-phone" class="text-sm font-medium">Nomor Telepon</label>
-                        <input id="profile-phone" name="phone_number" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md"
-                            value="{{ Auth::user()->phone_number }}" />
-                    </div>
-                    <div class="grid gap-2">
-                        <label for="profile-email" class="text-sm font-medium">Email</label>
-                        <input id="profile-email" name="email" type="email" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md"
-                            value="{{ Auth::user()->email }}" />
-                    </div>
-                </div>
-                <div class="flex justify-end gap-2">
-                    <button type="button" id="cancel-profile-btn"
-                        class="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50">
-                        Batal
-                    </button>
-                    <button type="submit" class="px-4 py-2 text-white bg-orange-500 rounded-md hover:bg-orange-600">
-                        Simpan
+        <!-- Profile Dialog -->
+        <div id="profile-dialog" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 opacity-0 transition-opacity duration-200 flex items-center justify-center">
+            <div class="w-full max-w-md rounded-lg bg-white p-6 transform scale-95 transition-transform duration-200">
+                <div class="mb-4 flex items-center justify-between">
+                    <h3 class="text-lg font-semibold">Edit Profil</h3>
+                    <button id="close-profile-dialog" class="text-gray-500 hover:text-gray-700">
+                        <i data-lucide="x" class="h-5 w-5"></i>
                     </button>
                 </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Photo Upload Dialog -->
-    <div id="photo-dialog"
-        class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-200 bg-black bg-opacity-50 opacity-0">
-        <div class="w-full max-w-md p-6 transition-transform duration-200 transform scale-95 bg-white rounded-lg">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-semibold">Ubah Foto Profil</h3>
-                <button id="close-photo-dialog" class="text-gray-500 hover:text-gray-700">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-
-            <form id="photo-form" method="POST" action="{{ route('user.profile.photo.update') }}"
-                enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
-
-                <div class="grid gap-4 py-4">
-                    <div class="flex flex-col items-center justify-center gap-4">
-                        <!-- Foto Preview -->
-                        <div class="relative w-32 h-32 overflow-hidden bg-gray-100 rounded-full">
-                            <img id="photo-preview"
-                                src="{{ Auth::user()->avatar ? asset('storage/profiles/' . Auth::user()->avatar) : 'https://via.placeholder.com/128' }}"
-                                class="object-cover w-full h-full" alt="Profile Preview">
-                        </div>
-
-                        <!-- File Input -->
-                        <div class="w-full">
-                            <label for="profile-photo" class="block mb-2 text-sm font-medium text-gray-700">
-                                Pilih Foto Baru
-                            </label>
-                            <input type="file" id="profile-photo" name="avatar" accept="image/*"
-                                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100">
-                        </div>
-
-                        <!-- Informasi -->
-                        <p class="text-xs text-gray-500">
-                            Format: JPG, PNG maksimal 2MB
-                        </p>
-                    </div>
-                </div>
-                <div class="flex justify-end gap-2">
-                    <button type="button" id="cancel-photo-btn"
-                        class="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50">
-                        Batal
-                    </button>
-                    <button type="submit" class="px-4 py-2 text-white bg-orange-500 rounded-md hover:bg-orange-600">
-                        Simpan Foto
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div id="passwordModal" class="fixed inset-0 z-50 flex items-center justify-center hidden p-4 bg-black/50">
-        <div class="w-full max-w-md overflow-hidden bg-white shadow-xl rounded-xl">
-            <!-- Header -->
-            <div class="flex items-center justify-between p-6 border-b">
-                <h3 class="text-xl font-bold text-gray-800">Ganti Password</h3>
-                <button id="closeModal" type="button" class="text-gray-400 transition-colors hover:text-gray-600">
-                    <span class="iconify" data-icon="mdi:close"></span>
-                </button>
-            </div>
-
-            <!-- Form -->
-            <form method="POST" action="{{ route('user.profile.password.update') }}">
-                @csrf
-                @method('PUT')
-
-                <!-- Tampilkan error validasi -->
-                @if ($errors->any())
-                    <div class="p-4 mx-4 mt-4 text-sm text-red-600 bg-red-100 rounded-md">
-                        @foreach ($errors->all() as $error)
-                            <p>{{ $error }}</p>
-                        @endforeach
-                    </div>
-                @endif
-
-                <div class="p-6 space-y-4">
-                    <!-- Current Password -->
-                    <div class="space-y-2">
-                        <label for="current_password" class="block text-gray-700">Password Sekarang</label>
-                        <div class="relative">
-                            <input id="current_password" name="current_password" type="password"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
-                                placeholder="Masukkan password saat ini" autofocus>
-                            <button type="button" onclick="togglePassword('current_password')"
-                                class="absolute text-gray-400 transform -translate-y-1/2 right-3 top-1/2 hover:text-gray-600">
-                                <span class="iconify" data-icon="mdi:eye"></span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- New Password -->
-                    <div class="space-y-2">
-                        <label for="new_password" class="block text-gray-700">Password Baru</label>
-                        <div class="relative">
-                            <input id="new_password" name="new_password" type="password"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
-                                placeholder="Password minimal 8 karakter"
-                                title="Minimal 8 karakter, mengandung huruf dan angka">
-                            <button type="button" onclick="togglePassword('new_password')"
-                                class="absolute text-gray-400 transform -translate-y-1/2 right-3 top-1/2 hover:text-gray-600">
-                                <span class="iconify" data-icon="mdi:eye"></span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Confirm Password -->
-                    <div class="space-y-2">
-                        <label for="confirm_password" class="block text-gray-700">Konfirmasi Password</label>
-                        <div class="relative">
-                            <input id="confirm_password" name="confirm_password" type="password"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
-                                placeholder="Ketik ulang password baru">
-                            <button type="button" onclick="togglePassword('confirm_password')"
-                                class="absolute text-gray-400 transform -translate-y-1/2 right-3 top-1/2 hover:text-gray-600">
-                                <span class="iconify" data-icon="mdi:eye"></span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Footer -->
-                <div class="flex justify-end gap-3 p-6 border-t bg-gray-50">
-                    <button type="button" onclick="document.getElementById('passwordModal').classList.add('hidden')"
-                        class="px-5 py-2 text-gray-700 transition-colors rounded-lg hover:bg-gray-100">
-                        Batal
-                    </button>
-                    <button type="submit"
-                        class="px-5 py-2 text-white transition-colors bg-orange-500 rounded-lg hover:bg-orange-600">
-                        Simpan Perubahan
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Address Dialog -->
-    <div id="address-dialog"
-        class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-200 bg-black bg-opacity-50 opacity-0">
-        <div class="w-full max-w-md p-6 transition-transform duration-200 transform scale-95 bg-white rounded-lg">
-            <div class="flex items-center justify-between mb-4">
-                <h3 id="dialog-title" class="text-lg font-semibold">
-                    {{ isset($edit_address) ? 'Edit Alamat' : 'Tambah Alamat' }}
-                </h3>
-                <button id="close-dialog" class="text-gray-500 hover:text-gray-700">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-
-            <form id="address-form" method="POST"
-                action="{{ isset($edit_address) ? route('user.profile.address.update', $edit_address->id) : route('user.profile.address.store') }}">
-                @csrf
-                @if (isset($edit_address))
+                <form id="profile-form" method="POST" action="{{ route('user.profile.update') }}">
+                    @csrf
                     @method('PUT')
-                @endif
-
-                <div class="grid gap-4 py-4">
-                    <!-- Nama Penerima -->
-                    <div class="grid gap-2">
-                        <label for="recipient_name" class="text-sm font-medium">Nama Penerima*</label>
-                        <input id="recipient_name" name="recipient_name" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md"
-                            value="{{ old('recipient_name', $edit_address->recipient_name ?? '') }}"
-                            placeholder="Nama lengkap penerima" />
-                        @error('recipient_name', 'address')
-                            <p class="text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                    <div class="grid gap-4 py-4">
+                        <div class="grid gap-2">
+                            <label for="profile-name" class="text-sm font-medium">Nama Lengkap</label>
+                            <input id="profile-name" name="name" required class="w-full rounded-md border border-gray-300 px-3 py-2"
+                                   value="{{ Auth::user()->name }}">
+                        </div>
+                        <div class="grid gap-2">
+                            <label for="profile-phone" class="text-sm font-medium">Nomor Telepon</label>
+                            <input id="profile-phone" name="phone_number" required class="w-full rounded-md border border-gray-300 px-3 py-2"
+                                   value="{{ Auth::user()->phone_number }}">
+                        </div>
+                        <div class="grid gap-2">
+                            <label for="profile-email" class="text-sm font-medium">Email</label>
+                            <input id="profile-email" name="email" type="email" required class="w-full rounded-md border border-gray-300 px-3 py-2"
+                                   value="{{ Auth::user()->email }}">
+                        </div>
                     </div>
-
-                    <!-- Nomor Telepon -->
-                    <div class="grid gap-2">
-                        <label for="phone_number" class="text-sm font-medium">Nomor Telepon*</label>
-                        <input id="phone_number" name="phone_number" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md"
-                            value="{{ old('phone_number', $edit_address->phone_number ?? '') }}"
-                            placeholder="Contoh: 081234567890" />
-                        @error('phone_number', 'address')
-                            <p class="text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                    <div class="flex justify-end gap-2">
+                        <button type="button" id="cancel-profile-btn" class="rounded-md border border-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-50">Batal</button>
+                        <button type="submit" class="rounded-md bg-orange-500 px-4 py-2 text-white hover:bg-orange-600">Simpan</button>
                     </div>
+                </form>
+            </div>
+        </div>
 
-                    <!-- Provinsi -->
-                    <div class="grid gap-2">
-                        <label for="province" class="text-sm font-medium">Provinsi*</label>
-                        <input id="province" name="province" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md"
-                            value="{{ old('province', $edit_address->province ?? '') }}"
-                            placeholder="Contoh: Jawa Barat" />
-                        @error('province', 'address')
-                            <p class="text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+        <!-- Photo Upload Dialog -->
+        <div id="photo-dialog" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 opacity-0 transition-opacity duration-200 flex items-center justify-center">
+            <div class="w-full max-w-md rounded-lg bg-white p-6 transform scale-95 transition-transform duration-200">
+                <div class="mb-4 flex items-center justify-between">
+                    <h3 class="text-lg font-semibold">Ubah Foto Profil</h3>
+                    <button id="close-photo-dialog" class="text-gray-500 hover:text-gray-700">
+                        <i data-lucide="x" class="h-5 w-5"></i>
+                    </button>
+                </div>
+                <form id="photo-form" method="POST" action="{{ route('user.profile.photo.update') }}" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <div class="grid gap-4 py-4">
+                        <div class="flex flex-col items-center justify-center gap-4">
+                            <div class="h-32 w-32 overflow-hidden rounded-full bg-gray-100">
+                                <img id="photo-preview" src="{{ Auth::user()->avatar ? asset('storage/profiles/' . Auth::user()->avatar) : 'https://via.placeholder.com/128' }}"
+                                     class="h-full w-full object-cover" alt="Profile Preview">
+                            </div>
+                            <div class="w-full">
+                                <label for="profile-photo" class="mb-2 block text-sm font-medium text-gray-700">Pilih Foto Baru</label>
+                                <input type="file" id="profile-photo" name="avatar" accept="image/*"
+                                       class="block w-full text-sm text-gray-500 file:mr-4 file:rounded-md file:border-0 file:bg-orange-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-orange-700 hover:file:bg-orange-100">
+                            </div>
+                            <p class="text-xs text-gray-500">Format: JPG, PNG maksimal 2MB</p>
+                        </div>
                     </div>
-
-                    <!-- Kota/Kabupaten -->
-                    <div class="grid gap-2">
-                        <label for="city" class="text-sm font-medium">Kota/Kabupaten*</label>
-                        <input id="city" name="city" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md"
-                            value="{{ old('city', $edit_address->city ?? '') }}" placeholder="Contoh: Bandung" />
-                        @error('city', 'address')
-                            <p class="text-sm text-red-600">{{ $message }}</p>
-                        @enderror
+                    <div class="flex justify-end gap-2">
+                        <button type="button" id="cancel-photo-btn" class="rounded-md border border-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-50">Batal</button>
+                        <button type="submit" class="rounded-md bg-orange-500 px-4 py-2 text-white hover:bg-orange-600">Simpan Foto</button>
                     </div>
+                </form>
+            </div>
+        </div>
 
-                    <!-- Kode Pos -->
-                    <div class="grid gap-2">
-                        <label for="postal_code" class="text-sm font-medium">Kode Pos</label>
-                        <input id="postal_code" name="postal_code"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md"
-                            value="{{ old('postal_code', $edit_address->postal_code ?? '') }}"
-                            placeholder="Contoh: 40132" />
-                        @error('postal_code', 'address')
-                            <p class="text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Alamat Lengkap -->
-                    <div class="grid gap-2">
-                        <label for="full_address" class="text-sm font-medium">Alamat Lengkap*</label>
-                        <textarea id="full_address" name="full_address" required rows="3"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md"
-                            placeholder="Contoh: Jl. Merdeka No. 10, RT 01/RW 02, Kec. Bandung Kulon">{{ old('full_address', $edit_address->full_address ?? '') }}</textarea>
-                        @error('full_address', 'address')
-                            <p class="text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Error Message -->
-                    @if ($errors->address->any())
-                        <div class="p-2 text-sm text-red-600 bg-red-100 rounded-md">
-                            @foreach ($errors->address->all() as $error)
+        <!-- Password Change Dialog -->
+        <div id="passwordModal" class="fixed inset-0 z-50 hidden bg-black/50 p-4 flex items-center justify-center">
+            <div class="w-full max-w-md overflow-hidden rounded-xl bg-white shadow-xl">
+                <div class="flex items-center justify-between border-b p-6">
+                    <h3 class="text-xl font-bold text-gray-800">Ganti Password</h3>
+                    <button id="closeModal" type="button" class="text-gray-400 hover:text-gray-600">
+                        <span class="iconify" data-icon="mdi:close"></span>
+                    </button>
+                </div>
+                <form method="POST" action="{{ route('user.profile.password.update') }}">
+                    @csrf
+                    @method('PUT')
+                    @if ($errors->any())
+                        <div class="mx-4 mt-4 rounded-md bg-red-100 p-4 text-sm text-red-600">
+                            @foreach ($errors->all() as $error)
                                 <p>{{ $error }}</p>
                             @endforeach
                         </div>
                     @endif
-                </div>
-
-                <div class="flex justify-end gap-2">
-                    <button type="button" id="cancel-btn"
-                        class="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50">
-                        Batal
-                    </button>
-                    <button type="submit" class="px-4 py-2 text-white bg-orange-500 rounded-md hover:bg-orange-600">
-                        {{ isset($edit_address) ? 'Update Alamat' : 'Simpan Alamat' }}
-                    </button>
-                </div>
-            </form>
+                    <div class="space-y-4 p-6">
+                        <div class="space-y-2">
+                            <label for="current_password" class="block text-gray-700">Password Sekarang</label>
+                            <div class="relative">
+                                <input id="current_password" name="current_password" type="password"
+                                       class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-orange-500 focus:ring-2 focus:ring-orange-500"
+                                       placeholder="Masukkan password saat ini" autofocus>
+                                <button type="button" onclick="togglePassword('current_password')"
+                                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                    <span class="iconify" data-icon="mdi:eye"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label for="new_password" class="block text-gray-700">Password Baru</label>
+                            <div class="relative">
+                                <input id="new_password" name="new_password" type="password"
+                                       class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-orange-500 focus:ring-2 focus:ring-orange-500"
+                                       placeholder="Password minimal 8 karakter" title="Minimal 8 karakter, mengandung huruf dan angka">
+                                <button type="button" onclick="togglePassword('new_password')"
+                                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                    <span class="iconify" data-icon="mdi:eye"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label for="confirm_password" class="block text-gray-700">Konfirmasi Password</label>
+                            <div class="relative">
+                                <input id="confirm_password" name="confirm_password" type="password"
+                                       class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-orange-500 focus:ring-2 focus:ring-orange-500"
+                                       placeholder="Ketik ulang password baru">
+                                <button type="button" onclick="togglePassword('confirm_password')"
+                                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                    <span class="iconify" data-icon="mdi:eye"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-end gap-3 border-t bg-gray-50 p-6">
+                        <button type="button" onclick="document.getElementById('passwordModal').classList.add('hidden')"
+                                class="rounded-lg px-5 py-2 text-gray-700 hover:bg-gray-100">Batal</button>
+                        <button type="submit" class="rounded-lg bg-orange-500 px-5 py-2 text-white hover:bg-orange-600">Simpan Perubahan</button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
 
-    <!-- Product Tracking Detail Dialog -->
-    <div id="product-tracking-dialog"
-        class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-200 bg-black bg-opacity-50">
-        <div class="bg-white rounded-lg w-full max-w-2xl p-6 max-h-[90vh] overflow-y-auto">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-semibold">Detail Pengiriman Produk</h3>
-                <button class="text-gray-500 hover:text-gray-700" id="close-tracking-dialog">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-
-            <div class="pb-4 mb-4 border-b">
-                <div class="flex items-start justify-between mb-2">
-                    <div>
-                        <p class="text-lg font-semibold">#{{ $order['order_id'] }} - {{ $order['product']['name'] }}</p>
-                        <p class="text-gray-500">Tanggal Pembelian: {{ $order['date'] }}</p>
-                    </div>
-                    <span class="flex items-center px-2 py-1 text-xs rounded-full {{ $order['status']['class'] }}">
-                        <i data-lucide="{{ $order['status']['icon'] }}" class="w-3 h-3 mr-1"></i>
-                        {{ $order['status']['text'] }}
-                    </span>
+        <!-- Address Dialog -->
+        <div id="address-dialog" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 opacity-0 transition-opacity duration-200 flex items-center justify-center">
+            <div class="w-full max-w-md rounded-lg bg-white p-6 transform scale-95 transition-transform duration-200">
+                <div class="mb-4 flex items-center justify-between">
+                    <h3 id="dialog-title" class="text-lg font-semibold">
+                        {{ isset($edit_address) ? 'Edit Alamat' : 'Tambah Alamat' }}
+                    </h3>
+                    <button id="close-dialog" class="text-gray-500 hover:text-gray-700">
+                        <i data-lucide="x" class="h-5 w-5"></i>
+                    </button>
                 </div>
-            </div>
-
-            <div class="mb-6">
-                <h4 class="mb-2 font-semibold">Informasi Pengiriman</h4>
-                <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    <div>
-                        <p class="text-sm text-gray-500">Kurir</p>
-                        <p class="font-medium">{{ $order['courier'] ?? 'JNE Express' }}</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500">No. Resi</p>
-                        <p class="font-medium">{{ $order['tracking_number'] ?? 'Menunggu' }}</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500">Estimasi Tiba</p>
-                        <p class="font-medium">{{ $order['estimated_arrival'] ?? '-' }}</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500">Berat</p>
-                        <p class="font-medium">{{ $order['product']['weight'] ?? '1' }} kg</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mb-6">
-                <h4 class="mb-2 font-semibold">Alamat Pengiriman</h4>
-                <div class="p-3 rounded-lg bg-gray-50">
-                    @php
-                        $address = Auth::user()->addresses->first();
-                    @endphp
-                    <p class="font-medium">{{ $address->recipient_name ?? Auth::user()->name }}</p>
-                    <p>{{ $address->phone_number ?? Auth::user()->phone_number }}</p>
-                    <p class="mt-1">{{ $address->full_address ?? 'Alamat belum ditambahkan' }}</p>
-                </div>
-            </div>
-
-            <div class="mb-6">
-                <h4 class="mb-2 font-semibold">Produk</h4>
-                <div class="flex items-center p-3 rounded-lg bg-gray-50">
-                    @if ($order['product']['image'])
-                        <img src="{{ asset('storage/' . $order['product']['image']) }}"
-                            alt="{{ $order['product']['name'] }}" class="object-cover w-16 h-16 mr-3 rounded">
+                <form id="address-form" method="POST"
+                      action="{{ isset($edit_address) ? route('user.profile.address.update', $edit_address->id) : route('user.profile.address.store') }}">
+                    @csrf
+                    @if (isset($edit_address))
+                        @method('PUT')
                     @endif
-                    <div>
-                        <p class="font-medium">{{ $order['product']['name'] }}</p>
-                        <p class="text-gray-500">{{ $order['quantity'] }} x
-                            Rp{{ number_format($order['total_price'], 0, ',', '.') }}</p>
+                    <div class="grid gap-4 py-4">
+                        <div class="grid gap-2">
+                            <label for="recipient_name" class="text-sm font-medium">Nama Penerima*</label>
+                            <input id="recipient_name" name="recipient_name" required class="w-full rounded-md border border-gray-300 px-3 py-2"
+                                   value="{{ old('recipient_name', $edit_address->recipient_name ?? '') }}" placeholder="Nama lengkap penerima">
+                            @error('recipient_name', 'address')
+                                <p class="text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="grid gap-2">
+                            <label for="phone_number" class="text-sm font-medium">Nomor Telepon*</label>
+                            <input id="phone_number" name="phone_number" required class="w-full rounded-md border border-gray-300 px-3 py-2"
+                                   value="{{ old('phone_number', $edit_address->phone_number ?? '') }}" placeholder="Contoh: 081234567890">
+                            @error('phone_number', 'address')
+                                <p class="text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="grid gap-2">
+                            <label for="province" class="text-sm font-medium">Provinsi*</label>
+                            <input id="province" name="province" required class="w-full rounded-md border border-gray-300 px-3 py-2"
+                                   value="{{ old('province', $edit_address->province ?? '') }}" placeholder="Contoh: Jawa Barat">
+                            @error('province', 'address')
+                                <p class="text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="grid gap-2">
+                            <label for="city" class="text-sm font-medium">Kota/Kabupaten*</label>
+                            <input id="city" name="city" required class="w-full rounded-md border border-gray-300 px-3 py-2"
+                                   value="{{ old('city', $edit_address->city ?? '') }}" placeholder="Contoh: Bandung">
+                            @error('city', 'address')
+                                <p class="text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="grid gap-2">
+                            <label for="postal_code" class="text-sm font-medium">Kode Pos</label>
+                            <input id="postal_code" name="postal_code" class="w-full rounded-md border border-gray-300 px-3 py-2"
+                                   value="{{ old('postal_code', $edit_address->postal_code ?? '') }}" placeholder="Contoh: 40132">
+                            @error('postal_code', 'address')
+                                <p class="text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="grid gap-2">
+                            <label for="full_address" class="text-sm font-medium">Alamat Lengkap*</label>
+                            <textarea id="full_address" name="full_address" required rows="3" class="w-full rounded-md border border-gray-300 px-3 py-2"
+                                      placeholder="Contoh: Jl. Merdeka No. 10, RT 01/RW 02, Kec. Bandung Kulon">{{ old('full_address', $edit_address->full_address ?? '') }}</textarea>
+                            @error('full_address', 'address')
+                                <p class="text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        @if ($errors->address->any())
+                            <div class="rounded-md bg-red-100 p-2 text-sm text-red-600">
+                                @foreach ($errors->address->all() as $error)
+                                    <p>{{ $error }}</p>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
+                    <div class="flex justify-end gap-2">
+                        <button type="button" id="cancel-btn" class="rounded-md border border-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-50">Batal</button>
+                        <button type="submit" class="rounded-md bg-orange-500 px-4 py-2 text-white hover:bg-orange-600">
+                            {{ isset($edit_address) ? 'Update Alamat' : 'Simpan Alamat' }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        @if(isset($orders) && count($orders) > 0)
+        <!-- Product Tracking Dialog -->
+        <div id="product-tracking-dialog" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 transition-opacity duration-200 flex items-center justify-center">
+            <div class="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-white p-6">
+                <div class="mb-4 flex items-center justify-between">
+                    <h3 class="text-lg font-semibold">Detail Pengiriman Produk</h3>
+                    <button id="close-tracking-dialog" class="text-gray-500 hover:text-gray-700">
+                        <i data-lucide="x" class="h-5 w-5"></i>
+                    </button>
+                </div>
+                @foreach($orders as $order)
+                <div class="tracking-content" id="tracking-content-{{ $order['order_id'] }}" style="display: none;">
+                    <div class="mb-4 border-b pb-4">
+                        <div class="mb-2 flex items-start justify-between">
+                            <div>
+                                <p class="text-lg font-semibold">#{{ $order['order_id'] }} - {{ $order['product']['name'] }}</p>
+                                <p class="text-gray-500">Tanggal Pembelian: {{ $order['date'] }}</p>
+                            </div>
+                            <span class="flex items-center px-2 py-1 text-xs rounded-full {{ $order['status']['class'] }}">
+                                <i data-lucide="{{ $order['status']['icon'] }}" class="mr-1 h-3 w-3"></i>
+                                {{ $order['status']['text'] }}
+                            </span>
+                        </div>
+                    </div>
+                <div class="mb-6">
+                    <h4 class="mb-2 font-semibold">Informasi Pengiriman</h4>
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <div>
+                            <p class="text-sm text-gray-500">Kurir</p>
+                            <p class="font-medium">{{ $order['courier'] ?? 'JNE Express' }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">No. Resi</p>
+                            <p class="font-medium">{{ $order['tracking_number'] ?? 'Menunggu' }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Estimasi Tiba</p>
+                            <p class="font-medium">{{ $order['estimated_arrival'] ?? '-' }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Berat</p>
+                            <p class="font-medium">{{ $order['product']['weight'] ?? '1' }} kg</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div>
-                <h4 class="mb-2 font-semibold">Status Pengiriman</h4>
-                <div class="relative pl-6">
-                    <div class="absolute top-0 z-0 w-1 h-full border-l-2 border-gray-300 border-dashed left-4"></div>
-                    <div class="space-y-6">
-
+                <div class="mb-6">
+                    <h4 class="mb-2 font-semibold">Alamat Pengiriman</h4>
+                    <div class="rounded-lg bg-gray-50 p-3">
+                        @php
+                            $address = Auth::user()->addresses->first();
+                        @endphp
+                        <p class="font-medium">{{ $address->recipient_name ?? Auth::user()->name }}</p>
+                        <p>{{ $address->phone_number ?? Auth::user()->phone_number }}</p>
+                        <p class="mt-1">{{ $address->full_address ?? 'Alamat belum ditambahkan' }}</p>
                     </div>
                 </div>
+                <div class="mb-6">
+                    <h4 class="mb-2 font-semibold">Produk</h4>
+                    <div class="flex items-center rounded-lg bg-gray-50 p-3">
+                        @if ($order['product']['image'])
+                            <img src="{{ asset('storage/' . $order['product']['image']) }}"
+                                 alt="{{ $order['product']['name'] }}" class="mr-3 h-16 w-16 rounded object-cover">
+                        @endif
+                        <div>
+                            <p class="font-medium">{{ $order['product']['name'] }}</p>
+                            <p class="text-gray-500">{{ $order['quantity'] }} x Rp{{ number_format($order['total_price'], 0, ',', '.') }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="mb-2 font-semibold">Status Pengiriman</h4>
+                    <div class="relative pl-6">
+                        <div class="absolute left-4 top-0 z-0 h-full w-1 border-l-2 border-dashed border-gray-300"></div>
+                        <div class="space-y-6"></div>
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-end">
+                    @if (isset($order['tracking_url']))
+                        <a href="{{ $order['tracking_url'] }}" target="_blank" class="rounded-md bg-orange-500 px-4 py-2 text-white hover:bg-orange-600">
+                            Lacak Pengiriman
+                        </a>
+                    @endif
+                </div>
+                @endforeach
             </div>
-
-            <div class="flex justify-end mt-6">
-                @if (isset($order['tracking_url']))
-                    <a href="{{ $order['tracking_url'] }}" target="_blank"
-                        class="px-4 py-2 text-white bg-orange-500 rounded-md hover:bg-orange-600">
-                        Lacak Pengiriman
-                    </a>
-                @endif
+        </div>
+        @endif
+        <!-- Service Tracking Dialog -->
+        <div id="service-tracking-dialog" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 opacity-0 transition-opacity duration-200 flex items-center justify-center">
+            <div class="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-white p-6 transform scale-95 transition-transform duration-200">
+                <div class="mb-4 flex items-center justify-between">
+                    <h3 class="text-lg font-semibold">Detail Layanan</h3>
+                    <button class="close-tracking-dialog text-gray-500 hover:text-gray-700">
+                        <i data-lucide="x" class="h-5 w-5"></i>
+                    </button>
+                </div>
+                <div class="mb-4 border-b pb-4">
+                    <div class="mb-2 flex items-start justify-between">
+                        <div>
+                            <p class="text-lg font-semibold">#S12350 - Pembersihan Sofa</p>
+                            <p class="text-gray-500">Tanggal Pemesanan: 20 Mei 2025</p>
+                        </div>
+                        <span class="flex items-center px-2 py-1 text-xs text-indigo-800 bg-indigo-100 rounded-full">
+                            <i data-lucide="calendar" class="mr-1 h-3 w-3"></i>Terjadwal
+                        </span>
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <h4 class="mb-2 font-semibold">Informasi Layanan</h4>
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <div>
+                            <p class="text-sm text-gray-500">Jenis Layanan</p>
+                            <p class="font-medium">Pembersihan Sofa</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Jadwal Layanan</p>
+                            <p class="font-medium">22 Mei 2025, 09:00 WIB</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Durasi Estimasi</p>
+                            <p class="font-medium">2 jam</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Teknisi</p>
+                            <p class="font-medium">Budi Santoso</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <h4 class="mb-2 font-semibold">Alamat Layanan</h4>
+                    <div class="rounded-lg bg-gray-50 p-3">
+                        <p class="font-medium">Surya Nugraha</p>
+                        <p>62855659718873</p>
+                        <p class="mt-1">Ciganitri Mukti V No.45 Rt06/Rw11 Desa. Cipagalo Kec. Bojongsong Kab. Bandung 40288</p>
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <h4 class="mb-2 font-semibold">Detail Layanan</h4>
+                    <div class="rounded-lg bg-gray-50 p-3">
+                        <div class="mb-2 flex justify-between">
+                            <p>Pembersihan Sofa (3 Seater)</p>
+                            <p class="font-medium">Rp250,000</p>
+                        </div>
+                        <div class="flex justify-between border-t pt-2">
+                            <p class="font-medium">Total</p>
+                            <p class="font-medium">Rp250,000</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="mb-2 font-semibold">Status Layanan</h4>
+                    <div class="relative pl-6">
+                        <div class="absolute left-4 top-0 z-0 h-full w-1 border-l-2 border-dashed border-gray-300"></div>
+                        <div class="space-y-6">
+                            <div class="relative">
+                                <div class="absolute -left-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-green-500 text-white">
+                                    <i data-lucide="check" class="h-4 w-4"></i>
+                                </div>
+                                <div class="ml-6">
+                                    <p class="font-semibold text-gray-800">Pesanan Dikonfirmasi</p>
+                                    <p class="text-sm text-gray-500">20 Mei 2025, 10:00 WIB</p>
+                                    <p class="mt-1 text-sm text-gray-600">Pesanan layanan Anda telah dikonfirmasi.</p>
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <div class="absolute -left-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-green-500 text-white">
+                                    <i data-lucide="calendar" class="h-4 w-4"></i>
+                                </div>
+                                <div class="ml-6">
+                                    <p class="font-semibold text-gray-800">Jadwal Ditetapkan</p>
+                                    <p class="text-sm text-gray-500">20 Mei 2025, 14:30 WIB</p>
+                                    <p class="mt-1 text-sm text-gray-600">Jadwal layanan telah ditetapkan untuk 22 Mei 2025, 09:00 WIB.</p>
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <div class="absolute -left-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 text-gray-600">
+                                    <i data-lucide="user" class="h-4 w-4"></i>
+                                </div>
+                                <div class="ml-6">
+                                    <p class="font-semibold text-gray-800">Teknisi Dalam Perjalanan</p>
+                                    <p class="text-sm text-gray-500">Jadwal: 22 Mei 2025, 09:00 WIB</p>
+                                    <p class="mt-1 text-sm text-gray-600">Teknisi akan datang ke lokasi Anda sesuai jadwal.</p>
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <div class="absolute -left-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 text-gray-600">
+                                    <i data-lucide="check-circle" class="h-4 w-4"></i>
+                                </div>
+                                <div class="ml-6">
+                                    <p class="font-semibold text-gray-800">Layanan Selesai</p>
+                                    <p class="text-sm text-gray-500">Estimasi: 22 Mei 2025</p>
+                                    <p class="mt-1 text-sm text-gray-600">Layanan akan selesai setelah teknisi menyelesaikan pekerjaan.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-end">
+                    <button class="mr-2 rounded-md border border-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-50">Hubungi Teknisi</button>
+                    <button class="rounded-md bg-orange-500 px-4 py-2 text-white hover:bg-orange-600">Konfirmasi Selesai</button>
+                </div>
             </div>
         </div>
     </div>
-
-    <!-- Service Tracking Detail Dialog -->
-    <div id="service-tracking-dialog"
-        class="fixed inset-0 z-50 flex items-center justify-center hidden transition-opacity duration-200 bg-black bg-opacity-50 opacity-0">
-        <div
-            class="bg-white rounded-lg w-full max-w-2xl p-6 transform scale-95 transition-transform duration-200 max-h-[90vh] overflow-y-auto">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-semibold">Detail Layanan</h3>
-                <button class="text-gray-500 close-tracking-dialog hover:text-gray-700">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-
-            <div class="pb-4 mb-4 border-b">
-                <div class="flex items-start justify-between mb-2">
-                    <div>
-                        <p class="text-lg font-semibold">#S12350 - Pembersihan Sofa</p>
-                        <p class="text-gray-500">Tanggal Pemesanan: 20 Mei 2025</p>
-                    </div>
-                    <span class="flex items-center px-2 py-1 text-xs text-indigo-800 bg-indigo-100 rounded-full">
-                        <i data-lucide="calendar" class="w-3 h-3 mr-1"></i> Terjadwal
-                    </span>
-                </div>
-            </div>
-
-            <div class="mb-6">
-                <h4 class="mb-2 font-semibold">Informasi Layanan</h4>
-                <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    <div>
-                        <p class="text-sm text-gray-500">Jenis Layanan</p>
-                        <p class="font-medium">Pembersihan Sofa</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500">Jadwal Layanan</p>
-                        <p class="font-medium">22 Mei 2025, 09:00 WIB</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500">Durasi Estimasi</p>
-                        <p class="font-medium">2 jam</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500">Teknisi</p>
-                        <p class="font-medium">Budi Santoso</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mb-6">
-                <h4 class="mb-2 font-semibold">Alamat Layanan</h4>
-                <div class="p-3 rounded-lg bg-gray-50">
-                    <p class="font-medium">Surya Nugraha</p>
-                    <p>62855659718873</p>
-                    <p class="mt-1">Ciganitri Mukti V No.45 Rt06/Rw11 Desa. Cipagalo Kec. Bojongsong Kab. Bandung 40288
-                    </p>
-                </div>
-            </div>
-
-            <div class="mb-6">
-                <h4 class="mb-2 font-semibold">Detail Layanan</h4>
-                <div class="p-3 rounded-lg bg-gray-50">
-                    <div class="flex justify-between mb-2">
-                        <p>Pembersihan Sofa (3 Seater)</p>
-                        <p class="font-medium">Rp250,000</p>
-                    </div>
-                    <div class="flex justify-between pt-2 border-t">
-                        <p class="font-medium">Total</p>
-                        <p class="font-medium">Rp250,000</p>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <h4 class="mb-2 font-semibold">Status Layanan</h4>
-                <div class="relative pl-6">
-                    <div class="absolute top-0 z-0 w-1 h-full border-l-2 border-gray-300 border-dashed left-4"></div>
-                    <div class="space-y-6">
-                        <div class="relative">
-                            <div
-                                class="absolute z-10 flex items-center justify-center w-8 h-8 text-white bg-green-500 rounded-full -left-4">
-                                <i data-lucide="check" class="w-4 h-4"></i>
-                            </div>
-                            <div class="ml-6">
-                                <p class="font-semibold text-gray-800">Pesanan Dikonfirmasi</p>
-                                <p class="text-sm text-gray-500">20 Mei 2025, 10:00 WIB</p>
-                                <p class="mt-1 text-sm text-gray-600">Pesanan layanan Anda telah dikonfirmasi.</p>
-                            </div>
-                        </div>
-                        <div class="relative">
-                            <div
-                                class="absolute z-10 flex items-center justify-center w-8 h-8 text-white bg-green-500 rounded-full -left-4">
-                                <i data-lucide="calendar" class="w-4 h-4"></i>
-                            </div>
-                            <div class="ml-6">
-                                <p class="font-semibold text-gray-800">Jadwal Ditetapkan</p>
-                                <p class="text-sm text-gray-500">20 Mei 2025, 14:30 WIB</p>
-                                <p class="mt-1 text-sm text-gray-600">Jadwal layanan telah ditetapkan untuk 22 Mei 2025,
-                                    09:00 WIB.</p>
-                            </div>
-                        </div>
-                        <div class="relative">
-                            <div
-                                class="absolute z-10 flex items-center justify-center w-8 h-8 text-gray-600 bg-gray-200 rounded-full -left-4">
-                                <i data-lucide="user" class="w-4 h-4"></i>
-                            </div>
-                            <div class="ml-6">
-                                <p class="font-semibold text-gray-800">Teknisi Dalam Perjalanan</p>
-                                <p class="text-sm text-gray-500">Jadwal: 22 Mei 2025, 09:00 WIB</p>
-                                <p class="mt-1 text-sm text-gray-600">Teknisi akan datang ke lokasi Anda sesuai jadwal.</p>
-                            </div>
-                        </div>
-                        <div class="relative">
-                            <div
-                                class="absolute z-10 flex items-center justify-center w-8 h-8 text-gray-600 bg-gray-200 rounded-full -left-4">
-                                <i data-lucide="check-circle" class="w-4 h-4"></i>
-                            </div>
-                            <div class="ml-6">
-                                <p class="font-semibold text-gray-800">Layanan Selesai</p>
-                                <p class="text-sm text-gray-500">Estimasi: 22 Mei 2025</p>
-                                <p class="mt-1 text-sm text-gray-600">Layanan akan selesai setelah teknisi menyelesaikan
-                                    pekerjaan.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex justify-end mt-6">
-                <button class="px-4 py-2 mr-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50">
-                    Hubungi Teknisi
-                </button>
-                <button class="px-4 py-2 text-white bg-orange-500 rounded-md hover:bg-orange-600">
-                    Konfirmasi Selesai
-                </button>
-            </div>
-        </div>
-    </div>
-
 @endsection
 
 
@@ -1021,6 +881,7 @@
              // ===============================Tab Transaction functionality=================================================
             const transactionTypeBtns = document.querySelectorAll('.transaction-type-btn');
             const orderRows = document.querySelectorAll('tbody tr');
+            const noOrdersMessage = document.querySelector('.no-orders-message');
 
             transactionTypeBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -1035,20 +896,43 @@
                     btn.classList.remove('border-transparent');
 
                     const filterType = btn.getAttribute('data-type').toLowerCase();
-                    
-                    // Show/hide rows based on status
-                    orderRows.forEach(row => {
-                        if (filterType === 'all') {
-                            row.classList.remove('hidden');
-                        } else {
-                            const rowType = row.getAttribute('data-type').toLowerCase();
-                            if (rowType === filterType) {
-                                row.classList.remove('hidden');
-                            } else {
+                    let hasVisibleOrders = false;
+
+                    // Count total orders (excluding the no-orders-message row)
+                    const totalOrders = Array.from(orderRows).filter(row => !row.classList.contains('no-orders-message')).length;
+
+                    if (totalOrders === 0) {
+                        // If no orders exist, always show the no orders message
+                        if (noOrdersMessage) {
+                            noOrdersMessage.classList.remove('hidden');
+                        }
+                        // Hide all other rows
+                        orderRows.forEach(row => {
+                            if (!row.classList.contains('no-orders-message')) {
                                 row.classList.add('hidden');
                             }
+                        });
+                    } else {
+                        // If orders exist, filter them
+                        orderRows.forEach(row => {
+                            if (row.classList.contains('no-orders-message')) {
+                                row.classList.add('hidden');
+                            } else {
+                                const rowType = row.getAttribute('data-type')?.toLowerCase();
+                                if (filterType === 'all' || rowType === filterType) {
+                                    row.classList.remove('hidden');
+                                    hasVisibleOrders = true;
+                                } else {
+                                    row.classList.add('hidden');
+                                }
+                            }
+                        });
+
+                        // Show no orders message if no orders match the filter
+                        if (noOrdersMessage && !hasVisibleOrders) {
+                            noOrdersMessage.classList.remove('hidden');
                         }
-                    });
+                    }
                 });
             });
 
@@ -1093,51 +977,63 @@
 
         // ==================== Product Tracking Dialog ====================
         document.addEventListener('DOMContentLoaded', function() {
-            const trackingDialog = document.getElementById('product-tracking-dialog');
-            const openTrackingBtns = document.querySelectorAll('.view-tracking-btn');
-            const closeTrackingBtn = document.getElementById('close-tracking-dialog');
+    const trackingDialog = document.getElementById('product-tracking-dialog');
+    const openTrackingBtns = document.querySelectorAll('.view-tracking-btn');
+    const closeTrackingBtn = document.getElementById('close-tracking-dialog');
 
-            // Fungsi untuk membuka dialog
-            function openTrackingDialog() {
-                trackingDialog.classList.remove('hidden');
-                setTimeout(() => {
-                    trackingDialog.classList.remove('opacity-0');
-                    trackingDialog.querySelector('.transform').classList.remove('scale-95');
-                    trackingDialog.querySelector('.transform').classList.add('scale-100');
-                }, 10);
-            }
-
-            // Fungsi untuk menutup dialog
-            function closeTrackingDialog() {
-                trackingDialog.classList.add('hidden');
-                trackingDialog.classList.add('opacity-0');
-                trackingDialog.querySelector('.transform').classList.remove('scale-100');
-                trackingDialog.querySelector('.transform').classList.add('scale-95');
-
-            }
-
-            // Event listener untuk tombol buka
-            openTrackingBtns.forEach(btn => {
-                btn.addEventListener('click', openTrackingDialog);
+    if (trackingDialog) {
+        // Open dialog function
+        function openTrackingDialog(orderId) {
+            // Hide all tracking contents first
+            document.querySelectorAll('.tracking-content').forEach(content => {
+                content.style.display = 'none';
             });
 
-            // Event listener untuk tombol tutup
-            if (closeTrackingBtn) {
-                closeTrackingBtn.addEventListener('click', closeTrackingDialog);
+            // Show the selected order's content
+            const selectedContent = document.getElementById(`tracking-content-${orderId}`);
+            if (selectedContent) {
+                selectedContent.style.display = 'block';
             }
 
-            // Tutup dialog ketika klik di luar
-            if (trackingDialog) {
-                trackingDialog.addEventListener('click', function(e) {
-                    if (e.target === this) {
-                        closeTrackingDialog();
-                    }
+            // Show dialog
+            trackingDialog.classList.remove('hidden');
+            setTimeout(() => {
+                trackingDialog.classList.remove('opacity-0');
+            }, 10);
+        }
+
+        // Close dialog function
+        function closeTrackingDialog() {
+            trackingDialog.classList.add('opacity-0');
+            setTimeout(() => {
+                trackingDialog.classList.add('hidden');
+                // Hide all contents when closing
+                document.querySelectorAll('.tracking-content').forEach(content => {
+                    content.style.display = 'none';
                 });
-            }
+            }, 200);
+        }
+
+        // Event listeners
+        openTrackingBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const orderId = btn.closest('tr').dataset.orderId;
+                openTrackingDialog(orderId);
+            });
         });
 
+        if (closeTrackingBtn) {
+            closeTrackingBtn.addEventListener('click', closeTrackingDialog);
+        }
 
-
+        // Close on outside click
+        trackingDialog.addEventListener('click', (e) => {
+            if (e.target === trackingDialog) {
+                closeTrackingDialog();
+            }
+        });
+    }
+});
         if (window.location.hash) {
             const targetSection = window.location.hash.substring(1);
             const targetTab = document.querySelector(`[data-section="${targetSection}"]`);
