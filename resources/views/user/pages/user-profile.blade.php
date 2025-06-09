@@ -465,64 +465,74 @@
                             </span>
                         </div>
                     </div>
-                <div class="mb-6">
-                    <h4 class="mb-2 font-semibold">Informasi Pengiriman</h4>
-                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                        <div>
-                            <p class="text-sm text-gray-500">Kurir</p>
-                            <p class="font-medium">{{ $order['courier'] ?? 'JNE Express' }}</p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500">No. Resi</p>
-                            <p class="font-medium">{{ $order['tracking_number'] ?? 'Menunggu' }}</p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500">Estimasi Tiba</p>
-                            <p class="font-medium">{{ $order['estimated_arrival'] ?? '-' }}</p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500">Berat</p>
-                            <p class="font-medium">{{ $order['product']['weight'] ?? '1' }} kg</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-6">
-                    <h4 class="mb-2 font-semibold">Alamat Pengiriman</h4>
-                    <div class="rounded-lg bg-gray-50 p-3">
-                        @php
-                            $address = Auth::user()->addresses->first();
-                        @endphp
-                        <p class="font-medium">{{ $address->recipient_name ?? Auth::user()->name }}</p>
-                        <p>{{ $address->phone_number ?? Auth::user()->phone_number }}</p>
-                        <p class="mt-1">{{ $address->full_address ?? 'Alamat belum ditambahkan' }}</p>
-                    </div>
-                </div>
-                <div class="mb-6">
-                    <h4 class="mb-2 font-semibold">Produk</h4>
-                    <div class="flex items-center rounded-lg bg-gray-50 p-3">
-                        @if ($order['product']['image'])
-                            <img src="{{ asset('storage/' . $order['product']['image']) }}"
-                                 alt="{{ $order['product']['name'] }}" class="mr-3 h-16 w-16 rounded object-cover">
-                        @endif
-                        <div>
-                            <p class="font-medium">{{ $order['product']['name'] }}</p>
-                            <p class="text-gray-500">{{ $order['quantity'] }} x Rp{{ number_format($order['total_price'], 0, ',', '.') }}</p>
+                    <div class="mb-6">
+                        <h4 class="mb-2 font-semibold">Informasi Pengiriman</h4>
+                        <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                            <div>
+                                <p class="text-sm text-gray-500">Kurir</p>
+                                <p class="font-medium">{{ $order['courier'] ?? 'JNE Express' }}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">No. Resi</p>
+                                <p class="font-medium">{{ $order['tracking_number'] ?? 'Menunggu' }}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Estimasi Tiba</p>
+                                <p class="font-medium">{{ $order['estimated_arrival'] ?? '-' }}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Berat</p>
+                                <p class="font-medium">{{ $order['product']['weight'] ?? '1' }} kg</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div>
-                    <h4 class="mb-2 font-semibold">Status Pengiriman</h4>
-                    <div class="relative pl-6">
-                        <div class="absolute left-4 top-0 z-0 h-full w-1 border-l-2 border-dashed border-gray-300"></div>
-                        <div class="space-y-6"></div>
+                    <div class="mb-6">
+                        <h4 class="mb-2 font-semibold">Alamat Pengiriman</h4>
+                        <div class="rounded-lg bg-gray-50 p-3">
+                            @php
+                                $address = Auth::user()->addresses->first();
+                            @endphp
+                            <p class="font-medium">{{ $address->recipient_name ?? Auth::user()->name }}</p>
+                            <p>{{ $address->phone_number ?? Auth::user()->phone_number }}</p>
+                            <p class="mt-1">{{ $address->full_address ?? 'Alamat belum ditambahkan' }}</p>
+                        </div>
                     </div>
-                </div>
-                <div class="mt-6 flex justify-end">
-                    @if (isset($order['tracking_url']))
-                        <a href="{{ $order['tracking_url'] }}" target="_blank" class="rounded-md bg-orange-500 px-4 py-2 text-white hover:bg-orange-600">
-                            Lacak Pengiriman
-                        </a>
-                    @endif
+                    <div class="mb-6">
+                        <h4 class="mb-2 font-semibold">Produk</h4>
+                        <div class="flex items-center rounded-lg bg-gray-50 p-3">
+                            @if ($order['product']['image'])
+                                <img src="{{ asset('storage/' . $order['product']['image']) }}"
+                                    alt="{{ $order['product']['name'] }}" class="mr-3 h-16 w-16 rounded object-cover">
+                            @endif
+                            <div>
+                                <p class="font-medium">{{ $order['product']['name'] }}</p>
+                                <p class="text-gray-500">{{ $order['quantity'] }} x Rp{{ number_format($order['total_price'], 0, ',', '.') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <h4 class="mb-2 font-semibold">Status Pengiriman</h4>
+                        <div class="relative pl-6">
+                            <div class="absolute left-4 top-0 z-0 h-full w-1 border-l-2 border-dashed border-gray-300"></div>
+                            <div class="space-y-6">
+                                @if (isset($order['tracking_status']) && is_array($order['tracking_status']))
+                                    @foreach($order['tracking_status'] as $status)
+                                        <div class="relative">
+                                            <div class="absolute left-[-28px] top-0 h-4 w-4 rounded-full bg-orange-500"></div>
+                                            <p class="font-medium">{{ $status['description'] }}</p>
+                                            <p class="text-sm text-gray-500">{{ $status['date'] }}</p>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="relative">
+                                        <div class="absolute left-[-28px] top-0 h-4 w-4 rounded-full bg-orange-500"></div>
+                                        <p class="font-medium">Pesanan Dibuat</p>
+                                        <p class="text-sm text-gray-500">{{ $order['date'] }}</p>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 @endforeach
             </div>
