@@ -18,8 +18,9 @@ class OrderController extends Controller
             'total_price' => $order->total_price,
             'payment_method' => $order->payment_method ?? 'Pending',
             'status' => [
-                'text' => $order->order_status ?? 'pending',
-                'class' => $this->getStatusClass($order->order_status)
+                'text' => strtolower($order->order_status), // Make sure this matches one of the conditions
+                'class' => $this->getStatusClass($order->order_status),
+                
             ],
             'product_name' => $order->products->name,
             'order_id' => $order->order_id,
@@ -33,9 +34,10 @@ class OrderController extends Controller
 private function getStatusClass($status)
 {
     return match ($status) {
-        'paid' => 'bg-blue-100 text-blue-800',
+        'pending' => 'bg-red-400 text-white-600',
+        'paid' => 'bg-green-400 text-white-100',
         'packing' => 'bg-yellow-100 text-yellow-800',
-        'shipping' => 'bg-purple-100 text-purple-800',
+        'shipping' => 'bg-indigo-100 text-indigo-800',
         'completed' => 'bg-green-100 text-green-800',
         default => 'bg-gray-100 text-gray-800'
     };

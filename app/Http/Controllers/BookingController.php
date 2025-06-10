@@ -135,9 +135,23 @@ class BookingController extends Controller
     }
 
 
-    public function processBooking(Request $request)
-    {
-        // Get booking data from session
+public function processBooking(Request $request)
+{
+    $orderId = $request->input('order_id');
+    $order = null;
+
+    if ($orderId) {
+        // Handle existing order
+        $order = Order::where('order_id', $orderId)
+            ->where('user_id', Auth::id())
+            ->where('order_status', 'pending')
+            ->first();
+
+        if (!$order) {
+            return redirect()->back()->with('error', 'Pesanan tidak ditemukan atau sudah dibayar');
+        }
+    } else {
+        // Handle new booking from session
         $booking = $request->session()->get('booking');
         if (!$booking) {
             return redirect()->back()->with('error', 'No booking information found');
@@ -168,46 +182,53 @@ class BookingController extends Controller
             'order_status' => 'pending',
             'order_date' => now(),
         ]);
-
-        // Prepare Midtrans parameters
-        $params = [
-            'transaction_details' => [
-                'order_id' => $order->order_id,
-                'gross_amount' => (int)$order->total_price, // Convert to integer
-            ],
-            'customer_details' => [
-                'first_name' => $userAddress->recipient_name,
-                'email' => $user->email,
-                'phone' => $userAddress->phone_number,
-                'shipping_address' => [
-                    'first_name' => $userAddress->recipient_name,
-                    'address' => $userAddress->full_address,
-                    'city' => $userAddress->city,
-                    'postal_code' => $userAddress->postal_code,
-                    'phone' => $userAddress->phone_number,
-                    'country_code' => 'IDN'
-                ]
-            ],
-            'item_details' => [
-                [
-                    'id' => $product->product_id,
-                    'price' => (int)$product->price,
-                    'quantity' => $booking['quantity'],
-                    'name' => $product->name,
-                ]
-            ]
-        ];
-
-        try {
-            $snapToken = Snap::getSnapToken($params);
-            $request->session()->forget('booking');
-
-            return view('user.pages.payment-checkout', compact('snapToken', 'order'));
-        } catch (\Exception $e) {
-            Log::error('Midtrans Error: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Failed to process payment: ' . $e->getMessage());
-        }
     }
+
+    // Prepare Midtrans parameters
+    $product = Product::find($order->product_id);
+    $user = Auth::user();
+    $userAddress = Address::where('user_id', $user->user_id)->first();
+
+    $params = [
+        'transaction_details' => [
+            'order_id' => $order->order_id,
+            'gross_amount' => (int)$order->total_price,
+        ],
+        'customer_details' => [
+            'first_name' => $userAddress->recipient_name,
+            'email' => $user->email,
+            'phone' => $userAddress->phone_number,
+            'shipping_address' => [
+                'first_name' => $userAddress->recipient_name,
+                'address' => $userAddress->full_address,
+                'city' => $userAddress->city,
+                'postal_code' => $userAddress->postal_code,
+                'phone' => $userAddress->phone_number,
+                'country_code' => 'IDN'
+            ]
+        ],
+        'item_details' => [
+            [
+                'id' => $product->product_id,
+                'price' => (int)$product->price,
+                'quantity' => $order->quantity,
+                'name' => $product->name,
+            ]
+        ]
+    ];
+
+    try {
+        $snapToken = Snap::getSnapToken($params);
+        if (!$orderId) {
+            $request->session()->forget('booking');
+        }
+
+        return view('user.pages.payment-checkout', compact('snapToken', 'order'));
+    } catch (\Exception $e) {
+        Log::error('Midtrans Error: ' . $e->getMessage());
+        return redirect()->back()->with('error', 'Failed to process payment: ' . $e->getMessage());
+    }
+}
 
 
 

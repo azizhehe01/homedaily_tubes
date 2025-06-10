@@ -90,7 +90,7 @@
                             <th class="px-4 py-3 font-semibold text-gray-700">Jumlah</th>
                             <th class="px-4 py-3 font-semibold text-gray-700">Total</th>
                             <th class="px-4 py-3 font-semibold text-gray-700">Status</th>
-                            <th class="px-4 py-3 font-semibold text-gray-700">Aksi</th>
+                            <th class="px-4 py-3 font-semibold text-gray-700 text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
@@ -119,10 +119,24 @@
                                         </span>
                                     </td>
                                     <td class="px-4 py-3">
-                                        <button class="view-tracking-btn flex w-full items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                            <i data-lucide="eye" class="mr-2 h-4 w-4"></i>Lihat Detail
-                                        </button>
-                                    </td>
+                                        <div class="flex justify-center items-center gap-2">
+                                            @if($order['status']['text'] === 'Menunggu Pembayaran' || $order['status']['text'] === 'pending')
+                                                <form action="{{ route('booking.process') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="order_id" value="{{ $order['order_id'] }}">
+                                                    <button type="submit" class="inline-flex items-center px-4 py-2 text-xs font-medium text-white bg-orange-500 rounded-lg hover:bg-orange-600 transition-colors">
+                                                        <i data-lucide="credit-card" class="mr-2 h-4 w-4"></i>
+                                                        Bayar Sekarang
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <button class="view-tracking-btn flex items-center px-4 py-2 text-xs font-medium text-gray-700 hover:bg-gray-100 rounded-lg">
+                                                    <i data-lucide="eye" class="mr-2 h-4 w-4"></i>
+                                                    Lihat Detail
+                                                </button>
+                                            @endif
+                                        </div>
+                                    </td>      
                                 </tr>
                             @empty
                                 <tr>
