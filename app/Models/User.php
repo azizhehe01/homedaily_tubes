@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Spatie\Permission\Traits\HasRoles;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     protected $primaryKey = 'user_id';
 
@@ -33,7 +34,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-    
+
     public function adminLogs()
     {
         return $this->hasMany(AdminLog::class);
@@ -56,7 +57,7 @@ class User extends Authenticatable
 
     public function addresses()
     {
-        return $this->hasMany(Address::class , 'user_id', 'user_id');
+        return $this->hasMany(Address::class, 'user_id', 'user_id');
     }
 
     public function homeServices()
@@ -71,8 +72,14 @@ class User extends Authenticatable
 
     public function liveChatMassages()
     {
-        return $this->hasMany(LiveChatMassage::class);
+        return $this->hasMany(LiveChatMassage::class, 'from_user_id', 'user_id');
     }
+
+    public function receivedMessages()
+    {
+        return $this->hasMany(LiveChatMassage::class, 'to_user_id', 'user_id');
+    }
+
     public function productChats()
     {
         return $this->hasMany(ProductChat::class);

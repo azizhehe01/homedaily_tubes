@@ -100,7 +100,7 @@
                                 </div>
                             </a>
                         @empty
-                            <div class="col-span-full text-center py-8">
+                            <div class="py-8 text-center col-span-full">
                                 <p class="text-gray-500">Tidak ada produk sejenis lainnya</p>
                             </div>
                         @endforelse
@@ -158,7 +158,7 @@
     </div>
 
     @auth
-        @include('user.components.chat-bubble')
+        <livewire:chat :product="$product" />
     @endauth
 @endsection
 

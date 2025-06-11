@@ -18,6 +18,27 @@
 
     <!-- Additional CSS -->
     @stack('css')
+
+    {{-- style livewire --}}
+    @livewireStyles
+
+
+    <style>
+        #chat-widget {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 9999;
+            width: 400px;
+            height: 600px;
+            margin-right: var(--sidebar-width, 240px);
+            transition: margin-right 0.3s ease;
+        }
+
+        .sidebar-collapsed #chat-widget {
+            margin-right: var(--sidebar-collapsed-width, 70px);
+        }
+    </style>
 </head>
 
 <body>
@@ -34,14 +55,53 @@
                         'subtitle' => 'Menu',
                         'title' => 'Dashboard',
                     ])
-
+                    @auth
+                        <div id="chat-widget">
+                            @livewire('chat')
+                        </div>
+                    @endauth
                     @yield('content')
                 </div>
             </main>
         </div>
+
     </div>
 
+
+
+
     @include('admin.layouts.footer-scripts')
+
+    {{-- livewire script --}}
+    @livewireScripts
+    <script>
+        document.addEventListener('livewire:load', function() {
+            Livewire.on('echo:chat,MessageSent', e => {
+                window.livewire.emit('messageReceived', e);
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const wrapper = document.querySelector('.wrapper');
+            const chatWidget = document.getElementById('chat-widget');
+
+            if (wrapper && chatWidget) {
+                const observer = new MutationObserver((mutations) => {
+                    mutations.forEach((mutation) => {
+                        if (mutation.attributeName === 'class') {
+                            const isSidebarCollapsed = wrapper.classList.contains(
+                                'sidebar-collapsed');
+                            document.body.classList.toggle('sidebar-collapsed', isSidebarCollapsed);
+                        }
+                    });
+                });
+
+                observer.observe(wrapper, {
+                    attributes: true
+                });
+            }
+        });
+    </script>
 
     <!-- JavaScript -->
     <script src="{{ asset('admin/libs/apexcharts/apexcharts.min.js') }}"></script>
@@ -49,6 +109,8 @@
     <script src="{{ asset('admin/js/pages/dashboard.js') }}"></script>
 
     @stack('scripts')
+
+
 </body>
 
 </html>

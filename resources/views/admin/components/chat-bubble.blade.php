@@ -79,79 +79,86 @@
 
         closeChat.addEventListener('click', () => chatBox.classList.add('hidden'));
 
-        //     // Fungsi untuk load chat dari controller
-        //     function loadChats() {
-        //         fetch(`/products/${productId}/chats`) // Endpoint GET chats
-        //             .then(response => response.json())
-        //             .then(data => {
-        //                 const { chats, product } = data;
+        // Fungsi untuk load chat dari controller
+        function loadChats() {
+            fetch(`/products/${productId}/chats`) // Endpoint GET chats
+                .then(response => response.json())
+                .then(data => {
+                    const {
+                        chats,
+                        product
+                    } = data;
 
-        //                 // Setel nama produk dan gambar
-        //                 document.getElementById('productName').textContent = product.name;
-        //                 const productImage = document.getElementById('productImage');
-        //                 if (product.image) {
-        //                     productImage.src = product.image;
-        //                     productImage.alt = `Gambar ${product.name}`;
-        //                 } else {
-        //                     productImage.src = '/images/default-product.jpg'; // Gambar default jika tidak ada
-        //                     productImage.alt = 'Gambar tidak tersedia';
-        //                 }
+                    // Setel nama produk dan gambar
+                    document.getElementById('productName').textContent = product.name;
+                    const productImage = document.getElementById('productImage');
+                    if (product.image) {
+                        productImage.src = product.image;
+                        productImage.alt = `Gambar ${product.name}`;
+                    } else {
+                        productImage.src = '/images/default-product.jpg'; // Gambar default jika tidak ada
+                        productImage.alt = 'Gambar tidak tersedia';
+                    }
 
-        //                 // Render chats
-        //                 chatMessages.innerHTML = '';
-        //                 chats.forEach(chat => {
-        //                     const msgDiv = document.createElement('div');
-        //                     msgDiv.className = chat.is_admin
-        //                         ? 'flex justify-start gap-2' // Styling untuk pesan admin
-        //                         : (chat.user_id === {{ auth()->id() }} ? 'flex justify-end' : 'flex items-start gap-2');
-        //                     msgDiv.innerHTML = `
-        //                         ${chat.is_admin ? `
-        //                         <div class="w-8 h-8 bg-[#FF7A00] rounded-full flex items-center justify-center text-white font-bold">
-        //                             A
-        //                         </div>` : ''}
-        //                         ${chat.user_id !== {{ auth()->id() }} && !chat.is_admin ? `
-        //                         <div class="w-8 h-8 bg-gray-300 rounded-full">
-        //                             <img src="${chat.user.avatar_url || '/images/default-profile.jpg'}" class="object-cover w-full h-full">
-        //                         </div>` : ''}
-        //                         <div class="${chat.is_admin ? 'bg-[#FFE9D5] text-[#FF7A00]' : (chat.user_id === {{ auth()->id() }} ? 'bg-[#FF7A00] text-white' : 'bg-gray-200')} px-4 py-2 rounded-lg max-w-[70%]">
-        //                             ${chat.message}
-        //                             <div class="text-xs mt-1 ${chat.is_admin ? 'text-[#FF7A00]' : (chat.user_id === {{ auth()->id() }} ? 'text-orange-100' : 'text-gray-500')}">
-        //                                 ${new Date(chat.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-        //                             </div>
-        //                         </div>
-        //                     `;
-        //                     chatMessages.appendChild(msgDiv);
-        //                 });
-        //                 chatMessages.scrollTop = chatMessages.scrollHeight;
-        //             })
-        //             .catch(error => console.error('Error loading chats:', error));
-        //     }
+                    // Render chats
+                    chatMessages.innerHTML = '';
+                    chats.forEach(chat => {
+                        const msgDiv = document.createElement('div');
+                        msgDiv.className = chat.is_admin ?
+                            'flex justify-start gap-2' // Styling untuk pesan admin
+                            :
+                            (chat.user_id === {{ auth()->id() }} ? 'flex justify-end' :
+                                'flex items-start gap-2');
+                        msgDiv.innerHTML = `
+                        ${chat.is_admin ? `
+                        <div class="w-8 h-8 bg-[#FF7A00] rounded-full flex items-center justify-center text-white font-bold">
+                            A
+                        </div>` : ''}
+                        ${chat.user_id !== {{ auth()->id() }} && !chat.is_admin ? `
+                        <div class="w-8 h-8 bg-gray-300 rounded-full">
+                            <img src="${chat.user.avatar_url || '/images/default-profile.jpg'}" class="object-cover w-full h-full">
+                        </div>` : ''}
+                        <div class="${chat.is_admin ? 'bg-[#FFE9D5] text-[#FF7A00]' : (chat.user_id === {{ auth()->id() }} ? 'bg-[#FF7A00] text-white' : 'bg-gray-200')} px-4 py-2 rounded-lg max-w-[70%]">
+                            ${chat.message}
+                            <div class="text-xs mt-1 ${chat.is_admin ? 'text-[#FF7A00]' : (chat.user_id === {{ auth()->id() }} ? 'text-orange-100' : 'text-gray-500')}">
+                                ${new Date(chat.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </div>
+                        </div>
+                    `;
+                        chatMessages.appendChild(msgDiv);
+                    });
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                })
+                .catch(error => console.error('Error loading chats:', error));
+        }
 
 
-        //     // Fungsi kirim pesan (tetap pakai AJAX)
-        //     function sendMessage() {
-        //         const message = chatInput.value.trim();
-        //         if (message === '') return;
+        // Fungsi kirim pesan (tetap pakai AJAX)
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (message === '') return;
 
-        //         fetch(`/products/${productId}/chat`, {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        //             },
-        //             body: JSON.stringify({ message: message })
-        //         })
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             chatInput.value = '';
-        //             loadChats(); // Reload chat setelah kirim pesan baru
-        //         })
-        //         .catch(error => console.error('Error:', error));
-        //     }
+            fetch(`/products/${productId}/chat`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        message: message
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    chatInput.value = '';
+                    loadChats(); // Reload chat setelah kirim pesan baru
+                })
+                .catch(error => console.error('Error:', error));
+        }
 
-        //     sendMessageBtn.addEventListener('click', sendMessage);
-        //     chatInput.addEventListener('keypress', function(e) {
-        //         if (e.key === 'Enter') sendMessage();
-        //     });
+        sendMessageBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') sendMessage();
+        });
     });
 </script>

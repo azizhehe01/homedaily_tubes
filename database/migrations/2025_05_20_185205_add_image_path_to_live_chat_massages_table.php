@@ -8,7 +8,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('live_chat_massages', function (Blueprint $table) {
-            $table->string('image_path')->nullable()->after('message_content');
+            $table->string('image_path')->nullable()->after('message');
         });
     }
 

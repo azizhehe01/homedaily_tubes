@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Product extends Model
 {
@@ -17,6 +18,16 @@ class Product extends Model
         'stock',
         'category_id'
     ];
+
+    public function getUnreadMessagesCount()
+    {
+        return $this->liveChatSessions()
+            ->whereHas('messages', function ($query) {
+                $query->where('status', 'unread')
+                    ->where('receiver_id', Auth::id());
+            })
+            ->count();
+    }
 
     public function category()
     {
@@ -46,6 +57,11 @@ class Product extends Model
 
     public function chats()
     {
-         return $this->hasMany(ProductChat::class, 'product_id', 'product_id')->with('user');
+        return $this->hasMany(ProductChat::class, 'product_id', 'product_id')->with('user');
+    }
+
+    public function liveChatSessions()
+    {
+        return $this->hasMany(LiveChatSession::class, 'product_id', 'product_id');
     }
 }

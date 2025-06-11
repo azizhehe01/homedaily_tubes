@@ -6,12 +6,18 @@ export default defineConfig({
         laravel({
             input: ["resources/css/app.css", "resources/js/app.js"],
             refresh: true,
-            puhlicDirectory: "public",
+            publicDirectory: "public",
         }),
     ],
     resolve: {
         alias: {
             "@": "/resources",
+        },
+    },
+    define: {
+        "process.env": {
+            PUSHER_APP_KEY: "6d73d4fcc6952df0b86",
+            PUSHER_APP_CLUSTER: "ap1",
         },
     },
 });
