@@ -90,14 +90,6 @@
             </li>
 
             <li class="menu-item">
-                <a href="{{ route('admin.pages.chat') }}"
-                    class="flex items-center px-3 py-2 text-sm font-medium transition-all rounded-md group gap-x-4 text-default-700 hover:bg-default-900/5">
-                    <i data-lucide="message-circle" class="size-5"></i>
-                    <span class="menu-text">Chat</span>
-                </a>
-            </li>
-
-            <li class="menu-item">
                 <a href="{{ route('admin.pages.orders') }}"
                     class="flex items-center px-3 py-2 text-sm font-medium transition-all rounded-md group gap-x-4 text-default-700 hover:bg-default-900/5 hs-accordion-active:bg-default-900/5">
                     <iconify-icon icon="lets-icons:order" class="text-2xl text-gray-600"></iconify-icon>
