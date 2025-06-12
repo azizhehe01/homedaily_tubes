@@ -14,6 +14,7 @@
         "laravel/sanctum": "^4.1",
         "laravel/socialite": "^5.20",
         "laravel/tinker": "^2.10.1",
+        "league/commonmark": "^2.7",
         "livewire/livewire": "^3.6",
         "midtrans/midtrans-php": "^2.6",
         "spatie/laravel-permission": "^6.19"

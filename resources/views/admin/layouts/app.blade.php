@@ -55,11 +55,7 @@
                         'subtitle' => 'Menu',
                         'title' => 'Dashboard',
                     ])
-                    @auth
-                        <div id="chat-widget">
-                            @livewire('chat')
-                        </div>
-                    @endauth
+                 
                     @yield('content')
                 </div>
             </main>
